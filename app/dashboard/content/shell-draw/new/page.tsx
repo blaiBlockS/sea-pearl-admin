@@ -19,7 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postCreateShellRaffle } from "@/services/dashboard/content/shellRaffle";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { cn } from "@/utils/cn";
+import { useRouter } from "next/navigation";
 
 const raffleColumns = [
   raffleColumnHelper.accessor("id", {
@@ -34,20 +34,20 @@ const raffleColumns = [
 
   raffleColumnHelper.accessor("reward", {
     id: "reward",
-    header: "총 리워드",
+    header: "총 리워드(USDT)",
     cell: ({ getValue }) => {
       const reward = getValue<number>();
-      return reward.toLocaleString();
+      return `${reward.toLocaleString()}`;
     },
   }),
 
   raffleColumnHelper.accessor("entry_fee", {
     id: "entry_fee",
-    header: "1회 응모권 비용",
+    header: "1회 응모권 비용(Shell)",
     cell: ({ row }) => {
       const { entry_type, entry_fee } = row.original;
       if (entry_type && entry_fee) {
-        return `${entry_fee} ${entry_type}`;
+        return `${entry_fee.toLocaleString()} ${entry_type}`;
       }
     },
   }),
@@ -73,6 +73,8 @@ export default function ShellRaffle() {
 }
 
 function ShellRaffleInner() {
+  const navigation = useRouter();
+
   const {
     register,
     control,
@@ -133,7 +135,7 @@ function ShellRaffleInner() {
   });
 
   // 제출 핸들러.
-  const onSubmit = (data: CreateRaffleFormData) => {
+  const onSubmit = async (data: CreateRaffleFormData) => {
     const confirm = window.confirm(
       "래플을 정말 생성하시겠습니까?\n" +
         `응모 비용: ${data.entry_fee}\n` +
@@ -169,17 +171,24 @@ function ShellRaffleInner() {
       .toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
     // fetching...
-    mutation.mutate({
-      entry_fee,
-      entry_type,
-      min_participants,
-      reward,
 
-      period: {
-        start: mergedStartDate,
-        end: mergedEndDate,
-      },
-    });
+    try {
+      await mutation.mutateAsync({
+        entry_fee,
+        entry_type,
+        min_participants,
+        reward,
+
+        period: {
+          start: mergedStartDate,
+          end: mergedEndDate,
+        },
+      });
+
+      navigation.back();
+    } catch (err) {
+      console.log(err, "shell-draw/new error");
+    }
   };
 
   // 래플 생성 & 수정 버튼

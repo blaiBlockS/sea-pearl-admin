@@ -122,20 +122,20 @@ function PearlRaffleInner() {
 
     raffleColumnHelper.accessor("reward", {
       id: "reward",
-      header: "총 리워드",
+      header: "총 리워드(USDT)",
       cell: ({ getValue }) => {
         const reward = getValue<number>();
-        return reward.toLocaleString();
+        return `${reward.toLocaleString()}`;
       },
     }),
 
     raffleColumnHelper.accessor("entry_fee", {
       id: "entry_fee",
-      header: "1회 응모권 비용",
+      header: "1회 응모권 비용(Pearl)",
       cell: ({ row }) => {
         const { entry_type, entry_fee } = row.original;
         if (entry_type && entry_fee) {
-          return `${entry_fee} ${entry_type}`;
+          return `${entry_fee.toLocaleString()} ${entry_type}`;
         }
       },
     }),
