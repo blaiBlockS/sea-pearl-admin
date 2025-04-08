@@ -95,6 +95,7 @@ function PearlRaffleDetailInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_PEARL_RAFFLE_DETAIL(id),
     queryFn: () => getUpdatePearlRaffle(id),
+    refetchOnWindowFocus: true,
   });
 
   const disabled = updateDisabledParser(data.status);
@@ -128,7 +129,7 @@ function PearlRaffleDetailInner() {
         `응모 비용: ${submitData.entry_fee}\n` +
         `최소 인원: ${submitData.min_participants}\n` +
         `래플 시작시기: ${submitData.period.startDate}\n` +
-        `래플 종료시기: ${submitData.period.endDate}`,
+        `래플 종료시기: ${submitData.period.endDate}`
     );
     if (!confirm) return;
 

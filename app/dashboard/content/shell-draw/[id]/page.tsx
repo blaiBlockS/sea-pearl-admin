@@ -102,6 +102,7 @@ function ShellRaffleDetailInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_SHELL_RAFFLE_DETAIL(id),
     queryFn: () => getUpdateShellRaffle(id),
+    refetchOnWindowFocus: true,
   });
 
   console.log(data, "total Data");
@@ -135,7 +136,7 @@ function ShellRaffleDetailInner() {
         `응모 비용: ${data.entry_fee}\n` +
         `최소 인원: ${data.min_participants}\n` +
         `래플 시작시기: ${data.period.startDate}\n` +
-        `래플 종료시기: ${data.period.endDate}`,
+        `래플 종료시기: ${data.period.endDate}`
     );
     if (!confirm) return;
 

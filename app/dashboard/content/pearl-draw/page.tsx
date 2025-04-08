@@ -135,7 +135,7 @@ function PearlRaffleInner() {
       cell: ({ row }) => {
         const { entry_type, entry_fee } = row.original;
         if (entry_type && entry_fee) {
-          return `${entry_fee.toLocaleString()} ${entry_type}`;
+          return `${entry_fee.toLocaleString()}`;
         }
       },
     }),
