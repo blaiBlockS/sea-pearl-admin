@@ -19,6 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postCreateShellRaffle } from "@/services/dashboard/content/shellRaffle";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { cn } from "@/utils/cn";
 
 const raffleColumns = [
   raffleColumnHelper.accessor("id", {
@@ -138,7 +139,7 @@ function ShellRaffleInner() {
         `응모 비용: ${data.entry_fee}\n` +
         `최소 인원: ${data.min_participants}\n` +
         `래플 시작시기: ${data.period.startDate}\n` +
-        `래플 종료시기: ${data.period.endDate}`,
+        `래플 종료시기: ${data.period.endDate}`
     );
     if (!confirm) return;
 

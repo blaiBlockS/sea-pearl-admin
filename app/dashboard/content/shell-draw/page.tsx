@@ -6,6 +6,7 @@ import { raffleColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
+import { cn } from "@/lib/utils";
 import { getAllShellRaffles } from "@/services/dashboard/content/shellRaffle";
 import { RaffleType } from "@/types/columns";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -42,6 +43,52 @@ function ShellRaffleInner() {
           {getValue<number>().toString().slice(0, 4)}...
         </div>
       ),
+    }),
+
+    raffleColumnHelper.accessor("status", {
+      id: "status",
+      header: () => <div className="pl-3">상태</div>,
+      cell: ({ getValue }) => {
+        const value = getValue<string>();
+        let result = "";
+        let statusStyle = "";
+        switch (value) {
+          case "1":
+            result = "대기중";
+            statusStyle = "bg-text-teritary/20 text-text-teritary";
+            break;
+          case "2":
+            result = "진행중";
+            statusStyle = "bg-background-brand/20 text-text-brand";
+            break;
+          case "3":
+            result = "완료됨";
+            statusStyle = "bg-[#00E6B8]/20 text-[#00E6B8]";
+            break;
+          case "4":
+            result = "인원미달";
+            statusStyle = "bg-red-500/20 text-red-500";
+            break;
+          case "5":
+          default:
+            result = "서버에러";
+            statusStyle = "bg-[#FF6600]/20 text-[#FF6600]";
+            break;
+        }
+
+        return (
+          <div className="flex pl-3">
+            <div
+              className={cn(
+                "px-2 py-1 rounded text-body4-semibold",
+                statusStyle
+              )}
+            >
+              {result}
+            </div>
+          </div>
+        );
+      },
     }),
 
     raffleColumnHelper.accessor("start", {

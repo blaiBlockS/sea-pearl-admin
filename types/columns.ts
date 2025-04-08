@@ -6,6 +6,7 @@ export interface tableResponseType<T> {
 export type RaffleType = {
   id: string;
   index: number;
+  status: string;
 
   start: string;
   end: string;
