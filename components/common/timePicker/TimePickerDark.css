@@ -1,0 +1,91 @@
+:root .ant-picker {
+  background-color: #2e3442;
+  border-color: #545d6a;
+  color: #fff;
+}
+
+:root .ant-picker-focused {
+  background-color: #4d5c75 !important;
+}
+
+:root .ant-picker-input > input {
+  color: white !important;
+}
+
+:root .ant-picker:hover {
+  background-color: #4d5c75;
+}
+
+:root .ant-picker-input > input::placeholder {
+  color: #4d5c75 !important;
+}
+
+:root .ant-picker-clear {
+  color: #b6b6b6;
+}
+
+:root .ant-picker-panel {
+  background-color: #1b1d22;
+  color: #fff;
+  border: none;
+}
+
+:root .ant-picker-time-panel {
+  background-color: #1b1d22;
+}
+
+:root .ant-picker-ranges {
+  background-color: #1b1d22 !important;
+  border-color: #1b1d22 !important;
+}
+
+:root .ant-picker-footer {
+  border-color: #1b1d22 !important;
+  outline-color: #b6b6b6 !important;
+}
+
+:root .ant-picker-time-panel-cell-inner:hover {
+  background-color: #4d5c75 !important;
+}
+
+:root .ant-picker-time-panel-cell-selected {
+  background-color: #4d5c75 !important;
+}
+
+:root .ant-picker-suffix {
+  color: #fff;
+}
+
+:root .anticon-clock-circle {
+  color: #4d5c75 !important;
+}
+
+:root .ant-picker-ok button {
+  border-color: #1b1d22 !important;
+  outline-color: #1b1d22 !important;
+  background-color: #4d5c75 !important;
+  color: white !important;
+}
+
+:root .ant-picker-ok button:hover {
+  border-color: #1b1d22 !important;
+  outline-color: #1b1d22 !important;
+  background-color: #4d5c75 !important;
+  opacity: 0.8;
+}
+
+:where(.css-dev-only-do-not-override-1d4w9r2).ant-picker-dropdown
+  .ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: #4d5c75 !important;
+  border-radius: none !important;
+}
+
+:where(.css-dev-only-do-not-override-1d4w9r2).ant-picker-dropdown
+  .ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell
+  .ant-picker-time-panel-cell-inner {
+  border-radius: none !important;
+  color: white;
+}
