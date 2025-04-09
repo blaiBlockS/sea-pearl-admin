@@ -2,6 +2,7 @@
 import Header from "@/components/layout/header";
 import Navigator from "@/components/layout/navigator";
 import React from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function DashboardLayout({
   children,
