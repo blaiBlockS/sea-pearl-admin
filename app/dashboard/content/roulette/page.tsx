@@ -1,9 +1,11 @@
 "use client";
 
 import Button from "@/components/common/button";
+import CheckBox from "@/components/common/checkbox";
 import { EdittingTable } from "@/components/common/edittingTable";
 import { rouletteColumnHelper } from "@/components/common/edittingTable/columns";
 import TableInput from "@/components/common/edittingTable/tableInput";
+import { SelectBox } from "@/components/common/selectBox";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import {
@@ -23,7 +25,7 @@ import { LucideCheck, LucideTrash2 as TrashIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 export default function Roulette() {
   return (
@@ -68,24 +70,19 @@ function RouletteInner() {
 
   // 4. HEADER / CELL 메타 정보
   const rouletteColumns = [
+    rouletteColumnHelper.display({
+      id: "id",
+      header: () => <div className="pl-3">번호</div>,
+      cell: ({ row }) => {
+        return <div className="pl-3">{row.index + 1}</div>;
+      },
+    }),
+
     rouletteColumnHelper.accessor("liveBar", {
       id: "liveBar",
-      header: () => <div className="pl-3">라이브바</div>,
+      header: () => <div>라이브바</div>,
       cell: ({ row }) => (
-        <label className="flex justify-start pl-3">
-          <input
-            type="checkbox"
-            {...register(`reward.${row.index}.liveBar`)}
-            className="peer hidden"
-          />
-          <div
-            className={`w-4 h-4 rounded-xs border border-stroke-secondary bg-background-primary peer-checked:border-none peer-checked:bg-blue-500`}
-          />
-          <LucideCheck
-            size={12}
-            className="w-4 h-4 peer-checked:opacity-100 opacity-0 absolute"
-          />
-        </label>
+        <CheckBox {...register(`reward.${row.index}.liveBar`)} />
       ),
     }),
 
@@ -100,9 +97,17 @@ function RouletteInner() {
     rouletteColumnHelper.accessor("reward_type", {
       id: "reward_type",
       header: "리워드 분류",
-      cell: ({ getValue }) => {
-        const reward = getValue<number>();
-        return reward;
+      cell: ({ row }) => {
+        return (
+          <Controller
+            name={`reward.${row.index}.reward_type`}
+            control={control}
+            defaultValue="usdt"
+            render={({ field: { onChange, value } }) => (
+              <SelectBox onValueChange={onChange} value={value} />
+            )}
+          />
+        );
       },
     }),
 
@@ -122,7 +127,7 @@ function RouletteInner() {
           <Button
             variant="unstyled"
             onClick={() => {
-              console.log(row.index, "row.index");
+              remove(row.index);
             }}
           >
             <TrashIcon size={16} />

@@ -1,4 +1,4 @@
-type RewardType = "usdt" | "shell" | "pearl";
+export type RewardType = "usdt" | "shell" | "pearl";
 
 type RouletteEntryType = {
   amount: number;
