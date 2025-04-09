@@ -17,7 +17,7 @@ import {
   postUpdatePearlRaffle,
 } from "@/services/dashboard/content/pearlRaffle";
 import { updateDisabledParser } from "@/utils/convertStatus";
-import { getDefaultValues } from "@/utils/getDefaultValues";
+import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
@@ -98,6 +98,7 @@ function PearlRaffleDetailInner() {
     refetchOnWindowFocus: true,
   });
 
+  // 상태에 따라 disabled
   const disabled = updateDisabledParser(data.status);
 
   const {

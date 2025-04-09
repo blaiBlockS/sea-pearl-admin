@@ -18,27 +18,27 @@ export const raffleFormSchema = z.object({
       (val) => dayjs.isDayjs(val) && val.isValid(),
       {
         message: "유효한 시간을 선택해주세요.",
-      },
+      }
     ),
     endDate: z.date(),
     endTime: z.custom<dayjs.Dayjs>(
       (val) => dayjs.isDayjs(val) && val.isValid(),
       {
         message: "유효한 시간을 선택해주세요.",
-      },
+      }
     ),
   }),
   min_participants: z.preprocess(
     (val) => Number(val),
     z
       .number({ invalid_type_error: "숫자를 입력해주세요." })
-      .min(0, { message: "최소 0 이상의 값을 입력해주세요." }),
+      .min(0, { message: "최소 0 이상의 값을 입력해주세요." })
   ),
   entry_fee: z.preprocess(
     (val) => Number(val),
     z
       .number({ invalid_type_error: "숫자를 입력해주세요." })
-      .min(0, { message: "최소 0 이상의 값을 입력해주세요." }),
+      .min(0, { message: "최소 0 이상의 값을 입력해주세요." })
   ),
   entry_type: z.string(),
 

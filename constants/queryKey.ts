@@ -14,4 +14,7 @@ export const QUERY_KEY = {
     pageSize,
   ],
   GET_PEARL_RAFFLE_DETAIL: (id: string) => ["PEARL_RAFFLE_DETAIL", id],
+
+  // ROULETTE
+  GET_ROULETTE_CONFIG: ["ROULETTE_CONFIG"],
 } as const;

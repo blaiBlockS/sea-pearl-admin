@@ -14,4 +14,9 @@ export const END_POINT = {
   GET_PEARL_RAFFLE_DETAIL: (id: string) =>
     `api/pearlRaffle/detailPearlRaffle?id=${id}`,
   PUT_PEARL_RAFFLES: "/api/pearlRaffle/updatePearlRaffle",
+
+  // ROULETTE & LIVE BAR
+  GET_ROULETTE_CONFIG: "/api/roulette/getall",
+  PUT_UPDATE_ROULETTE_CONFIG: "/api/roulette/update",
+  PUT_UPDATE_LIVE_BAR: "/api/roulette/update/livebar",
 } as const;

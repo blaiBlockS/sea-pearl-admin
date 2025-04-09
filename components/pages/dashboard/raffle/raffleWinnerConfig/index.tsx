@@ -109,7 +109,7 @@ const RaffleWinnerConfig = ({
       <Button
         className={cn(
           "bg-background-teritary/75 hover:bg-background-teritary h-10 w-full",
-          isDisabled && "opacity-25",
+          isDisabled && "opacity-25"
         )}
         onClick={onPressAddButton}
         disabled={isDisabled}

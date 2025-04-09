@@ -1,11 +1,20 @@
+import { cn } from "@/utils/cn";
+
 interface TitleProps {
   children: React.ReactNode;
   ActionButton?: React.ComponentType;
+  fontSize?: string;
 }
 
-const Title = ({ children, ActionButton }: TitleProps) => {
+const Title = ({
+  children,
+  ActionButton,
+  fontSize = "text-head1",
+}: TitleProps) => {
+  const titleStyle = cn(fontSize, "mb-6.5 flex items-center justify-between");
+
   return (
-    <div className="text-head1 mb-6.5 flex items-center justify-between">
+    <div className={titleStyle}>
       {/* 타이틀 */}
       <span>{children}</span>
 

@@ -24,7 +24,7 @@ const navigatorConfig: CategoryType[] = [
         href: "/dashboard/content/freebox",
       },
       {
-        title: "Roulette",
+        title: "Roulette / Live Bar",
         href: "/dashboard/content/roulette",
       },
       {

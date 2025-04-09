@@ -23,7 +23,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { QUERY_KEY } from "@/constants/queryKey";
 import { useParams } from "next/navigation";
-import { getDefaultValues } from "@/utils/getDefaultValues";
+import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { updateDisabledParser } from "@/utils/convertStatus";
 
 export type Winner = {
