@@ -21,7 +21,7 @@ import { parseDefaultRouletteValues } from "@/utils/getDefaultRouletteValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { LucideCheck, LucideTrash2 as TrashIcon } from "lucide-react";
+import { LucideTrash2 as TrashIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -146,7 +146,7 @@ function RouletteInner() {
       window.alert("수정 중 에러가 발생하였습니다.");
     },
   });
-  const onSubmit = (submittedData: RouletteRewardType[]) => {};
+  const onSubmit = (submittedData: CreateRouletteRewardFormData) => {};
 
   // 수정 완료 버튼
   const EditCompleteButton = () => {
