@@ -23,9 +23,9 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideTrash2 as TrashIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 
 export default function Roulette() {
   return (
@@ -54,7 +54,7 @@ function RouletteInner() {
     register,
     control,
     handleSubmit,
-
+    watch,
     formState: { errors },
   } = useForm<CreateRouletteRewardFormData>({
     resolver: zodResolver(rouletteFormSchema),
@@ -67,6 +67,15 @@ function RouletteInner() {
     control,
     name: "reward",
   });
+
+  const handleAppend = () => {
+    append({
+      liveBar: false,
+      amount: 0,
+      reward_type: "usdt",
+      chance: 0,
+    });
+  };
 
   // 4. HEADER / CELL 메타 정보
   const rouletteColumns = [
@@ -90,7 +99,11 @@ function RouletteInner() {
       id: "amount",
       header: "리워드 양",
       cell: ({ row }) => {
-        return <TableInput {...register(`reward.${row.index}.amount`)} />;
+        return (
+          <TableInput
+            {...register(`reward.${row.index}.amount`, { valueAsNumber: true })}
+          />
+        );
       },
     }),
 
@@ -115,7 +128,11 @@ function RouletteInner() {
       id: "chance",
       header: "당첨 확률",
       cell: ({ row }) => {
-        return <TableInput {...register(`reward.${row.index}.chance`)} />;
+        return (
+          <TableInput
+            {...register(`reward.${row.index}.chance`, { valueAsNumber: true })}
+          />
+        );
       },
     }),
 
@@ -175,7 +192,12 @@ function RouletteInner() {
 
           {/* 룰렛 구성 설정 테이블 */}
 
-          <EdittingTable columns={rouletteColumns} data={fields} />
+          <EdittingTable //
+            columns={rouletteColumns}
+            data={fields}
+            onAppend={handleAppend}
+            watch={watch}
+          />
         </div>
 
         <div className="flex-2/5">
