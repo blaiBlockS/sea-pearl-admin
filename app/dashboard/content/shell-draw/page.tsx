@@ -172,7 +172,6 @@ function ShellRaffleFallback() {
           <Button
             variant="fill"
             className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
-            onClick={() => router.push(pathname + `/${row.original.id}`)}
           >
             상세내역
           </Button>
