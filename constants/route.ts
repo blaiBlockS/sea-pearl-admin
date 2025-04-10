@@ -21,4 +21,8 @@ export const END_POINT = {
 
   GET_LIVE_BAR_CONFIG: "/api/roulette/livebar",
   PUT_UPDATE_LIVE_BAR: "/api/roulette/update/livebar",
+
+  // FREE BOX
+  GET_FREE_BOX_CONFIG: "/api/freebox/getFreebox",
+  PUT_FREE_BOX_CONFIG: "/api/freebox/updateFreebox",
 } as const;

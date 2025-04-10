@@ -3,12 +3,10 @@ import { LiveBarConfigType } from "@/schemas/live-bar.schema";
 export const getDefaultLiveBarValues = (
   data: LiveBarConfigType
 ): LiveBarConfigType => {
-  console.log(data, "hahaha");
-  const { timeRange, limit, reason } = data;
+  const { timeRange, limit } = data;
 
   return {
     timeRange,
     limit,
-    reason,
   };
 };

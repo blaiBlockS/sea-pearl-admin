@@ -235,6 +235,13 @@ function RouletteInner() {
   // 최종 제출 핸들러
   const onSubmitAll = async () => {
     try {
+      if (totalSum !== 100) {
+        window.alert(
+          "룰렛 설정을 변경하려면 총 당첨 확률이 100%여야 합니다. 확률을 확인해주세요."
+        );
+        return;
+      }
+
       const [rouletteUpdatedData, liveBarUpdatedData] = await Promise.all([
         onValidateRouletteConfig(),
         onValidateLiveBarConfig(),

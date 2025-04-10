@@ -20,4 +20,7 @@ export const QUERY_KEY = {
 
   // LIVEBAR
   GET_LIVE_BAR_CONFIG: ["LIVE_BAR_CONFIG"],
+
+  // FREE BOX
+  GET_FREE_BOX_CONFIG: ["FREE_BOX_CONFIG"],
 } as const;

@@ -10,11 +10,12 @@ const Title = ({
   children,
   ActionButton,
   fontSize = "text-head1",
+  ...props
 }: TitleProps) => {
   const titleStyle = cn(fontSize, "mb-6.5 flex items-center justify-between");
 
   return (
-    <div className={titleStyle}>
+    <div className={titleStyle} {...props}>
       {/* 타이틀 */}
       <span>{children}</span>
 
