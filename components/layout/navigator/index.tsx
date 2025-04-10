@@ -38,9 +38,14 @@ const navigatorConfig: CategoryType[] = [
     ],
   },
   {
-    title: "퀘스트",
-    href: "/dashboard/quest",
-    iconSrc: "/icons/quest.svg",
+    title: "Sea Pearl 퀘스트",
+    href: "/dashboard/sea-pearl-quest",
+    iconSrc: "/icons/sea-pearl-quest.svg",
+  },
+  {
+    title: "커뮤니티 퀘스트",
+    href: "/dashboard/community-quest",
+    iconSrc: "/icons/community-quest.svg",
   },
   {
     title: "수익 및 지출",
