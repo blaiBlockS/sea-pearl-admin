@@ -17,4 +17,7 @@ export const QUERY_KEY = {
 
   // ROULETTE
   GET_ROULETTE_CONFIG: ["ROULETTE_CONFIG"],
+
+  // LIVEBAR
+  GET_LIVE_BAR_CONFIG: ["LIVE_BAR_CONFIG"],
 } as const;

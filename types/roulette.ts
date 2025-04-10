@@ -7,7 +7,7 @@ type RouletteEntryType = {
 };
 
 export type RouletteRewardType = {
-  liveBar: boolean;
+  live_bar: boolean;
   amount: number;
   reward_type: RewardType;
   chance: number;

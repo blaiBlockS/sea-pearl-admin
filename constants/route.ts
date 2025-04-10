@@ -18,5 +18,7 @@ export const END_POINT = {
   // ROULETTE & LIVE BAR
   GET_ROULETTE_CONFIG: "/api/roulette/getall",
   PUT_UPDATE_ROULETTE_CONFIG: "/api/roulette/update",
+
+  GET_LIVE_BAR_CONFIG: "/api/roulette/livebar",
   PUT_UPDATE_LIVE_BAR: "/api/roulette/update/livebar",
 } as const;

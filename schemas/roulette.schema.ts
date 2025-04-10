@@ -11,8 +11,8 @@ import { z } from "zod";
 // });
 
 const rewardConfigSchema = z.object({
-  liveBar: z.boolean(),
-  amount: z.number().min(1), // 등수: 1등, 2등...
+  live_bar: z.boolean(),
+  amount: z.number().min(0), // 등수: 1등, 2등...
   reward_type: z.enum(["usdt", "shell", "pearl"]),
   chance: z.number().min(0, { message: "확률은 0 이상이어야 합니다" }),
 });

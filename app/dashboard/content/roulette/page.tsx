@@ -7,25 +7,31 @@ import { rouletteColumnHelper } from "@/components/common/edittingTable/columns"
 import TableInput from "@/components/common/edittingTable/tableInput";
 import { SelectBox } from "@/components/common/selectBox";
 import Title from "@/components/layout/title";
+import LiveBarConfigTable from "@/components/pages/dashboard/roulette";
 import { QUERY_KEY } from "@/constants/queryKey";
+import {
+  liveBarConfigSchema,
+  LiveBarConfigType,
+} from "@/schemas/live-bar.schema";
 import {
   CreateRouletteRewardFormData,
   rouletteFormSchema,
 } from "@/schemas/roulette.schema";
 import {
+  getLiveBarConfig,
   getRouletteConfig,
   putUpdateRouletteConfig,
 } from "@/services/dashboard/content/roulette";
 import { RouletteRewardType } from "@/types/roulette";
+import { getDefaultLiveBarValues } from "@/utils/getDefaultLiveBarValues";
 import { parseDefaultRouletteValues } from "@/utils/getDefaultRouletteValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideTrash2 as TrashIcon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 export default function Roulette() {
   return (
@@ -40,42 +46,66 @@ export default function Roulette() {
 }
 
 function RouletteInner() {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  // 1. 데이터 패칭
-  const { data } = useSuspenseQuery({
+  /**
+   *  @룰렛_데이터_패칭
+   * */
+  const { data: rouletteData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_ROULETTE_CONFIG,
     queryFn: getRouletteConfig,
   });
+  /**
+   *  @라이브바_데이터_패칭
+   * */
+  const { data: liveBarData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_LIVE_BAR_CONFIG,
+    queryFn: getLiveBarConfig,
+  });
+  console.log(liveBarData, "liveBarData");
 
-  // 2. 테이블 데이터로 변환
+  /**
+   *  @룰렛_구성_테이블_데이터로_변환
+   * */
   const {
-    register,
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
+    register: rouletteRegister,
+    control: rouletteControl,
+    handleSubmit: rouletteHandleSubmit,
+    getValues: rouletteGetValues,
+    // formState: { errors },
   } = useForm<CreateRouletteRewardFormData>({
     resolver: zodResolver(rouletteFormSchema),
+    mode: "onBlur",
+    defaultValues: parseDefaultRouletteValues(rouletteData),
+  });
+
+  /**
+   *  @라이브바_설정_변환
+   * */
+  const {
+    register: liveBarRegister,
+    handleSubmit: liveBarHandleSubmit,
+    formState: { errors },
+  } = useForm<LiveBarConfigType>({
+    resolver: zodResolver(liveBarConfigSchema),
     mode: "onChange",
-    defaultValues: parseDefaultRouletteValues(data),
+    defaultValues: getDefaultLiveBarValues(liveBarData),
   });
 
   // 3. 테이블 데이터 배열 동적 관리
   const { fields, append, remove } = useFieldArray({
-    control,
+    control: rouletteControl,
     name: "reward",
   });
 
   const handleAppend = () => {
     append({
-      liveBar: false,
+      live_bar: false,
       amount: 0,
       reward_type: "usdt",
       chance: 0,
     });
   };
+
+  const [totalSum, setTotalSum] = useState<number>(100);
 
   // 4. HEADER / CELL 메타 정보
   const rouletteColumns = [
@@ -87,11 +117,11 @@ function RouletteInner() {
       },
     }),
 
-    rouletteColumnHelper.accessor("liveBar", {
-      id: "liveBar",
+    rouletteColumnHelper.accessor("live_bar", {
+      id: "live_bar",
       header: () => <div>라이브바</div>,
       cell: ({ row }) => (
-        <CheckBox {...register(`reward.${row.index}.liveBar`)} />
+        <CheckBox {...rouletteRegister(`reward.${row.index}.live_bar`)} />
       ),
     }),
 
@@ -101,7 +131,9 @@ function RouletteInner() {
       cell: ({ row }) => {
         return (
           <TableInput
-            {...register(`reward.${row.index}.amount`, { valueAsNumber: true })}
+            {...rouletteRegister(`reward.${row.index}.amount`, {
+              valueAsNumber: true,
+            })}
           />
         );
       },
@@ -114,7 +146,7 @@ function RouletteInner() {
         return (
           <Controller
             name={`reward.${row.index}.reward_type`}
-            control={control}
+            control={rouletteControl}
             defaultValue="usdt"
             render={({ field: { onChange, value } }) => (
               <SelectBox onValueChange={onChange} value={value} />
@@ -130,7 +162,17 @@ function RouletteInner() {
       cell: ({ row }) => {
         return (
           <TableInput
-            {...register(`reward.${row.index}.chance`, { valueAsNumber: true })}
+            {...rouletteRegister(`reward.${row.index}.chance`, {
+              valueAsNumber: true,
+            })}
+            onBlur={() => {
+              const reward = rouletteGetValues("reward");
+
+              const reduced = reward.reduce((acc, cur) => {
+                return acc + (Number(cur.chance) || 0);
+              }, 0);
+              setTotalSum(reduced); // 필요한 계산만 여기서
+            }}
           />
         );
       },
@@ -163,16 +205,39 @@ function RouletteInner() {
       window.alert("수정 중 에러가 발생하였습니다.");
     },
   });
-  const onSubmit = (submittedData: CreateRouletteRewardFormData) => {};
+
+  /**
+   * @Validation_로직
+   */
+  // onSubmit RouletteConfig
+  const onValidateRouletteConfig = () =>
+    new Promise<CreateRouletteRewardFormData>((resolve, reject) => {
+      rouletteHandleSubmit(resolve, reject)();
+    });
+  // onSubmit RouletteConfig
+  const onValidateLiveBarConfig = () =>
+    new Promise<LiveBarConfigType>((resolve, reject) => {
+      liveBarHandleSubmit(resolve, reject)();
+    });
+
+  // 최종 제출 핸들러
+  const onSubmitAll = async () => {
+    try {
+      const [rouletteData, liveBarData] = await Promise.all([
+        onValidateRouletteConfig(),
+        onValidateLiveBarConfig(),
+      ]);
+
+      console.log([rouletteData, liveBarData], "[rouletteData, liveBarData]");
+    } catch (err) {
+      // ❌ 하나라도 실패하면 여기서 에러 처리
+    }
+  };
 
   // 수정 완료 버튼
   const EditCompleteButton = () => {
-    const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
-    };
-
     return (
-      <Button variant="fill" onClick={handleSubmit(onSubmit)}>
+      <Button variant="fill" onClick={onSubmitAll}>
         <div className="flex h-10 items-center gap-2 px-6">
           <span className="text-body3-medium">수정</span>
         </div>
@@ -196,13 +261,17 @@ function RouletteInner() {
             columns={rouletteColumns}
             data={fields}
             onAppend={handleAppend}
-            watch={watch}
+            reducedKey={"총 당첨확률: "}
+            reducedValue={totalSum}
           />
         </div>
 
         <div className="flex-2/5">
           {/* 타이틀 */}
-          <Title fontSize="text-head2">결과</Title>
+          <Title fontSize="text-head2">Live Bar 설정</Title>
+
+          {/* 라이브바 설정 테이블 */}
+          <LiveBarConfigTable register={liveBarRegister} errors={errors} />
         </div>
       </form>
     </div>
