@@ -42,7 +42,7 @@ function FreeBoxInner() {
    *  @프리박스_데이터_패칭
    * */
   const { data: freeBoxData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_ROULETTE_CONFIG,
+    queryKey: QUERY_KEY.GET_FREE_BOX_CONFIG,
     queryFn: getFreeBoxConfig,
   });
 
