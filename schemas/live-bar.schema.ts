@@ -11,7 +11,6 @@ export const liveBarConfigSchema = z.object({
       invalid_type_error: "해당 입력값은 숫자여야 합니다.",
     })
     .min(0),
-  reason: z.string().optional().default(""),
 });
 
 // 리워드 타입 추론

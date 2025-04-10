@@ -1,15 +1,5 @@
 import { z } from "zod";
 
-// const entryItemSchema = z.object({
-//   grade: z.number().min(1), // 등수: 1등, 2등...
-//   reward_type: z.string(),
-//   amount: z.number().min(0, { message: "금액은 0 이상이어야 합니다" }),
-//   winners: z
-//     .number()
-//     .int()
-//     .min(1, { message: "당첨자 수는 1 이상이어야 합니다" }),
-// });
-
 const rewardConfigSchema = z.object({
   live_bar: z.boolean(),
   amount: z.number().min(0), // 등수: 1등, 2등...

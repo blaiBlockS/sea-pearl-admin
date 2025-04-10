@@ -20,6 +20,7 @@ import {
 import {
   getLiveBarConfig,
   getRouletteConfig,
+  putUpdateLiveBarConfig,
   putUpdateRouletteConfig,
 } from "@/services/dashboard/content/roulette";
 import { RouletteRewardType } from "@/types/roulette";
@@ -53,6 +54,7 @@ function RouletteInner() {
     queryKey: QUERY_KEY.GET_ROULETTE_CONFIG,
     queryFn: getRouletteConfig,
   });
+  console.log(rouletteData, "rouletteData...");
   /**
    *  @라이브바_데이터_패칭
    * */
@@ -76,7 +78,6 @@ function RouletteInner() {
     mode: "onBlur",
     defaultValues: parseDefaultRouletteValues(rouletteData),
   });
-
   /**
    *  @라이브바_설정_변환
    * */
@@ -196,18 +197,29 @@ function RouletteInner() {
     }),
   ] as ColumnDef<RouletteRewardType, unknown>[];
 
-  const mutation = useMutation({
+  /**
+   * @룰렛_수정_mutation
+   */
+  const rouletteMutation = useMutation({
     mutationFn: putUpdateRouletteConfig,
-    onSuccess: () => {
-      window.alert("룰렛 구성을 성공적으로 수정하였습니다.");
-    },
+    onSuccess: () => {},
     onError: () => {
-      window.alert("수정 중 에러가 발생하였습니다.");
+      window.alert("룰렛 수정 중 에러가 발생하였습니다.");
+    },
+  });
+  /**
+   * @라이브바_수정_mutation
+   */
+  const liveBarMutation = useMutation({
+    mutationFn: putUpdateLiveBarConfig,
+    onSuccess: () => {},
+    onError: () => {
+      window.alert("라이브바 수정 중 에러가 발생하였습니다.");
     },
   });
 
   /**
-   * @Validation_로직
+   * @룰렛_라이브바_Validation_로직
    */
   // onSubmit RouletteConfig
   const onValidateRouletteConfig = () =>
@@ -223,12 +235,27 @@ function RouletteInner() {
   // 최종 제출 핸들러
   const onSubmitAll = async () => {
     try {
-      const [rouletteData, liveBarData] = await Promise.all([
+      const [rouletteUpdatedData, liveBarUpdatedData] = await Promise.all([
         onValidateRouletteConfig(),
         onValidateLiveBarConfig(),
       ]);
 
-      console.log([rouletteData, liveBarData], "[rouletteData, liveBarData]");
+      /**
+       * @여기서_데이터_수정_FETCH !!!!!!
+       */
+      const { reward } = rouletteUpdatedData;
+
+      await rouletteMutation.mutateAsync({
+        entry: rouletteData.entry, // 그대로 던지기
+        id: rouletteData.id, // 그대로 던지기
+        reward, // 수정된 부분
+      });
+
+      window.alert("룰렛 설정이 변경되었습니다.");
+
+      await liveBarMutation.mutateAsync(liveBarUpdatedData);
+
+      window.alert("라이브바 설정이 변경되었습니다.");
     } catch (err) {
       // ❌ 하나라도 실패하면 여기서 에러 처리
     }
@@ -256,7 +283,6 @@ function RouletteInner() {
           <Title fontSize="text-head2">Roulette Reward 수정</Title>
 
           {/* 룰렛 구성 설정 테이블 */}
-
           <EdittingTable //
             columns={rouletteColumns}
             data={fields}

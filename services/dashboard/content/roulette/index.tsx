@@ -32,3 +32,12 @@ export const getLiveBarConfig = async () => {
 
   return res.data;
 };
+
+export const putUpdateLiveBarConfig = async (dto: LiveBarConfigType) => {
+  const res = await clientAxios.put<{ [key: string]: string }>(
+    END_POINT.PUT_UPDATE_ROULETTE_CONFIG,
+    dto
+  );
+
+  return res.data;
+};
