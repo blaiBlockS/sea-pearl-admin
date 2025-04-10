@@ -23,15 +23,21 @@ interface DataTableProps<TData, TValue> {
   isPageNationOn?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+
+  pageSize?: number;
+  pageIndex?: number;
+  pathname?: string;
 }
 
 export function DataTable<TData, TValue>({
   isPageNationOn = true,
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
-  const { pageSize, pageIndex, pathname } = usePageData();
 
+  pageSize,
+  pageIndex,
+  pathname,
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     columns,
     data,
@@ -42,6 +48,8 @@ export function DataTable<TData, TValue>({
   if (typeof data === "undefined") {
     return <></>;
   }
+
+  const pageNationOn = isPageNationOn && pageSize && pageIndex && pathname;
 
   return (
     <div>
@@ -91,7 +99,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      {isPageNationOn && (
+      {pageNationOn && (
         <PaginationDeck
           data={data}
           pageIndex={pageIndex}

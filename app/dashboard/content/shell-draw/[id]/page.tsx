@@ -25,6 +25,7 @@ import { QUERY_KEY } from "@/constants/queryKey";
 import { useParams } from "next/navigation";
 import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { updateDisabledParser } from "@/utils/convertStatus";
+import usePageData from "@/hook/usePageData";
 
 export type Winner = {
   grade: number;
@@ -105,7 +106,7 @@ function ShellRaffleDetailInner() {
     refetchOnWindowFocus: true,
   });
 
-  console.log(data, "total Data");
+  const { pageSize, pageIndex, pathname } = usePageData();
 
   const {
     register,
@@ -257,6 +258,9 @@ function ShellRaffleDetailInner() {
           isPageNationOn={false}
           columns={raffleColumns}
           data={data.winners}
+          pageSize={pageSize}
+          pageIndex={pageIndex}
+          pathname={pathname}
         />
       </div>
     </div>

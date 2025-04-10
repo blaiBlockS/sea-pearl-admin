@@ -220,9 +220,8 @@ function PearlRaffleFallback() {
 }
 
 function PearlRaffleInner() {
-  const { pageSize, pageIndex } = usePageData();
+  const { pageSize, pageIndex, pathname } = usePageData();
   const router = useRouter();
-  const { pathname } = usePageData();
 
   const raffleColumns = [
     raffleColumnHelper.accessor("id", {
@@ -391,7 +390,13 @@ function PearlRaffleInner() {
       <Title ActionButton={NewRaffleButton}>Pearl Raffle</Title>
 
       {/* 테이블 */}
-      <DataTable columns={raffleColumns} data={data} />
+      <DataTable
+        columns={raffleColumns}
+        data={data}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
+        pathname={pathname}
+      />
     </div>
   );
 }

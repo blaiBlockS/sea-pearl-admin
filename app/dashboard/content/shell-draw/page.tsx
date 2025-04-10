@@ -390,7 +390,13 @@ function ShellRaffleInner() {
       <Title ActionButton={NewRaffleButton}>Shell Raffle</Title>
 
       {/* 테이블 */}
-      <DataTable columns={raffleColumns} data={data} />
+      <DataTable
+        columns={raffleColumns}
+        data={data}
+        pageSize={pageSize}
+        pageIndex={pageIndex}
+        pathname={pathname}
+      />
     </div>
   );
 }

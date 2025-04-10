@@ -7,6 +7,7 @@ import Title from "@/components/layout/title";
 import RaffleInfoConfig from "@/components/pages/dashboard/raffle/raffleInfoConfig";
 import RaffleWinnerConfig from "@/components/pages/dashboard/raffle/raffleWinnerConfig";
 import { QUERY_KEY } from "@/constants/queryKey";
+import usePageData from "@/hook/usePageData";
 import {
   CreateRaffleFormData,
   raffleFormSchema,
@@ -215,6 +216,8 @@ function PearlRaffleDetailInner() {
     trigger();
   };
 
+  const { pageIndex, pageSize, pathname } = usePageData();
+
   return (
     <div className="flex gap-8 px-9 py-7">
       {/* 설정 등록 */}
@@ -250,6 +253,9 @@ function PearlRaffleDetailInner() {
           isPageNationOn={false}
           columns={raffleColumns}
           data={data.winners}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          pathname={pathname}
         />
       </div>
     </div>
