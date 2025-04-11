@@ -10,10 +10,10 @@ import {
 // SHELL 전체 리스트 페이지 GET
 export const getAllShellRaffles = async (
   pageIndex: number,
-  pageSize: number,
+  pageSize: number
 ): Promise<RaffleType[]> => {
   const res = await clientAxios.get<tableResponseType<RaffleType[]>>(
-    END_POINT.GET_SHELL_RAFFLES(pageIndex, pageSize),
+    END_POINT.GET_SHELL_RAFFLES(pageIndex, pageSize)
   );
 
   return res.data.data;
@@ -23,7 +23,7 @@ export const getAllShellRaffles = async (
 export const postCreateShellRaffle = async (dto: CreateRaffleFormDataDto) => {
   const res = await clientAxios.post<{ message: string }>(
     END_POINT.POST_SHELL_RAFFLES,
-    dto,
+    dto
   );
 
   return res;
@@ -32,7 +32,7 @@ export const postCreateShellRaffle = async (dto: CreateRaffleFormDataDto) => {
 // SHELL 수정페이지 GET
 export const getUpdateShellRaffle = async (id: string) => {
   const res = await clientAxios.get<GetRaffleFormDataDto>(
-    END_POINT.GET_SHELL_RAFFLE_DETAIL(id),
+    END_POINT.GET_SHELL_RAFFLE_DETAIL(id)
   );
 
   return res.data;
@@ -40,7 +40,7 @@ export const getUpdateShellRaffle = async (id: string) => {
 
 // SHELL 수정페이지 POST
 export const postUpdateShellRaffle = async (
-  dto: CreateRaffleFormDataDtoWithId,
+  dto: CreateRaffleFormDataDtoWithId
 ) => {
   const res = await clientAxios.put(END_POINT.PUT_SHELL_RAFFLES, {
     ...dto,

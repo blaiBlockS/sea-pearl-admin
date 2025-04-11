@@ -23,4 +23,11 @@ export const QUERY_KEY = {
 
   // FREE BOX
   GET_FREE_BOX_CONFIG: ["FREE_BOX_CONFIG"],
+
+  // FINANCE - EXPENSE
+  GET_FINANCE_EXPENSE: (pageIndex: number, pageSize: number) => [
+    "FINANCE_EXPENSE",
+    pageIndex,
+    pageSize,
+  ],
 } as const;
