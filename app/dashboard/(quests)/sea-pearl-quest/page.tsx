@@ -17,21 +17,48 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-export default function Quest() {
+export default function SeaPearlQuest() {
   return (
     <ErrorBoundary
       fallbackRender={(error) => <div>에러: {JSON.stringify(error.error)}</div>}
     >
       <Suspense fallback={<></>}>
-        <SeaPearlQuestInner />
+        <QuestInformationWrapper />
       </Suspense>
     </ErrorBoundary>
   );
 }
 
-function SeaPearlQuestInner() {
-  const router = useRouter();
+function QuestInformationWrapper() {
   const { pageIndex, pageSize, pathname } = usePageData();
+  const { data: communityQuestData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST(pageIndex, pageSize),
+    queryFn: () => getAllShellRaffles(pageIndex, pageSize),
+  });
+
+  return (
+    <SeaPearlQuestInner
+      communityQuestData={communityQuestData}
+      pageIndex={pageIndex}
+      pageSize={pageSize}
+      pathname={pathname}
+    />
+  );
+}
+
+interface SeaPearlQuestProps {
+  communityQuestData: unknown;
+  pageIndex: number;
+  pageSize: number;
+  pathname: string;
+}
+
+function SeaPearlQuestInner({
+  pageIndex,
+  pageSize,
+  pathname,
+}: SeaPearlQuestProps) {
+  const router = useRouter();
 
   const raffleColumns = [
     raffleColumnHelper.accessor("id", {

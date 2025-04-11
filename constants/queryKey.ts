@@ -24,6 +24,16 @@ export const QUERY_KEY = {
   // FREE BOX
   GET_FREE_BOX_CONFIG: ["FREE_BOX_CONFIG"],
 
+  // SEA-PEARL-QUEST
+  GET_SEA_PEARL_QUEST: (pageIndex: number, pageSize: number) => [
+    "SEA_PEARL_QUEST",
+    pageIndex,
+    pageSize,
+  ],
+
+  // COMMUNITY-QUEST
+  GET_COMMUNITY_QUEST: ["COMMUNITY_QUEST"],
+
   // FINANCE - EXPENSE
   GET_FINANCE_EXPENSE: (pageIndex: number, pageSize: number) => [
     "FINANCE_EXPENSE",
