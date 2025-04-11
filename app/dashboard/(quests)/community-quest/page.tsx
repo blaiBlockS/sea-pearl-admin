@@ -1,3 +1,3 @@
 export default function Quest() {
-  return <div className="min-h-screen text-head1">Quest</div>;
+  return <div className="px-9 py-7 w-3/5 min-w-[500px]">Quest</div>;
 }

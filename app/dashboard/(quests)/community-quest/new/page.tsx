@@ -41,7 +41,7 @@ function QuestInner() {
 
   return (
     <div className="px-9 py-7">
-      <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트</Title>
+      <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트 등록</Title>
     </div>
   );
 }
