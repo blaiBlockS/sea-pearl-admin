@@ -13,13 +13,13 @@ export default function Quest() {
       fallbackRender={(error) => <div>에러: {JSON.stringify(error.error)}</div>}
     >
       <Suspense fallback={<></>}>
-        <QuestInner />
+        <NewCommunityQuestInner />
       </Suspense>
     </ErrorBoundary>
   );
 }
 
-function QuestInner() {
+function NewCommunityQuestInner() {
   const router = useRouter();
   const pathname = usePathname();
 

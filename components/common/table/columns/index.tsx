@@ -6,3 +6,5 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 export const raffleColumnHelper = createColumnHelper<RaffleType>();
 export const winnerColumnHelper = createColumnHelper<Winner>();
+export const seaPearlQuestColumnHelper = createColumnHelper<Winner>();
+export const communityQuestColumnHelper = createColumnHelper<Winner>();

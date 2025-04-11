@@ -15,9 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import usePageData from "@/hook/usePageData";
 import { PaginationDeck } from "../pagenation";
-// import { Suspense } from "react";
 
 interface DataTableProps<TData, TValue> {
   isPageNationOn?: boolean;
@@ -44,10 +42,6 @@ export function DataTable<TData, TValue>({
     columnResizeMode: "onEnd",
     getCoreRowModel: getCoreRowModel(),
   });
-
-  if (typeof data === "undefined") {
-    return <></>;
-  }
 
   const pageNationOn = isPageNationOn && pageSize && pageIndex && pathname;
 
