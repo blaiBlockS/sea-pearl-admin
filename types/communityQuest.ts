@@ -9,7 +9,10 @@ interface QuestType {
   title: string;
   reward: QuestReward[];
 
-  resetCycle: string;
+  resetCycle: string; // 반복 주기?
+  resetCount: number; // ???
+  roundInCycle: number; // ???
+
   enabled: boolean;
   archivedPeople: number;
   maxParticipants: number;

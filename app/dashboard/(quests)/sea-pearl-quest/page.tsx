@@ -2,18 +2,26 @@
 
 import Button from "@/components/common/button";
 import { DataTable } from "@/components/common/table";
-import { raffleColumnHelper } from "@/components/common/table/columns";
+import {
+  seaPearlQuestColumnHelper,
+  raffleColumnHelper,
+} from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
+import { Switch } from "@/components/ui/switch";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { cn } from "@/lib/utils";
-import { getAllShellRaffles } from "@/services/dashboard/content/shellRaffle";
-import { RaffleType } from "@/types/columns";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  getAllSeaPearlQuests,
+  postUpdateisExposionEnabled,
+} from "@/services/dashboard/quest/seaPearlQuest";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
 import { PlusIcon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -23,169 +31,165 @@ export default function SeaPearlQuest() {
       fallbackRender={(error) => <div>에러: {JSON.stringify(error.error)}</div>}
     >
       <Suspense fallback={<></>}>
-        <QuestInformationWrapper />
+        <SeaPearlQuestInner />
       </Suspense>
     </ErrorBoundary>
   );
 }
 
-function QuestInformationWrapper() {
+function SeaPearlQuestInner() {
+  const router = useRouter();
   const { pageIndex, pageSize, pathname } = usePageData();
-  const { data: communityQuestData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST(pageIndex, pageSize),
-    queryFn: () => getAllShellRaffles(pageIndex, pageSize),
+
+  const queryClient = useQueryClient();
+
+  const toggleMutation = useMutation({
+    mutationFn: (id: string) => postUpdateisExposionEnabled(id),
+    onSuccess: () => {
+      window.alert("수정 성공");
+    },
+    onError: () => {
+      window.alert("수정 중 에러가 발생하였습니다.");
+    },
   });
 
-  return (
-    <SeaPearlQuestInner
-      communityQuestData={communityQuestData}
-      pageIndex={pageIndex}
-      pageSize={pageSize}
-      pathname={pathname}
-    />
-  );
-}
+  const handleToggleExposion = async (
+    id: string,
+    title: string,
+    enabled: boolean
+  ) => {
+    const confirm = window.confirm(
+      `정말 ${title}을 ${enabled ? "끄" : "켜"}시겠습니까?`
+    );
 
-interface SeaPearlQuestProps {
-  communityQuestData: unknown;
-  pageIndex: number;
-  pageSize: number;
-  pathname: string;
-}
+    if (confirm) {
+      await toggleMutation.mutateAsync(id);
 
-function SeaPearlQuestInner({
-  pageIndex,
-  pageSize,
-  pathname,
-}: SeaPearlQuestProps) {
-  const router = useRouter();
+      // 수정 후 invalidate로 재패칭
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST,
+      });
+    }
+  };
 
   const raffleColumns = [
-    raffleColumnHelper.accessor("id", {
+    seaPearlQuestColumnHelper.accessor("id", {
       id: "id",
-      header: () => <div className="pl-3">ID</div>,
-      enableResizing: false, //disable resizing for just this column
-      size: 100,
-      cell: ({ getValue }) => (
-        <div className="flex pl-3">
-          {getValue<number>().toString().slice(0, 4)}...
-        </div>
-      ),
+      header: () => <div className="pl-3">번호</div>,
+      enableResizing: false,
+      size: 50,
+      cell: ({ row }) => <div className="flex pl-3">{row.index + 1}</div>,
     }),
 
-    raffleColumnHelper.accessor("status", {
-      id: "status",
-      header: () => <div className="pl-3">상태</div>,
-      size: 200,
-      cell: ({ getValue }) => {
-        const value = getValue<string>();
-        let result = "";
-        let statusStyle = "";
-        switch (value) {
-          case "1":
-            result = "대기중";
-            statusStyle = "bg-text-teritary/20 text-text-teritary";
-            break;
-          case "2":
-            result = "진행중";
-            statusStyle = "bg-background-brand/20 text-text-brand";
-            break;
-          case "3":
-            result = "완료됨";
-            statusStyle = "bg-[#00E6B8]/20 text-[#00E6B8]";
-            break;
-          case "4":
-            result = "취소환불";
-            statusStyle = "bg-red-500/20 text-red-500";
-            break;
-          case "5":
-          default:
-            result = "서버에러";
-            statusStyle = "bg-[#FF6600]/20 text-[#FF6600]";
-            break;
-        }
+    seaPearlQuestColumnHelper.accessor("enabled", {
+      id: "isPubliclyExposed",
+      header: () => <div className="pl-3">노출 여/부</div>,
+      size: 100,
+      cell: ({ row }) => {
+        const title = row.original.title;
+        const id = row.original.id;
+        const enabled = row.original.enabled;
 
+        // enabled 로 기본값
         return (
           <div className="flex pl-3">
-            <div
-              className={cn(
-                "px-2 py-1 rounded text-body4-semibold",
-                statusStyle
-              )}
-            >
-              {result}
-            </div>
+            <Switch
+              id="exposeEnabled"
+              checked={enabled}
+              onCheckedChange={() => handleToggleExposion(id, title, enabled)}
+            />
           </div>
         );
       },
     }),
 
-    raffleColumnHelper.accessor("start", {
-      id: "start",
-      header: () => "시작 일시",
-      size: 150,
-      cell: ({ getValue }) => {
-        const start = getValue<string>();
-        return (
-          <div>
-            <div>{format(start, "yy-MM-dd")}</div>
-            <div>{format(start, "HH:mm:ss")}</div>
-          </div>
-        );
-      },
-    }),
-
-    raffleColumnHelper.accessor("end", {
-      id: "end",
-      header: () => "종료 일시",
+    seaPearlQuestColumnHelper.accessor("title", {
+      id: "title",
+      header: "프로젝트명",
       size: 200,
       cell: ({ getValue }) => {
-        const end = getValue<string>();
+        const projectName = getValue<string>();
+        return `${projectName}`;
+      },
+    }),
+
+    seaPearlQuestColumnHelper.accessor("reward", {
+      id: "reward",
+      header: "퀘스트 총 보상",
+      size: 100,
+      cell: ({ row }) => {
+        const { reward } = row.original;
+        let shell: number = 0;
+        let pearl: number = 0;
+
+        if (Array.isArray(reward)) {
+          reward.forEach((item) => {
+            const { amount, type } = item;
+
+            if (type === "shell") {
+              shell += amount;
+            } else if (type === "pearl") {
+              pearl += amount;
+            }
+          });
+        }
+
         return (
-          <div>
-            <div>{format(end, "yy-MM-dd")}</div>
-            <div>{format(end, "HH:mm:ss")}</div>
+          <div className="flex flex-col">
+            <span>{shell} shell</span>
+            <span>{pearl} pearl</span>
           </div>
         );
       },
     }),
 
-    raffleColumnHelper.accessor("reward", {
-      id: "reward",
-      header: "총 리워드(USDT)",
-      size: 150,
+    seaPearlQuestColumnHelper.accessor("resetCycle", {
+      id: "resetCycle",
+      header: "반복 주기",
+      size: 100,
       cell: ({ getValue }) => {
-        const reward = getValue<number>();
-        return `${reward.toLocaleString()}`;
+        const resetCycle = getValue<string>();
+
+        return `${resetCycle?.toLocaleString()}`;
       },
     }),
 
-    raffleColumnHelper.accessor("entry_fee", {
-      id: "entry_fee",
-      header: "1회 응모권 비용(Shell)",
-      size: 150,
-      cell: ({ row }) => {
-        const { entry_type, entry_fee } = row.original;
-        if (entry_type && entry_fee) {
-          return `${entry_fee.toLocaleString()}`;
-        }
-      },
-    }),
-
-    raffleColumnHelper.accessor("participants", {
-      id: "participants",
+    seaPearlQuestColumnHelper.accessor("maxParticipants", {
+      id: "maxParticipants",
       header: "참여자 수",
-      size: 50,
+      size: 100,
+      cell: ({ row }) => {
+        const { archivedPeople, maxParticipants } = row.original;
+
+        return `${archivedPeople?.toLocaleString() ?? "-"} / ${maxParticipants?.toLocaleString() ?? "-"}`;
+      },
+    }),
+
+    seaPearlQuestColumnHelper.accessor("start", {
+      id: "start",
+      header: "노출 시작 일시",
+      size: 100,
       cell: ({ getValue }) => {
-        const participants = getValue<number>();
-        return participants.toLocaleString();
+        const start = getValue<string>();
+
+        return <div>{`${start ?? "-"}`}</div>;
+      },
+    }),
+
+    seaPearlQuestColumnHelper.accessor("end", {
+      id: "end",
+      header: "노출 종료 일시",
+      size: 100,
+      cell: ({ getValue }) => {
+        const end = getValue<string>();
+        return <div>{`${end ?? "-"}`}</div>;
       },
     }),
 
     raffleColumnHelper.display({
       id: "toDetailPage",
       header: "",
-      size: 250,
+      size: 50,
       cell: ({ row }) => (
         <div className="flex justify-end pr-3">
           <Button
@@ -193,16 +197,16 @@ function SeaPearlQuestInner({
             className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
             onClick={() => router.push(pathname + `/${row.original.id}`)}
           >
-            상세내역
+            상세보기
           </Button>
         </div>
       ),
     }),
-  ] as ColumnDef<RaffleType, unknown>[];
+  ] as ColumnDef<QuestType, unknown>[];
 
   const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_SHELL_RAFFLES(pageIndex, pageSize),
-    queryFn: () => getAllShellRaffles(pageIndex, pageSize),
+    queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST,
+    queryFn: getAllSeaPearlQuests,
   });
 
   // 새로운 래플 생성 버튼
@@ -227,14 +231,7 @@ function SeaPearlQuestInner({
       <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트</Title>
 
       {/* 테이블 */}
-      <DataTable
-        columns={raffleColumns}
-        data={data}
-        // PAGENATION RELATED DATAS
-        pageSize={pageSize}
-        pageIndex={pageIndex}
-        pathname={pathname}
-      />
+      <DataTable columns={raffleColumns} data={data} />
     </div>
   );
 }

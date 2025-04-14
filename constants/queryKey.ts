@@ -25,11 +25,7 @@ export const QUERY_KEY = {
   GET_FREE_BOX_CONFIG: ["FREE_BOX_CONFIG"],
 
   // SEA-PEARL-QUEST
-  GET_SEA_PEARL_QUEST: (pageIndex: number, pageSize: number) => [
-    "SEA_PEARL_QUEST",
-    pageIndex,
-    pageSize,
-  ],
+  GET_SEA_PEARL_QUEST: ["SEA_PEARL_QUEST"],
 
   // COMMUNITY-QUEST
   GET_COMMUNITY_QUEST: ["COMMUNITY_QUEST"],

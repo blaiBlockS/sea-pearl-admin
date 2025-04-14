@@ -13,7 +13,7 @@ import usePageData from "@/hook/usePageData";
 import {
   getAllCommunityQuests,
   postUpdateisExposionEnabled,
-} from "@/services/dashboard/quest/communityQuest";
+} from "@/services/dashboard/quest/seaPearlQuest";
 import {
   useMutation,
   useQueryClient,
@@ -41,19 +41,6 @@ export default function CommunityQuest() {
 function CommunityQuestInner() {
   const router = useRouter();
   const { pageIndex, pageSize, pathname } = usePageData();
-
-  // interface QuestType {
-  //   id: string;
-  //   questNumber: number;
-  //   title: string;
-  //   reward: QuestReward[];
-  //   resetCycle: string;
-  //   enabled: boolean;
-  //   archivedPeople: number;
-  //   maxParticipants: number;
-  //   start: string; // ISO date string
-  //   end: string; // ISO date string
-  // }
 
   const queryClient = useQueryClient();
 
@@ -127,28 +114,14 @@ function CommunityQuestInner() {
       },
     }),
 
-    // communityQuestColumnHelper.accessor("logo", {
-    //   id: "logo",
-    //   header: "로고",
-    //   size: 200,
-    //   cell: ({ getValue }) => {
-    //     const end = getValue<string>();
-    //     return (
-    //       <div>
-    //         <div>{format(end, "yy-MM-dd")}</div>
-    //         <div>{format(end, "HH:mm:ss")}</div>
-    //       </div>
-    //     );
-    //   },
-    // }),
-
     communityQuestColumnHelper.accessor("questNumber", {
       id: "questNumber",
       header: "퀘스트 개수",
       size: 100,
       cell: ({ getValue }) => {
         const questNumber = getValue<number>();
-        return `${questNumber.toLocaleString()}`;
+        // TODO: 수정
+        return `${questNumber?.toLocaleString()}`;
       },
     }),
 
@@ -161,15 +134,17 @@ function CommunityQuestInner() {
         let shell: number = 0;
         let pearl: number = 0;
 
-        reward.forEach((item) => {
-          const { amount, type } = item;
+        if (Array.isArray(reward)) {
+          reward.forEach((item) => {
+            const { amount, type } = item;
 
-          if (type === "shell") {
-            shell += amount;
-          } else if (type === "pearl") {
-            pearl += amount;
-          }
-        });
+            if (type === "shell") {
+              shell += amount;
+            } else if (type === "pearl") {
+              pearl += amount;
+            }
+          });
+        }
 
         return (
           <div className="flex flex-col">
@@ -187,13 +162,7 @@ function CommunityQuestInner() {
       cell: ({ getValue }) => {
         const start = getValue<string>();
 
-        return (
-          <div>
-            {`${start}`}
-            {/* <div>{format(start, "yy-MM-dd")}</div>
-            <div>{format(start, "HH:mm:ss")}</div> */}
-          </div>
-        );
+        return <div>{`${start}`}</div>;
       },
     }),
 
@@ -203,13 +172,7 @@ function CommunityQuestInner() {
       size: 100,
       cell: ({ getValue }) => {
         const end = getValue<string>();
-        return (
-          <div>
-            {`${end}`}
-            {/* <div>{format(end, "yy-MM-dd")}</div>
-            <div>{format(end, "HH:mm:ss")}</div> */}
-          </div>
-        );
+        return <div>{`${end}`}</div>;
       },
     }),
 
@@ -236,7 +199,7 @@ function CommunityQuestInner() {
     queryFn: getAllCommunityQuests,
   });
 
-  console.log(data, "data");
+  console.log(data, "community quest data");
 
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {

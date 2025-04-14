@@ -26,7 +26,11 @@ export const END_POINT = {
   GET_FREE_BOX_CONFIG: "/api/freebox/getFreebox",
   PUT_FREE_BOX_CONFIG: "/api/freebox/updateFreebox",
 
+  // BLOCKS QUEST
+  GET_BLOCKS_QUESTS: "/api/blocks/get-all-blocks-quest",
+  PUT_BLOCKS_QUEST_ENABLED: "/api/blocks/toggle-blocks-quest",
+
   // COMMUNITY QUEST
-  GET_COMMUNITY_QUESTS: "/api/blocks/get-all-blocks-quest",
-  PUT_COMMUNITY_QUEST_ENABLED: "/api/blocks/toggle-blocks-quest",
+  GET_COMMUNITY_QUEST: "",
+  PUT_COMMUNITY_QUEST: "",
 } as const;
