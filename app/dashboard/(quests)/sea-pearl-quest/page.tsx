@@ -20,6 +20,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
@@ -172,7 +173,12 @@ function SeaPearlQuestInner() {
       cell: ({ getValue }) => {
         const start = getValue<string>();
 
-        return <div>{`${start || "-"}`}</div>;
+        return (
+          <div>
+            <div>{start ? format(start, "yy-MM-dd") : "-"}</div>
+            <div>{start ? format(start, "HH:mm:ss") : "-"}</div>
+          </div>
+        );
       },
     }),
 
@@ -182,7 +188,13 @@ function SeaPearlQuestInner() {
       size: 100,
       cell: ({ getValue }) => {
         const end = getValue<string>();
-        return <div>{`${end || "-"}`}</div>;
+
+        return (
+          <div>
+            <div>{end ? format(end, "yy-MM-dd") : "-"}</div>
+            <div>{end ? format(end, "HH:mm:ss") : "-"}</div>
+          </div>
+        );
       },
     }),
 
