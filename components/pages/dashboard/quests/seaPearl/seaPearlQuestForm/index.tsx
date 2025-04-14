@@ -20,7 +20,7 @@ interface QuestFormProps {
 
 const QuestForm = ({ control, register, errors }: QuestFormProps) => {
   return (
-    <div className="bg-background-secondary mb-8 flex flex-col max-w-5/8 gap-5 rounded-xl p-8">
+    <div className="bg-background-secondary mb-8 flex flex-col gap-5 rounded-xl p-8">
       {/* 퀘스트 노출 여부 */}
       <div className="flex items-center justify-between">
         <span className="text-body2 flex-1 max-w-1/5">퀘스트 노출 여부</span>

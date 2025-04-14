@@ -172,7 +172,7 @@ function SeaPearlQuestInner() {
       cell: ({ getValue }) => {
         const start = getValue<string>();
 
-        return <div>{`${start ?? "-"}`}</div>;
+        return <div>{`${start || "-"}`}</div>;
       },
     }),
 
@@ -182,7 +182,7 @@ function SeaPearlQuestInner() {
       size: 100,
       cell: ({ getValue }) => {
         const end = getValue<string>();
-        return <div>{`${end ?? "-"}`}</div>;
+        return <div>{`${end || "-"}`}</div>;
       },
     }),
 

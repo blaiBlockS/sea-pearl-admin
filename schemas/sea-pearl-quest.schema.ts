@@ -55,7 +55,7 @@ export const questSchema = z.object({
 
   maxParticipants: z // 10. 최대 참여자 수
     .number({ message: "숫자를 입력해주세요." })
-    .min(1, { message: "최대 인원은 1명 이상이어야 합니다." }),
+    .optional(),
 
   period: z.object({
     // 10. 퀘스트 시작 일시 / 11. 퀘스트 종료 일시
@@ -79,3 +79,7 @@ export const questSchema = z.object({
 // 프리박스 설정 타입 추론
 export type QuestRewardItemConfigType = z.infer<typeof questRewardItemSchema>;
 export type QuestConfigType = z.infer<typeof questSchema>;
+export type QuestConfigRequestType = Omit<QuestConfigType, "period"> & {
+  start: string;
+  end: string;
+};

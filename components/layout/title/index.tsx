@@ -22,9 +22,9 @@ const Title = ({
       <span>{children}</span>
 
       {/* 우측 버튼 */}
-      <div>
+      <div className="flex gap-4">
         {ActionButton && <ActionButton />}
-        {/* {SubButton && <SubButton />} */}
+        {SubButton && <SubButton />}
       </div>
     </div>
   );

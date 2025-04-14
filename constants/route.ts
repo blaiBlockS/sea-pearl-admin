@@ -28,6 +28,7 @@ export const END_POINT = {
 
   // BLOCKS QUEST
   GET_BLOCKS_QUESTS: "/api/blocks/get-all-blocks-quest",
+  POST_BLOCKS_QUESTS: "/api/blocks/create-blocks-quest",
   PUT_BLOCKS_QUEST_ENABLED: "/api/blocks/toggle-blocks-quest",
 
   // COMMUNITY QUEST

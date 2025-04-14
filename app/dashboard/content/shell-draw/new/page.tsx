@@ -162,11 +162,11 @@ function ShellRaffleInner() {
       .toDate()
       .toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    const mergedEndDate = dayjs(period.startDate)
-      .set("hour", period.startTime.hour())
-      .set("minute", period.startTime.minute())
-      .set("second", period.startTime.second())
-      .set("millisecond", period.startTime.millisecond())
+    const mergedEndDate = dayjs(period.endDate)
+      .set("hour", period.endTime.hour())
+      .set("minute", period.endTime.minute())
+      .set("second", period.endTime.second())
+      .set("millisecond", period.endTime.millisecond())
       .toDate()
       .toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
