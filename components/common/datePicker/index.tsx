@@ -27,7 +27,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
           variant={"outline"}
           className={cn(
             "bg-background-teritary border-stroke-secondary text-body4-medium flex-1 justify-between border text-left font-normal",
-            !value && "text-muted-foreground",
+            !value && "text-muted-foreground"
           )}
         >
           <div className="flex items-center gap-2">
@@ -41,6 +41,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
           <ChevronDown />
         </Button>
       </PopoverTrigger>
+
       <PopoverContent
         className="border-background-teritary w-auto border bg-[#131A25] p-0 text-gray-200"
         align="start"

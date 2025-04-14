@@ -114,7 +114,7 @@ function FreeBoxInner() {
               <SelectBox
                 onValueChange={onChange}
                 value={value}
-                rewardList={["shell", "pearl"]}
+                valueList={["shell", "pearl"]}
               />
             )}
           />

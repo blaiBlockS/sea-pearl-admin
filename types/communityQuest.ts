@@ -10,7 +10,6 @@ interface QuestType {
   reward: QuestReward[];
 
   resetCycle: string; // 반복 주기?
-  resetCount: number; // ???
   roundInCycle: number; // ???
 
   enabled: boolean;

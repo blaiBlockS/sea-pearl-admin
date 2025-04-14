@@ -3,12 +3,14 @@ import { cn } from "@/utils/cn";
 interface TitleProps {
   children: React.ReactNode;
   ActionButton?: React.ComponentType;
+  SubButton?: React.ComponentType;
   fontSize?: string;
 }
 
 const Title = ({
   children,
   ActionButton,
+  SubButton,
   fontSize = "text-head1",
   ...props
 }: TitleProps) => {
@@ -20,7 +22,10 @@ const Title = ({
       <span>{children}</span>
 
       {/* 우측 버튼 */}
-      {ActionButton && <ActionButton />}
+      <div>
+        {ActionButton && <ActionButton />}
+        {/* {SubButton && <SubButton />} */}
+      </div>
     </div>
   );
 };

@@ -2,10 +2,16 @@
 
 import Button from "@/components/common/button";
 import Title from "@/components/layout/title";
+import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQuestForm";
+import { raffleFormSchema } from "@/schemas/raffle.schema";
+import { QuestConfigType, questSchema } from "@/schemas/sea-pearl-quest.schema";
+import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useForm } from "react-hook-form";
 
 export default function Quest() {
   return (
@@ -22,6 +28,22 @@ export default function Quest() {
 function NewSeaPearlQuestInner() {
   const router = useRouter();
   const pathname = usePathname();
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = useForm<QuestConfigType>({
+    resolver: zodResolver(questSchema),
+    mode: "onChange",
+    // defaultValues: {
+    //   period: {
+    //     startDate: new Date(),
+    //   },
+    // },
+  });
 
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {
@@ -41,7 +63,11 @@ function NewSeaPearlQuestInner() {
 
   return (
     <div className="px-9 py-7">
+      {/* TITLE */}
       <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트 등록</Title>
+
+      {/* QUEST CONFIG SETTING */}
+      <QuestForm register={register} control={control} errors={errors} />
     </div>
   );
 }

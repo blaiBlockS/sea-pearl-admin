@@ -9,19 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RewardType } from "@/types/roulette";
 
 interface Props {
   onValueChange: (arg: string) => void;
-  value: RewardType;
-  rewardList?: ("usdt" | "shell" | "pearl")[];
+  value?: string;
+  valueList?: string[];
 }
 
 export const SelectBox = React.forwardRef<HTMLButtonElement, Props>(
-  (
-    { onValueChange, value, rewardList = ["usdt", "shell"], ...props }: Props,
-    ref
-  ) => {
+  ({ onValueChange, value, valueList, ...props }: Props, ref) => {
     return (
       <Select onValueChange={onValueChange} value={value}>
         <SelectTrigger
@@ -33,30 +29,15 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, Props>(
         <SelectContent className="bg-background-primary text-text-primary border-none">
           <SelectGroup>
             <SelectLabel>리워드 타입</SelectLabel>
-            {rewardList.includes("usdt") && (
+            {valueList?.map((value) => (
               <SelectItem
-                value="usdt"
+                key={value}
+                value={value}
                 className="hover:bg-background-secondary focus:bg-background-secondary focus:text-text-primary"
               >
-                usdt
+                {value}
               </SelectItem>
-            )}
-            {rewardList.includes("shell") && (
-              <SelectItem
-                value="shell"
-                className="hover:bg-background-secondary focus:bg-background-secondary focus:text-text-primary"
-              >
-                shell
-              </SelectItem>
-            )}
-            {rewardList.includes("pearl") && (
-              <SelectItem
-                value="pearl"
-                className="hover:bg-background-secondary focus:bg-background-secondary focus:text-text-primary"
-              >
-                pearl
-              </SelectItem>
-            )}
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>
