@@ -2,9 +2,7 @@ import { GetRaffleFormDataDto } from "@/schemas/raffle.schema";
 import { QuestConfigType } from "@/schemas/sea-pearl-quest.schema";
 import dayjs from "dayjs";
 
-export const getDefaultQuestValues = (
-  data: GetRaffleFormDataDto
-): QuestConfigType => {
+export const getDefaultQuestValues = (data: GetRaffleFormDataDto) => {
   const {
     min_participants,
     entry_fee,
@@ -25,12 +23,5 @@ export const getDefaultQuestValues = (
       endDate: endDayJs.startOf("day").toDate(), // 또는 dayjs().toDate()
       endTime: dayjs(endDayJs.format("HH:mm:ss"), "HH:mm:ss"),
     },
-
-    min_participants,
-    entry_fee,
-    entry_type,
-
-    reward,
-    winners,
   };
 };
