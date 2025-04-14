@@ -44,7 +44,7 @@ function NewSeaPearlQuestInner() {
   const mutation = useMutation({
     mutationFn: postCreateSeaPearlQuest,
     onSuccess: () => {
-      window.alert("래플을 성공적으로 생성하였습니다.");
+      window.alert("퀘스트를 성공적으로 등록하였습니다.");
     },
     onError: () => {
       window.alert("생성 중 에러가 발생하였습니다.");

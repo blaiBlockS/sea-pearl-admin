@@ -80,6 +80,8 @@ export const questSchema = z.object({
 export type QuestRewardItemConfigType = z.infer<typeof questRewardItemSchema>;
 export type QuestConfigType = z.infer<typeof questSchema>;
 export type QuestConfigRequestType = Omit<QuestConfigType, "period"> & {
-  start: string;
-  end: string;
+  period: {
+    start: string;
+    end: string;
+  };
 };
