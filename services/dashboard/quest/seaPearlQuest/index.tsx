@@ -1,5 +1,4 @@
 import { END_POINT } from "@/constants/route";
-import { CreateRaffleFormDataDto } from "@/schemas/raffle.schema";
 import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
 import { clientAxios } from "@/services";
 

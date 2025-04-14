@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
-import { DataTable } from "@/components/common/table";
+// import { DataTable } from "@/components/common/table";
 import {
   communityQuestColumnHelper,
   raffleColumnHelper,
@@ -10,10 +10,7 @@ import Title from "@/components/layout/title";
 import { Switch } from "@/components/ui/switch";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import {
-  getAllCommunityQuests,
-  postUpdateisExposionEnabled,
-} from "@/services/dashboard/quest/seaPearlQuest";
+import { postUpdateisExposionEnabled } from "@/services/dashboard/quest/seaPearlQuest";
 import {
   useMutation,
   useQueryClient,
@@ -194,12 +191,12 @@ function CommunityQuestInner() {
     }),
   ] as ColumnDef<QuestType, unknown>[];
 
-  const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST,
-    queryFn: getAllCommunityQuests,
-  });
+  // const { data } = useSuspenseQuery({
+  //   queryKey: QUERY_KEY.GET_COMMUNITY_QUEST,
+  //   queryFn: getAllCommunityQuests,
+  // });
 
-  console.log(data, "community quest data");
+  // console.log(data, "community quest data");
 
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {
@@ -223,7 +220,7 @@ function CommunityQuestInner() {
       <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트</Title>
 
       {/* 테이블 */}
-      <DataTable columns={raffleColumns} data={data} />
+      {/* <DataTable columns={raffleColumns} data={data} /> */}
     </div>
   );
 }
