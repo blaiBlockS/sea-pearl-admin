@@ -10,7 +10,10 @@ import Title from "@/components/layout/title";
 import { Switch } from "@/components/ui/switch";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { getAllCommunityQuests } from "@/services/dashboard/quest/communityQuest";
+import {
+  getAllCommunityQuests,
+  postUpdateCommunityQuestToggle,
+} from "@/services/dashboard/quest/communityQuest";
 import { postUpdateSeaPearlQuestToggle } from "@/services/dashboard/quest/seaPearlQuest";
 import {
   useMutation,
@@ -20,6 +23,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { PlusIcon } from "lucide-react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -43,7 +47,7 @@ function CommunityQuestInner() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (id: string) => postUpdateSeaPearlQuestToggle(id),
+    mutationFn: (id: string) => postUpdateCommunityQuestToggle(id),
     onSuccess: () => {
       window.alert("수정 성공");
     },
@@ -52,7 +56,7 @@ function CommunityQuestInner() {
     },
   });
 
-  const handleChangeExposion = async (
+  const handleToggleCommunityQuestExposion = async (
     id: string,
     title: string,
     enabled: boolean
@@ -95,15 +99,17 @@ function CommunityQuestInner() {
             <Switch
               id="exposeEnabled"
               checked={enabled}
-              onCheckedChange={() => handleChangeExposion(id, title, enabled)}
+              onCheckedChange={() =>
+                handleToggleCommunityQuestExposion(id, title, enabled)
+              }
             />
           </div>
         );
       },
     }),
 
-    communityQuestColumnHelper.accessor("title", {
-      id: "title",
+    communityQuestColumnHelper.accessor("name", {
+      id: "name",
       header: "프로젝트명",
       size: 200,
       cell: ({ getValue }) => {
@@ -112,8 +118,19 @@ function CommunityQuestInner() {
       },
     }),
 
-    communityQuestColumnHelper.accessor("questNumber", {
-      id: "questNumber",
+    communityQuestColumnHelper.accessor("logo", {
+      id: "logo",
+      header: "로고",
+      size: 100,
+      cell: ({ getValue }) => {
+        const logo = getValue<string>();
+        // TODO: 수정
+        return <Image src={logo} alt="logo" width={24} height={24} />;
+      },
+    }),
+
+    communityQuestColumnHelper.accessor("quests", {
+      id: "quests",
       header: "퀘스트 개수",
       size: 100,
       cell: ({ getValue }) => {
@@ -153,24 +170,34 @@ function CommunityQuestInner() {
       },
     }),
 
-    communityQuestColumnHelper.accessor("start", {
+    communityQuestColumnHelper.accessor("period.start", {
       id: "start",
       header: "노출 시작 일시",
       size: 100,
       cell: ({ getValue }) => {
         const start = getValue<string>();
 
-        return <div>{`${start}`}</div>;
+        return (
+          <div>
+            <div>{start ? format(start, "yy-MM-dd") : "-"}</div>
+            <div>{start ? format(start, "HH:mm:ss") : "-"}</div>
+          </div>
+        );
       },
     }),
 
-    communityQuestColumnHelper.accessor("end", {
+    communityQuestColumnHelper.accessor("period.end", {
       id: "end",
       header: "노출 종료 일시",
       size: 100,
       cell: ({ getValue }) => {
         const end = getValue<string>();
-        return <div>{`${end}`}</div>;
+        return (
+          <div>
+            <div>{end ? format(end, "yy-MM-dd") : "-"}</div>
+            <div>{end ? format(end, "HH:mm:ss") : "-"}</div>
+          </div>
+        );
       },
     }),
 
@@ -197,8 +224,6 @@ function CommunityQuestInner() {
     queryFn: getAllCommunityQuests,
   });
 
-  console.log(data, "data");
-
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {
     const handleNavigateNewRaffle = () => {
@@ -221,7 +246,7 @@ function CommunityQuestInner() {
       <Title ActionButton={NewQuestButton}>커뮤니티 퀘스트</Title>
 
       {/* 테이블 */}
-      {/* <DataTable columns={raffleColumns} data={data} /> */}
+      <DataTable columns={raffleColumns} data={data} />
     </div>
   );
 }
