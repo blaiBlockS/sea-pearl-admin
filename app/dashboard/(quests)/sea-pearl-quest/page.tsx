@@ -12,7 +12,7 @@ import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import {
   getAllSeaPearlQuests,
-  postUpdateisExposionEnabled,
+  postUpdateSeaPearlQuestToggle,
 } from "@/services/dashboard/quest/seaPearlQuest";
 import {
   useMutation,
@@ -45,7 +45,7 @@ function SeaPearlQuestInner() {
   const queryClient = useQueryClient();
 
   const toggleMutation = useMutation({
-    mutationFn: (id: string) => postUpdateisExposionEnabled(id),
+    mutationFn: (id: string) => postUpdateSeaPearlQuestToggle(id),
     onSuccess: () => {
       window.alert("수정 성공");
     },
@@ -68,7 +68,7 @@ function SeaPearlQuestInner() {
 
       // 수정 후 invalidate로 재패칭
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST,
+        queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS,
       });
     }
   };
@@ -217,9 +217,11 @@ function SeaPearlQuestInner() {
   ] as ColumnDef<QuestType, unknown>[];
 
   const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST,
+    queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS,
     queryFn: getAllSeaPearlQuests,
   });
+
+  console.log(data, "data");
 
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {

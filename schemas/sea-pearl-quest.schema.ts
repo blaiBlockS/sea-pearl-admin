@@ -53,10 +53,13 @@ export const questSchema = z.object({
     .number({ message: "숫자를 입력해주세요." })
     .min(1, { message: "퀘스트 완료 기준 횟수는 최소 1 이상이어야 합니다." }), // 9. 퀘스트 완료 기준 횟수
 
-  maxParticipants: z // 10. 최대 참여자 수
-    .number({ message: "숫자를 입력해주세요." })
-    .optional(),
-
+  maxParticipants: z.preprocess(
+    (val) => {
+      if (val === "" || val === null || Number.isNaN(val)) return undefined;
+      return val;
+    },
+    z.number({ message: "숫자를 입력해주세요." }).optional()
+  ),
   period: z.object({
     // 10. 퀘스트 시작 일시 / 11. 퀘스트 종료 일시
     startDate: z.date(),

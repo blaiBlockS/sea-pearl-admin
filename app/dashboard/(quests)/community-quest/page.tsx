@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
-// import { DataTable } from "@/components/common/table";
+import { DataTable } from "@/components/common/table";
 import {
   communityQuestColumnHelper,
   raffleColumnHelper,
@@ -10,7 +10,8 @@ import Title from "@/components/layout/title";
 import { Switch } from "@/components/ui/switch";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { postUpdateisExposionEnabled } from "@/services/dashboard/quest/seaPearlQuest";
+import { getAllCommunityQuests } from "@/services/dashboard/quest/communityQuest";
+import { postUpdateSeaPearlQuestToggle } from "@/services/dashboard/quest/seaPearlQuest";
 import {
   useMutation,
   useQueryClient,
@@ -42,7 +43,7 @@ function CommunityQuestInner() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (id: string) => postUpdateisExposionEnabled(id),
+    mutationFn: (id: string) => postUpdateSeaPearlQuestToggle(id),
     onSuccess: () => {
       window.alert("수정 성공");
     },
@@ -65,7 +66,7 @@ function CommunityQuestInner() {
 
       // 수정 후 invalidate로 재패칭
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.GET_COMMUNITY_QUEST,
+        queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS,
       });
     }
   };
@@ -191,12 +192,12 @@ function CommunityQuestInner() {
     }),
   ] as ColumnDef<QuestType, unknown>[];
 
-  // const { data } = useSuspenseQuery({
-  //   queryKey: QUERY_KEY.GET_COMMUNITY_QUEST,
-  //   queryFn: getAllCommunityQuests,
-  // });
+  const { data } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS,
+    queryFn: getAllCommunityQuests,
+  });
 
-  // console.log(data, "community quest data");
+  console.log(data, "data");
 
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {
@@ -217,7 +218,7 @@ function CommunityQuestInner() {
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
-      <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트</Title>
+      <Title ActionButton={NewQuestButton}>커뮤니티 퀘스트</Title>
 
       {/* 테이블 */}
       {/* <DataTable columns={raffleColumns} data={data} /> */}

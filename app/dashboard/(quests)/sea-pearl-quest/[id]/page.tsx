@@ -6,9 +6,10 @@ import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQues
 import { QUERY_KEY } from "@/constants/queryKey";
 import { QuestConfigType, questSchema } from "@/schemas/sea-pearl-quest.schema";
 import {
-  postCreateSeaPearlQuest,
+  getOneSeaPearlQuest,
   putUpdateSeaPearlQuest,
 } from "@/services/dashboard/quest/seaPearlQuest";
+import { getDefaultSeaPearlQuestValues } from "@/utils/getDefaultSeaPearlQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -34,10 +35,10 @@ function SeaPearlQuestDetailInner() {
   const param = useParams();
   const id = Array.isArray(param.id) ? param.id[0] : param.id;
 
-  // const {data} = useSuspenseQuery({
-  //   queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST_DETAIL(id),
-  //   queryFn: () => getSomething...,
-  // });
+  const { data } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST_DETAIL(id),
+    queryFn: () => getOneSeaPearlQuest(id),
+  });
 
   const {
     register,
@@ -47,7 +48,7 @@ function SeaPearlQuestDetailInner() {
   } = useForm<QuestConfigType>({
     resolver: zodResolver(questSchema),
     mode: "onChange",
-    // defaultValues:
+    defaultValues: getDefaultSeaPearlQuestValues(data),
   });
 
   const mutation = useMutation({
@@ -62,8 +63,10 @@ function SeaPearlQuestDetailInner() {
 
   // 제출 핸들러.
   const onSubmit = (submitData: QuestConfigType) => {
+    console.log("?????");
+
     const confirm = window.confirm(
-      "퀘스트을 정말 생성하시겠습니까?\n" +
+      "퀘스트을 정말 수정하시겠습니까?\n" +
         `퀘스트 제목: ${submitData.title}\n` +
         `최대 인원: ${submitData.maxParticipants}\n` +
         `래플 시작시기: ${submitData.period.startDate}\n` +
@@ -123,7 +126,7 @@ function SeaPearlQuestDetailInner() {
   };
 
   // 새로운 래플 생성 버튼
-  const NewQuestButton = () => {
+  const EditButton = () => {
     return (
       <Button variant="fill" onClick={handleSubmit(onSubmit)}>
         <div className="flex h-10 items-center gap-2 px-3">
@@ -135,14 +138,14 @@ function SeaPearlQuestDetailInner() {
 
   // 뒤로가기 버튼
   const SubButton = () => {
-    const handleNavigateNewRaffle = () => {
+    const handleGoBack = () => {
       router.back();
     };
 
     return (
       <Button
         variant="fill"
-        onClick={handleNavigateNewRaffle}
+        onClick={handleGoBack}
         className="bg-button-secondary hover:bg-button-secondary/50"
       >
         <div className="flex h-10 items-center gap-2 px-3">
@@ -155,8 +158,8 @@ function SeaPearlQuestDetailInner() {
   return (
     <div className="px-9 py-7 max-w-5/8">
       {/* TITLE */}
-      <Title ActionButton={NewQuestButton} SubButton={SubButton}>
-        Sea Pearl 퀘스트 수정 {}
+      <Title ActionButton={EditButton} SubButton={SubButton}>
+        Sea Pearl 퀘스트 수정
       </Title>
 
       {/* QUEST CONFIG SETTING */}

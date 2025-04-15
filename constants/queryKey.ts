@@ -25,14 +25,18 @@ export const QUERY_KEY = {
   GET_FREE_BOX_CONFIG: ["FREE_BOX_CONFIG"],
 
   // SEA-PEARL-QUEST
-  GET_SEA_PEARL_QUEST: ["SEA_PEARL_QUEST"],
+  GET_SEA_PEARL_QUESTS: ["SEA_PEARL_QUESTS"],
   GET_SEA_PEARL_QUEST_DETAIL: (id: string | string[]) => [
     "SEA_PEARL_QUEST_DETAIL",
     id,
   ],
 
   // COMMUNITY-QUEST
-  GET_COMMUNITY_QUEST: ["COMMUNITY_QUEST"],
+  GET_COMMUNITY_QUESTS: ["COMMUNITY_QUESTS"],
+  GET_COMMUNITY_QUESTS_DETAIL: (id: string | string[]) => [
+    "COMMUNITY_QUEST_DETAIL",
+    id,
+  ],
 
   // FINANCE - EXPENSE
   GET_FINANCE_EXPENSE: (pageIndex: number, pageSize: number) => [

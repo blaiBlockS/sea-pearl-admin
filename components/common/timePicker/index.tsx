@@ -1,7 +1,7 @@
 import { TimePicker as AntDTimePicker } from "antd";
 import "./TimePickerDark.css";
 import { Dayjs } from "dayjs";
-import React from "react";
+import React, { MutableRefObject } from "react";
 
 interface TimePickerProps {
   value: Dayjs;
@@ -10,9 +10,10 @@ interface TimePickerProps {
 }
 
 const TimePicker = React.forwardRef<any, TimePickerProps>(
-  ({ value, onChange, format, ...props }: TimePickerProps) => {
+  ({ value, onChange, format, ...props }: TimePickerProps, ref) => {
     return (
       <AntDTimePicker
+        ref={ref}
         className="flex-1"
         value={value}
         onChange={onChange}

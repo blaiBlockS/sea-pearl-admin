@@ -28,10 +28,16 @@ export const END_POINT = {
 
   // BLOCKS QUEST
   GET_BLOCKS_QUESTS: "/api/blocks/get-all-blocks-quest",
-  POST_BLOCKS_QUESTS: "/api/blocks/create-blocks-quest",
+  GET_BLOCKS_QUEST_DETAIL: (id: string) =>
+    `/api/blocks/get-blocks-quest-by-id?id=${id}`,
+  POST_BLOCKS_QUEST: "/api/blocks/create-blocks-quest",
+  PUT_BLOCKS_QUEST: "/api/blocks/update-blocks-quest",
   PUT_BLOCKS_QUEST_ENABLED: "/api/blocks/toggle-blocks-quest",
 
   // COMMUNITY QUEST
-  GET_COMMUNITY_QUEST: "",
-  PUT_COMMUNITY_QUEST: "",
+  GET_COMMUNITY_QUESTS: "/api/projects/getAll",
+  GET_COMMUNITY_QUEST_DETAIL: "/api/projects/getAll",
+  POST_COMMUNITY_QUEST: "/api/projects/create",
+  PUT_COMMUNITY_QUEST: "/api/projects/update",
+  PUT_COMMUNITY_ENABLED: "/api/projects/toggle",
 } as const;
