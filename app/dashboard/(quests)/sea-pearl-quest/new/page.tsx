@@ -5,6 +5,7 @@ import Title from "@/components/layout/title";
 import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQuestForm";
 import { QuestConfigType, questSchema } from "@/schemas/sea-pearl-quest.schema";
 import { postCreateSeaPearlQuest } from "@/services/dashboard/quest/seaPearlQuest";
+import { getDefaultSeaPearlQuestValues } from "@/utils/getDefaultSeaPearlQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -28,6 +29,10 @@ export default function NewSeaPearlQuest() {
 function NewSeaPearlQuestInner() {
   const router = useRouter();
   const pathname = usePathname();
+  getDefaultSeaPearlQuestValues;
+
+  const startDayJs = dayjs(new Date(2024, 12, 31, 0, 0));
+  const endDayJs = dayjs(new Date(2050, 12, 31, 0, 0));
 
   const {
     register,
@@ -38,7 +43,27 @@ function NewSeaPearlQuestInner() {
   } = useForm<QuestConfigType>({
     resolver: zodResolver(questSchema),
     mode: "onChange",
-    // defaultValues:
+    defaultValues: {
+      enabled: false,
+      period: {
+        startDate: startDayJs.startOf("day").toDate(),
+        startTime: dayjs(startDayJs.format("HH:mm:ss"), "HH:mm:ss"), // dayjs 객체
+        endDate: endDayJs.startOf("day").toDate(), // 또는 dayjs().toDate()
+        endTime: dayjs(endDayJs.format("HH:mm:ss"), "HH:mm:ss"),
+      },
+      questLogo: "checkin",
+      questNumber: 100,
+      resetCycle: "daily",
+      reward: [
+        {
+          amount: 0,
+          type: "shell",
+        },
+      ],
+      roundInCycle: 1,
+      title: "",
+      url: undefined,
+    },
   });
 
   const mutation = useMutation({

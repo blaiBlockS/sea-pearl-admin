@@ -13,7 +13,7 @@ import { getDefaultSeaPearlQuestValues } from "@/utils/getDefaultSeaPearlQuestVa
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
@@ -63,8 +63,6 @@ function SeaPearlQuestDetailInner() {
 
   // 제출 핸들러.
   const onSubmit = (submitData: QuestConfigType) => {
-    console.log("?????");
-
     const confirm = window.confirm(
       "퀘스트을 정말 수정하시겠습니까?\n" +
         `퀘스트 제목: ${submitData.title}\n` +
