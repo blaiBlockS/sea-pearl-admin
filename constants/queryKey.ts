@@ -26,6 +26,10 @@ export const QUERY_KEY = {
 
   // SEA-PEARL-QUEST
   GET_SEA_PEARL_QUEST: ["SEA_PEARL_QUEST"],
+  GET_SEA_PEARL_QUEST_DETAIL: (id: string | string[]) => [
+    "SEA_PEARL_QUEST_DETAIL",
+    id,
+  ],
 
   // COMMUNITY-QUEST
   GET_COMMUNITY_QUEST: ["COMMUNITY_QUEST"],

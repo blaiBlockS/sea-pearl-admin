@@ -19,13 +19,24 @@ export const postCreateSeaPearlQuest = async (dto: QuestConfigRequestType) => {
   return res;
 };
 
-// SEA PEARL QUEST 수정
+// SEA PEARL QUEST 토글 수정
 export const postUpdateisExposionEnabled = async (id: string) => {
   const res = await clientAxios.put<{ message: string }>(
     END_POINT.PUT_BLOCKS_QUEST_ENABLED,
     {
       id,
     }
+  );
+
+  return res;
+};
+
+export const putUpdateSeaPearlQuest = async (
+  dto: QuestConfigRequestType & { id: string }
+) => {
+  const res = await clientAxios.put<{ message: string }>(
+    END_POINT.PUT_BLOCKS_QUEST_ENABLED,
+    dto
   );
 
   return res;

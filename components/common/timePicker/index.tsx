@@ -1,6 +1,7 @@
 import { TimePicker as AntDTimePicker } from "antd";
 import "./TimePickerDark.css";
 import { Dayjs } from "dayjs";
+import React from "react";
 
 interface TimePickerProps {
   value: Dayjs;
@@ -8,16 +9,18 @@ interface TimePickerProps {
   format: string;
 }
 
-const TimePicker = ({ value, onChange, format, ...props }: TimePickerProps) => {
-  return (
-    <AntDTimePicker
-      className="flex-1"
-      value={value}
-      onChange={onChange}
-      format={format}
-      {...props}
-    />
-  );
-};
+const TimePicker = React.forwardRef<any, TimePickerProps>(
+  ({ value, onChange, format, ...props }: TimePickerProps) => {
+    return (
+      <AntDTimePicker
+        className="flex-1"
+        value={value}
+        onChange={onChange}
+        format={format}
+        {...props}
+      />
+    );
+  }
+);
 
 export default TimePicker;

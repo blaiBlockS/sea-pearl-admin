@@ -3,37 +3,46 @@
 import Button from "@/components/common/button";
 import Title from "@/components/layout/title";
 import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQuestForm";
+import { QUERY_KEY } from "@/constants/queryKey";
 import { QuestConfigType, questSchema } from "@/schemas/sea-pearl-quest.schema";
-import { postCreateSeaPearlQuest } from "@/services/dashboard/quest/seaPearlQuest";
+import {
+  postCreateSeaPearlQuest,
+  putUpdateSeaPearlQuest,
+} from "@/services/dashboard/quest/seaPearlQuest";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
 
-export default function NewSeaPearlQuest() {
+export default function SeaPearlQuestDetail() {
   return (
     <ErrorBoundary
       fallbackRender={(error) => <div>에러: {JSON.stringify(error.error)}</div>}
     >
       <Suspense fallback={<></>}>
-        <NewSeaPearlQuestInner />
+        <SeaPearlQuestDetailInner />
       </Suspense>
     </ErrorBoundary>
   );
 }
 
-function NewSeaPearlQuestInner() {
+function SeaPearlQuestDetailInner() {
   const router = useRouter();
-  const pathname = usePathname();
+  const param = useParams();
+  const id = Array.isArray(param.id) ? param.id[0] : param.id;
+
+  // const {data} = useSuspenseQuery({
+  //   queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST_DETAIL(id),
+  //   queryFn: () => getSomething...,
+  // });
 
   const {
     register,
     control,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = useForm<QuestConfigType>({
     resolver: zodResolver(questSchema),
@@ -42,7 +51,7 @@ function NewSeaPearlQuestInner() {
   });
 
   const mutation = useMutation({
-    mutationFn: postCreateSeaPearlQuest,
+    mutationFn: putUpdateSeaPearlQuest,
     onSuccess: () => {
       window.alert("퀘스트를 성공적으로 등록하였습니다.");
     },
@@ -95,6 +104,7 @@ function NewSeaPearlQuestInner() {
       .toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
     mutation.mutate({
+      id,
       questNumber,
       title,
       questLogo,
@@ -117,7 +127,7 @@ function NewSeaPearlQuestInner() {
     return (
       <Button variant="fill" onClick={handleSubmit(onSubmit)}>
         <div className="flex h-10 items-center gap-2 px-3">
-          <span className="text-body3-medium">등록</span>
+          <span className="text-body3-medium">수정</span>
         </div>
       </Button>
     );
@@ -146,7 +156,7 @@ function NewSeaPearlQuestInner() {
     <div className="px-9 py-7 max-w-5/8">
       {/* TITLE */}
       <Title ActionButton={NewQuestButton} SubButton={SubButton}>
-        Sea Pearl 퀘스트 등록
+        Sea Pearl 퀘스트 수정 {}
       </Title>
 
       {/* QUEST CONFIG SETTING */}
