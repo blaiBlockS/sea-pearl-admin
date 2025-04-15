@@ -1,10 +1,14 @@
 import { END_POINT } from "@/constants/route";
 import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
 import { clientAxios } from "@/services";
+import { CommunityQuestType } from "@/types/communityQuest";
+import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 
 // COMMUNITY 전체 리스트 페이지 GET
-export const getAllCommunityQuests = async (): Promise<QuestType[]> => {
-  const res = await clientAxios.get<QuestType[]>(
+export const getAllCommunityQuests = async (): Promise<
+  CommunityQuestType[]
+> => {
+  const res = await clientAxios.get<CommunityQuestType[]>(
     END_POINT.GET_COMMUNITY_QUESTS
   );
 

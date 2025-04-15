@@ -14,7 +14,7 @@ import {
   getAllCommunityQuests,
   postUpdateCommunityQuestToggle,
 } from "@/services/dashboard/quest/communityQuest";
-import { postUpdateSeaPearlQuestToggle } from "@/services/dashboard/quest/seaPearlQuest";
+import { CommunityQuestType } from "@/types/communityQuest";
 import {
   useMutation,
   useQueryClient,
@@ -42,7 +42,7 @@ export default function CommunityQuest() {
 
 function CommunityQuestInner() {
   const router = useRouter();
-  const { pageIndex, pageSize, pathname } = usePageData();
+  const { pathname } = usePageData();
 
   const queryClient = useQueryClient();
 
@@ -89,7 +89,7 @@ function CommunityQuestInner() {
       header: () => <div className="pl-3">노출 여/부</div>,
       size: 100,
       cell: ({ row }) => {
-        const title = row.original.title;
+        const title = row.original.name;
         const id = row.original.id;
         const enabled = row.original.enabled;
 
@@ -140,17 +140,17 @@ function CommunityQuestInner() {
       },
     }),
 
-    communityQuestColumnHelper.accessor("reward", {
+    communityQuestColumnHelper.accessor("rewards", {
       id: "reward",
       header: "퀘스트 총 보상",
       size: 100,
       cell: ({ row }) => {
-        const { reward } = row.original;
+        const { rewards } = row.original;
         let shell: number = 0;
         let pearl: number = 0;
 
-        if (Array.isArray(reward)) {
-          reward.forEach((item) => {
+        if (Array.isArray(rewards)) {
+          rewards.forEach((item) => {
             const { amount, type } = item;
 
             if (type === "shell") {
@@ -217,7 +217,7 @@ function CommunityQuestInner() {
         </div>
       ),
     }),
-  ] as ColumnDef<QuestType, unknown>[];
+  ] as ColumnDef<CommunityQuestType, unknown>[];
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS,
@@ -246,7 +246,10 @@ function CommunityQuestInner() {
       <Title ActionButton={NewQuestButton}>커뮤니티 퀘스트</Title>
 
       {/* 테이블 */}
-      <DataTable columns={raffleColumns} data={data} />
+      <DataTable
+        columns={raffleColumns}
+        data={data.filter((item) => item.name !== "Block s")}
+      />
     </div>
   );
 }

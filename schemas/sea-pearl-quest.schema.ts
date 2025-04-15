@@ -1,17 +1,6 @@
 import dayjs from "dayjs";
 import { z } from "zod";
 
-// {
-//   "roundInCycle": 0,
-//   "resetCount": 0,
-//   "period": {
-//     "start": "2025-04-14T05:11:23.559Z",
-//     "end": "2025-04-14T05:11:23.559Z"
-//   },
-//   "maxParticipants": 0,
-//   "enabled": true
-// }
-
 const questRewardItemSchema = z.object({
   type: z.enum(["shell", "pearl", "usdt"]), // 리워드 분류
   amount: z.number().min(0.1, { message: "금액은 0 이상이어야 합니다" }), // 리워드 수량

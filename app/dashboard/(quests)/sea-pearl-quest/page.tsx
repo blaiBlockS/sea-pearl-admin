@@ -14,6 +14,7 @@ import {
   getAllSeaPearlQuests,
   postUpdateSeaPearlQuestToggle,
 } from "@/services/dashboard/quest/seaPearlQuest";
+import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 import {
   useMutation,
   useQueryClient,
@@ -214,7 +215,7 @@ function SeaPearlQuestInner() {
         </div>
       ),
     }),
-  ] as ColumnDef<QuestType, unknown>[];
+  ] as ColumnDef<SeaPearlQuestType, unknown>[];
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS,

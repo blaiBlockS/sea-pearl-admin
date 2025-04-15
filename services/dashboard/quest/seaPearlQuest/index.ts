@@ -1,10 +1,13 @@
 import { END_POINT } from "@/constants/route";
 import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
 import { clientAxios } from "@/services";
+import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 
 // SHELL 전체 리스트 페이지 GET
-export const getAllSeaPearlQuests = async (): Promise<QuestType[]> => {
-  const res = await clientAxios.get<QuestType[]>(END_POINT.GET_BLOCKS_QUESTS);
+export const getAllSeaPearlQuests = async (): Promise<SeaPearlQuestType[]> => {
+  const res = await clientAxios.get<SeaPearlQuestType[]>(
+    END_POINT.GET_BLOCKS_QUESTS
+  );
 
   console.log(res, "res");
 

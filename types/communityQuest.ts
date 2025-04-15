@@ -1,21 +1,18 @@
-interface QuestReward {
-  type: string;
-  amount: number;
-}
-
-interface QuestType {
+export interface CommunityQuestType {
   id: string;
-  questNumber: number;
-  title: string;
-  reward: QuestReward[];
-
-  resetCycle: string; // 반복 주기?
-  roundInCycle: number; // ???
-
+  quests: number;
+  name: string;
+  logo: string;
   enabled: boolean;
-  archivedPeople: number;
-  maxParticipants: number;
 
-  start: string; // ISO date string
-  end: string; // ISO date string
+  rewards: {
+    shell?: number;
+    pearl?: number;
+    usdt?: number;
+  };
+
+  period: {
+    start: string;
+    end: string;
+  };
 }
