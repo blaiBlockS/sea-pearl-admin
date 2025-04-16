@@ -7,7 +7,7 @@ import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import {
-  getAllExpenses,
+  // getAllExpenses,
   getExpensesByDate,
 } from "@/services/dashboard/expense";
 import { ExpenseType } from "@/types/expense";
@@ -322,26 +322,22 @@ function FinanceInner() {
 
   console.log(start, end, "start and end");
 
-  // 수익
-  // const { data } = useSuspenseQuery({
-  //   queryKey: QUERY_KEY.GET_FINANCE_EXPENSE(pageIndex, pageSize, start, end),
-  //   queryFn: () =>
-  //     getExpensesByDate({
-  //       page: pageIndex, //
-  //       size: pageSize,
-  //       start,
-  //       end,
-  //       order: "asc",
-  //     }),
-  // });
-
-  const { data: allData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
-    queryFn: () => getAllExpenses(pageIndex, pageSize),
+  const { data } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_FINANCE_EXPENSE(pageIndex, pageSize, start, end),
+    queryFn: () =>
+      getExpensesByDate({
+        page: pageIndex, //
+        size: pageSize,
+        start,
+        end,
+        order: "asc",
+      }),
   });
 
-  // console.log(data, "data!");
-  console.log(allData, "allData!");
+  // const { data: allData } = useSuspenseQuery({
+  //   queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
+  //   queryFn: () => getAllExpenses(pageIndex, pageSize),
+  // });
 
   // 지출
   // const { data } = useSuspenseQuery({
@@ -386,7 +382,7 @@ function FinanceInner() {
           {/* 테이블 */}
           <DataTable
             columns={raffleColumns}
-            data={data}
+            data={data.expenses}
             pageSize={pageSize}
             pageIndex={pageIndex}
             pathname={pathname}

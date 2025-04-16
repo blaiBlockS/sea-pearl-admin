@@ -20,6 +20,9 @@ import {
   communityQuestSchema,
 } from "@/schemas/community-quest.schema";
 import { Switch } from "@/components/ui/switch";
+import { useMutation } from "@tanstack/react-query";
+import { postCreateCommunityQuest } from "@/services/dashboard/quest/communityQuest";
+import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
 
 export type Winner = {
   grade: number;
@@ -91,6 +94,10 @@ function NewCommunityQuestInner() {
   const router = useRouter();
   const { pathname } = usePageData();
 
+  // 이미지 데이터
+  const [images, setImages] = useState<ImageType[]>([]);
+
+  // RHF
   const {
     register,
     control,
@@ -102,21 +109,52 @@ function NewCommunityQuestInner() {
     defaultValues: {},
   });
 
-  const [images, setImages] = useState<ImageType[]>([]);
+  // 생성 MUTATION
+  const mutation = useMutation({
+    mutationFn: (dto: CommunityQuestConfigType & { logo?: ImageType }) =>
+      postCreateCommunityQuest(dto),
+    onSuccess: () => {
+      window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
+    },
+    onError: () => {
+      window.alert("생성 중 에러가 발생하였습니다.");
+    },
+  });
+
+  // 생성 핸들러
   const onChange = (imageList: ImageListType, addUpdateIndex?: number[]) => {
     setImages(imageList);
   };
 
+  // 제출 핸들러
+  const onSubmit = (data: CommunityQuestConfigType) => {
+    const {
+      name,
+      enabled,
+      questStartDate,
+      questEndDate,
+      projectNumber,
+      description,
+    } = data;
+    console.log(data, "data!");
+
+    mutation.mutate({
+      name,
+      enabled,
+      questStartDate,
+      questEndDate,
+      description,
+      projectNumber,
+      logo: images?.[0],
+    });
+  };
+
   // 수정 버튼
   const EditButton = () => {
-    const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
-    };
-
     return (
-      <Button variant="fill" onClick={handleNavigateNewRaffle}>
+      <Button variant="fill" onClick={handleSubmit(onSubmit)}>
         <div className="flex h-10 items-center gap-2 px-5">
-          <span className="text-body3-medium">수정</span>
+          <span className="text-body3-medium">생성</span>
         </div>
       </Button>
     );
@@ -189,9 +227,9 @@ function NewCommunityQuestInner() {
                 <Input
                   type="number"
                   inputClassName="h-10 input-no-spinner"
-                  placeholder="Enter quantity"
-                  hint={errors?.questNumber?.message}
-                  {...register("questNumber", { valueAsNumber: true })}
+                  placeholder="Enter Project Order"
+                  hint={errors?.projectNumber?.message}
+                  {...register("projectNumber", { valueAsNumber: true })}
                 />
               </div>
             </div>
@@ -201,9 +239,8 @@ function NewCommunityQuestInner() {
               <span className="text-body2 flex-1 max-w-1/5">프로젝트 명</span>
               <div className="flex flex-1 max-w-4/5 gap-4">
                 <Input
-                  type="number"
                   inputClassName="h-10 input-no-spinner"
-                  placeholder="Enter quantity"
+                  placeholder="Enter Title"
                   hint={errors?.name?.message}
                   {...register("name")}
                 />
