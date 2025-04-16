@@ -20,9 +20,14 @@ import {
   CommunityQuestConfigType,
   communityQuestSchema,
 } from "@/schemas/community-quest.schema";
-import { postCreateCommunityQuest } from "@/services/dashboard/quest/communityQuest";
-import { useMutation } from "@tanstack/react-query";
+import {
+  getAllCommunityQuests,
+  getCommunityQuestDetail,
+  postCreateCommunityQuest,
+} from "@/services/dashboard/quest/communityQuest";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { QUERY_KEY } from "@/constants/queryKey";
 
 export type Winner = {
   grade: number;
@@ -91,11 +96,20 @@ export default function CommunityQuestInfo() {
 }
 
 function CommunityQuestInfoInner() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = Array.isArray(params.communityId)
+    ? params.communityId[0]
+    : params.communityId;
+
   const router = useRouter();
   const { pathname } = usePageData();
 
-  // useForm
+  // 커뮤니티 퀘스트 단일 데이터 조회
+  const { data: communityQuestData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS_DETAIL(id),
+    queryFn: () => getCommunityQuestDetail(id),
+  });
+
   // 이미지 데이터
   const [images, setImages] = useState<ImageType[]>([]);
 
@@ -108,7 +122,7 @@ function CommunityQuestInfoInner() {
   } = useForm<CommunityQuestConfigType>({
     resolver: zodResolver(communityQuestSchema),
     mode: "onChange",
-    defaultValues: {},
+    defaultValues: communityQuestData,
   });
 
   // 생성 MUTATION
@@ -138,7 +152,6 @@ function CommunityQuestInfoInner() {
       projectNumber,
       description,
     } = data;
-    console.log(data, "data!");
 
     mutation.mutate({
       name,
@@ -151,14 +164,10 @@ function CommunityQuestInfoInner() {
     });
   };
 
-  // 수정 버튼
+  // 프로젝트 내역 수정 버튼
   const EditButton = () => {
-    const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
-    };
-
     return (
-      <Button variant="fill" onClick={handleNavigateNewRaffle}>
+      <Button variant="fill" onClick={handleSubmit(onSubmit)}>
         <div className="flex h-10 items-center gap-2 px-5">
           <span className="text-body3-medium">수정</span>
         </div>
@@ -166,7 +175,7 @@ function CommunityQuestInfoInner() {
     );
   };
 
-  // 삭제 버튼
+  // 프로젝트 삭제 버튼
   const RemoveButton = () => {
     const handleNavigateNewRaffle = () => {
       router.push(pathname + "/new");
@@ -185,7 +194,7 @@ function CommunityQuestInfoInner() {
     );
   };
 
-  // 새로운 래플 생성 버튼
+  // 새로운 서브 퀘스트 생성 버튼
   const NewQuestButton = () => {
     const handleNavigateNewRaffle = () => {
       router.push(pathname + "/new");

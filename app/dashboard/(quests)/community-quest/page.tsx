@@ -248,7 +248,7 @@ function CommunityQuestInner() {
       {/* 테이블 */}
       <DataTable
         columns={raffleColumns}
-        data={data.filter((item) => item.name !== "Block s")}
+        data={data?.filter((item) => item.name !== "Block s") ?? []}
       />
     </div>
   );

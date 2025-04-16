@@ -66,6 +66,15 @@ export const postUpdateCommunityQuestToggle = async (id: string) => {
   return res;
 };
 
+// COMMUNITY QUEST 단일 아이템 조회
+export const getCommunityQuestDetail = async (id: string) => {
+  const res = await clientAxios.get<CommunityQuestConfigType>(
+    END_POINT.GET_COMMUNITY_QUEST_DETAIL(id)
+  );
+
+  return res.data;
+};
+
 // COMMUNITY QUEST 단일 아이템 수정
 export const putUpdateCommunityQuest = async (
   dto: QuestConfigRequestType & { id: string }
