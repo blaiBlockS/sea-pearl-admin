@@ -24,7 +24,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { PlusIcon } from "lucide-react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 

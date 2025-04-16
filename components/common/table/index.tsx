@@ -25,6 +25,8 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number;
   pageIndex?: number;
   pathname?: string;
+
+  noDataText?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -35,6 +37,8 @@ export function DataTable<TData, TValue>({
   pageSize,
   pageIndex,
   pathname,
+
+  noDataText = "No results.",
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     columns,
@@ -86,7 +90,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {noDataText}
               </TableCell>
             </TableRow>
           )}
