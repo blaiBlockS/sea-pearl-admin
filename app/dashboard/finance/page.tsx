@@ -231,16 +231,14 @@ function FinanceInner() {
       id: "id",
       header: () => <div className="pl-3">번호</div>,
       size: 100,
-      cell: ({ getValue }) => {
-        const id = getValue<number>();
-
-        return `${id?.toLocaleString()}`;
+      cell: ({ row }) => {
+        return <div className="pl-3">{row.index + 1}</div>;
       },
     }),
 
     expenseColumnHelper.accessor("createdAt", {
       id: "createdAt",
-      header: () => <div className="pl-3">출금 요청 일자</div>,
+      header: () => <div className="">출금 요청 일자</div>,
       size: 100,
       cell: ({ getValue }) => {
         const createdAt = getValue<string>();
@@ -256,7 +254,7 @@ function FinanceInner() {
 
     expenseColumnHelper.accessor("expenseDate", {
       id: "expenseDate",
-      header: () => <div className="pl-3">출금 일자</div>,
+      header: () => <div className="">출금 일자</div>,
       size: 100,
       cell: ({ getValue }) => {
         const expenseDate = getValue<string>();
@@ -269,7 +267,7 @@ function FinanceInner() {
                 <div>{format(expenseDate, "HH:mm:ss")}</div>
               </>
             ) : (
-              <div>미입력</div>
+              <div className="text-text-disabled">미입력</div>
             )}
           </div>
         );
@@ -278,7 +276,7 @@ function FinanceInner() {
 
     expenseColumnHelper.accessor("userName", {
       id: "userName",
-      header: () => <div className="pl-3">유저명</div>,
+      header: () => <div className="">유저명</div>,
       size: 100,
       cell: ({ getValue }) => {
         const userName = getValue<string>();
@@ -305,7 +303,15 @@ function FinanceInner() {
       cell: ({ getValue }) => {
         const txHashUrl = getValue<string>();
 
-        return `${txHashUrl}`;
+        return (
+          <div>
+            {txHashUrl ? (
+              <div>{txHashUrl}</div>
+            ) : (
+              <div className="text-text-disabled">미입력</div>
+            )}
+          </div>
+        );
       },
     }),
 
@@ -313,14 +319,21 @@ function FinanceInner() {
       id: "toDetailPage",
       header: "출금 등록/상세",
       size: 250,
-      cell: () => (
+      cell: ({ row }) => (
         <div className="flex justify-end pr-3">
-          <Button
-            variant="fill"
-            className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
-          >
-            상세내역
-          </Button>
+          {row?.original?.txHashUrl ? (
+            <Button
+              variant="fill"
+              className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
+              onClick={() => {}}
+            >
+              상세
+            </Button>
+          ) : (
+            <Button variant="fill" className=" h-10 px-4" onClick={() => {}}>
+              등록
+            </Button>
+          )}
         </div>
       ),
     }),
@@ -355,7 +368,7 @@ function FinanceInner() {
   const uploadProfitButton = () => {
     return (
       <Button variant="fill" onClick={() => {}}>
-        <div className="flex h-10 items-center gap-2 pr-3 pl-2">
+        <div className="flex h-10 items-center gap-2 px-3">
           <span className="text-body3-medium">수익 입력</span>
         </div>
       </Button>
@@ -382,7 +395,7 @@ function FinanceInner() {
           {/* 지출 타이틀 */}
           <Title fontSize="text-head2">
             <span className="mr-5">지출</span>
-            <span>{} USDT</span>
+            <span>{data.totalExpenseAmount} USDT</span>
           </Title>
 
           {/* 테이블 */}

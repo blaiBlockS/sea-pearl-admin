@@ -17,4 +17,5 @@ export interface ExpenseType {
 export interface ExpenseListType {
   expenses: ExpenseType[];
   totalCount: number;
+  totalExpenseAmount: number;
 }
