@@ -40,4 +40,24 @@ export const END_POINT = {
   POST_COMMUNITY_QUEST: "/api/projects/create",
   PUT_COMMUNITY_QUEST: "/api/projects/update",
   PUT_COMMUNITY_ENABLED: "/api/projects/toggle",
+
+  // EXPENSE
+  GET_ALL_EXPENSE: (page: number, size: number) =>
+    `/api/expense/get-all?page=${page}&size=${size}&order=asc`,
+  GET_EXPENSE_DETAIL: (id: string) => `/api/expense/detail?id=${id}`,
+  PUT_EXPENSE_UPDATE: "/api/expense/update",
+  GET_EXPENSE_BY_DATE: ({
+    page,
+    size,
+    start,
+    end,
+    order = "asc",
+  }: {
+    page: number;
+    size: number;
+    start: string;
+    end: string;
+    order: "asc" | "desc";
+  }) =>
+    `/api/expense/get-all-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
 } as const;

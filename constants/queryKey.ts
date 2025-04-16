@@ -39,9 +39,11 @@ export const QUERY_KEY = {
   ],
 
   // FINANCE - EXPENSE
-  GET_FINANCE_EXPENSE: (pageIndex: number, pageSize: number) => [
-    "FINANCE_EXPENSE",
-    pageIndex,
-    pageSize,
-  ],
+  GET_ALL_FINANCE_EXPENSES: ["ALL_FINANCE_EXPENSE"],
+  GET_FINANCE_EXPENSE: (
+    pageIndex: number,
+    pageSize: number,
+    start: string,
+    end: string
+  ) => ["FINANCE_EXPENSE", pageIndex, pageSize, start, end],
 } as const;
