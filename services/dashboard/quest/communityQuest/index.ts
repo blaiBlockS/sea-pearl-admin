@@ -20,7 +20,7 @@ export const getAllCommunityQuests = async (): Promise<
 
 // COMMUNITY QUEST 생성
 export const postCreateCommunityQuest = async (
-  dto: CommunityQuestConfigType & { logo: ImageType }
+  dto: CommunityQuestConfigType & { logo?: ImageType }
 ) => {
   const { enabled, name, projectNumber, description, logo } = dto;
 

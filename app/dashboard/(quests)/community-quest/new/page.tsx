@@ -149,8 +149,8 @@ function NewCommunityQuestInner() {
     });
   };
 
-  // 수정 버튼
-  const EditButton = () => {
+  // 생성 버튼
+  const PostButton = () => {
     return (
       <Button variant="fill" onClick={handleSubmit(onSubmit)}>
         <div className="flex h-10 items-center gap-2 px-5">
@@ -191,7 +191,7 @@ function NewCommunityQuestInner() {
         {/* LEFT */}
         <div className="h-full w-3/7">
           {/* 프로젝트 수정 */}
-          <Title fontSize="text-head2" ActionButton={EditButton}>
+          <Title fontSize="text-head2" ActionButton={PostButton}>
             프로젝트 생성
           </Title>
 

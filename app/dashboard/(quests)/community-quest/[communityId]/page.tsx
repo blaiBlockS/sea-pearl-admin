@@ -3,7 +3,7 @@
 import { winnerColumnHelper } from "@/components/common/table/columns";
 import { ColumnDef } from "@tanstack/react-table";
 import { ErrorBoundary } from "react-error-boundary";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useParams } from "next/navigation";
 import Title from "@/components/layout/title";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,17 @@ import Button from "@/components/common/button";
 import { PlusIcon } from "lucide-react";
 import Input from "@/components/common/input";
 import { DataTable } from "@/components/common/table";
+import { Controller, useForm } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
+import ImageUploadingBox from "@/components/common/imageUploading";
+import { ImageListType, ImageType } from "react-images-uploading";
+import {
+  CommunityQuestConfigType,
+  communityQuestSchema,
+} from "@/schemas/community-quest.schema";
+import { postCreateCommunityQuest } from "@/services/dashboard/quest/communityQuest";
+import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type Winner = {
   grade: number;
@@ -85,6 +96,60 @@ function CommunityQuestInfoInner() {
   const { pathname } = usePageData();
 
   // useForm
+  // 이미지 데이터
+  const [images, setImages] = useState<ImageType[]>([]);
+
+  // RHF
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CommunityQuestConfigType>({
+    resolver: zodResolver(communityQuestSchema),
+    mode: "onChange",
+    defaultValues: {},
+  });
+
+  // 생성 MUTATION
+  const mutation = useMutation({
+    mutationFn: (dto: CommunityQuestConfigType & { logo?: ImageType }) =>
+      postCreateCommunityQuest(dto),
+    onSuccess: () => {
+      window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
+    },
+    onError: () => {
+      window.alert("생성 중 에러가 발생하였습니다.");
+    },
+  });
+
+  // 생성 핸들러
+  const onChange = (imageList: ImageListType, addUpdateIndex?: number[]) => {
+    setImages(imageList);
+  };
+
+  // 제출 핸들러
+  const onSubmit = (data: CommunityQuestConfigType) => {
+    const {
+      name,
+      enabled,
+      questStartDate,
+      questEndDate,
+      projectNumber,
+      description,
+    } = data;
+    console.log(data, "data!");
+
+    mutation.mutate({
+      name,
+      enabled,
+      questStartDate,
+      questEndDate,
+      description,
+      projectNumber,
+      logo: images?.[0],
+    });
+  };
 
   // 수정 버튼
   const EditButton = () => {
@@ -147,11 +212,34 @@ function CommunityQuestInfoInner() {
         <div className="h-full w-3/7">
           {/* 프로젝트 수정 */}
           <Title fontSize="text-head2" ActionButton={EditButton}>
-            프로젝트 수정
+            프로젝트 생성
           </Title>
 
           {/* 커뮤니티 프로젝트 총 수정 요소 */}
           <div className="flex flex-1 flex-col rounded-lg gap-5 p-8 min-h-50 bg-background-secondary border border-stroke-secondary">
+            {/* 노출여부 */}
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-body2 flex-1 max-w-1/5">노출 여부</span>
+              <div className="flex flex-1 max-w-4/5 gap-4">
+                <Controller
+                  name={"enabled"}
+                  control={control}
+                  defaultValue={false}
+                  render={({ field: { onChange, value } }) => (
+                    <>
+                      <Switch onCheckedChange={onChange} checked={value} />
+                      {value && (
+                        <span className="text-text-teritary text-body4-medium">
+                          *노출 여부 활성화 시 생성하자마자 사용자에게
+                          노출됩니다.
+                        </span>
+                      )}
+                    </>
+                  )}
+                />
+              </div>
+            </div>
+
             {/* 프로젝트 순번 */}
             <div className="flex items-center justify-between gap-4">
               <span className="text-body2 flex-1 max-w-1/5">프로젝트 순번</span>
@@ -159,9 +247,9 @@ function CommunityQuestInfoInner() {
                 <Input
                   type="number"
                   inputClassName="h-10 input-no-spinner"
-                  placeholder="Enter quantity"
-                  // hint={errors?.questNumber?.message}
-                  // {...register("questNumber", { valueAsNumber: true })}
+                  placeholder="Enter Project Order"
+                  hint={errors?.projectNumber?.message}
+                  {...register("projectNumber", { valueAsNumber: true })}
                 />
               </div>
             </div>
@@ -171,11 +259,10 @@ function CommunityQuestInfoInner() {
               <span className="text-body2 flex-1 max-w-1/5">프로젝트 명</span>
               <div className="flex flex-1 max-w-4/5 gap-4">
                 <Input
-                  type="number"
                   inputClassName="h-10 input-no-spinner"
-                  placeholder="Enter quantity"
-                  // hint={errors?.questNumber?.message}
-                  // {...register("questNumber", { valueAsNumber: true })}
+                  placeholder="Enter Title"
+                  hint={errors?.name?.message}
+                  {...register("name")}
                 />
               </div>
             </div>
@@ -184,13 +271,8 @@ function CommunityQuestInfoInner() {
             <div className="flex items-center justify-between gap-4">
               <span className="text-body2 flex-1 max-w-1/5">로고</span>
               <div className="flex flex-1 max-w-4/5 gap-4">
-                <Input
-                  type="number"
-                  inputClassName="h-10 input-no-spinner"
-                  placeholder="Enter quantity"
-                  // hint={errors?.questNumber?.message}
-                  // {...register("questNumber", { valueAsNumber: true })}
-                />
+                {/* 이미지 업로드 */}
+                <ImageUploadingBox images={images} onChange={onChange} />
               </div>
             </div>
           </div>

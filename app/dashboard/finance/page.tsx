@@ -259,12 +259,18 @@ function FinanceInner() {
       header: () => <div className="pl-3">출금 일자</div>,
       size: 100,
       cell: ({ getValue }) => {
-        const createdAt = getValue<string>();
+        const expenseDate = getValue<string>();
 
         return (
           <div>
-            <div>{createdAt ? format(createdAt, "yy-MM-dd") : "-"}</div>
-            <div>{createdAt ? format(createdAt, "HH:mm:ss") : "-"}</div>
+            {expenseDate ? (
+              <>
+                <div>{format(expenseDate, "yy-MM-dd")}</div>
+                <div>{format(expenseDate, "HH:mm:ss")}</div>
+              </>
+            ) : (
+              <div>미입력</div>
+            )}
           </div>
         );
       },
