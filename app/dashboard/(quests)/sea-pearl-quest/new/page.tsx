@@ -49,7 +49,7 @@ function NewSeaPearlQuestInner() {
         endDate: endDayJs.startOf("day").toDate(), // 또는 dayjs().toDate()
         endTime: dayjs(endDayJs.format("HH:mm:ss"), "HH:mm:ss"),
       },
-      questLogo: "checkin",
+      questLogo: "check-in",
       questNumber: 100,
       resetCycle: "daily",
       reward: [
