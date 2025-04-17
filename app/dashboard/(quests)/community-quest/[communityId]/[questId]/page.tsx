@@ -5,13 +5,15 @@ import { Suspense } from "react";
 import { useParams } from "next/navigation";
 import Title from "@/components/layout/title";
 import { useRouter } from "next/navigation";
-import usePageData from "@/hook/usePageData";
 import Button from "@/components/common/button";
-import { PlusIcon } from "lucide-react";
 import Input from "@/components/common/input";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { QUERY_KEY } from "@/constants/queryKey";
 import {
@@ -20,6 +22,7 @@ import {
   questSchema,
 } from "@/schemas/quest.schema";
 import {
+  deleteToggleSubQuest,
   getSubQuestDetail,
   putUpdateSubQuest,
 } from "@/services/dashboard/quest/communityQuest/subQuest";
@@ -42,10 +45,11 @@ export default function CommunityQuestInfo() {
 function CommunityQuestInfoInner() {
   const params = useParams();
   const id = Array.isArray(params.questId) ? params.questId[0] : params.questId;
+  const projectId = Array.isArray(params.communityId)
+    ? params.communityId[0]
+    : params.communityId;
 
-  const router = useRouter();
-  const { pathname } = usePageData();
-
+  console.log(projectId, "projectId");
   // 커뮤니티 퀘스트 단일 데이터 조회
   const { data: subQuestData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL(id),
@@ -64,20 +68,28 @@ function CommunityQuestInfoInner() {
     defaultValues: getDefaultSubQuestValues(subQuestData),
   });
 
-  // 생성 MUTATION
-  const mutation = useMutation({
+  // 수정 MUTATION
+  const updateMutation = useMutation({
     mutationFn: (dto: QuestConfigWithCombinedPeriod & { id: string }) =>
       putUpdateSubQuest(dto),
     onSuccess: () => {
       window.alert("성공적으로 퀘스트를 수정하였습니다.");
     },
     onError: () => {
-      window.alert("생성 중 에러가 발생하였습니다.");
+      window.alert("수정 중 에러가 발생하였습니다.");
     },
   });
 
-  // QuestConfigType;
-  // QuestConfigWithCombinedPeriod;
+  // 삭제 MUTATION
+  const removeMutation = useMutation({
+    mutationFn: (dto: { id: string }) => deleteToggleSubQuest(dto),
+    onSuccess: () => {
+      window.alert("성공적으로 퀘스트를 삭제하였습니다.");
+    },
+    onError: () => {
+      window.alert("삭제 중 에러가 발생하였습니다.");
+    },
+  });
 
   // 제출 핸들러
   const onSubmit = (data: QuestConfigType) => {
@@ -110,7 +122,7 @@ function CommunityQuestInfoInner() {
       .toDate()
       .toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    mutation.mutate({
+    updateMutation.mutate({
       id,
       enabled,
       questNumber,
@@ -128,10 +140,26 @@ function CommunityQuestInfoInner() {
     });
   };
 
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  // 삭제 핸들러
+  const handleDelete = async () => {
+    await removeMutation.mutateAsync({ id });
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(projectId),
+    });
+    router.back();
+  };
+
   // 프로젝트 내역 수정 버튼
   const EditButton = () => {
     return (
-      <Button variant="fill" onClick={handleSubmit(onSubmit)}>
+      <Button
+        variant="fill"
+        onClick={handleSubmit(onSubmit, (err) => {
+          console.log(err, "err");
+        })}
+      >
         <div className="flex h-10 items-center gap-2 px-5">
           <span className="text-body3-medium">수정</span>
         </div>
@@ -141,34 +169,14 @@ function CommunityQuestInfoInner() {
 
   // 프로젝트 삭제 버튼
   const RemoveButton = () => {
-    const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
-    };
-
     return (
       <Button
         variant="fill"
         className="bg-button-secondary"
-        onClick={handleNavigateNewRaffle}
+        onClick={handleDelete}
       >
         <div className="flex h-10 items-center gap-2 px-5">
-          <span className="text-body3-medium">프로젝트 삭제</span>
-        </div>
-      </Button>
-    );
-  };
-
-  // 새로운 서브 퀘스트 생성 버튼
-  const NewQuestButton = () => {
-    const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
-    };
-
-    return (
-      <Button variant="fill" onClick={handleNavigateNewRaffle}>
-        <div className="flex h-10 items-center gap-2 pl-2 pr-3">
-          <PlusIcon size={20} />
-          <span className="text-body3-medium">New Quest</span>
+          <span className="text-body3-medium">삭제</span>
         </div>
       </Button>
     );
@@ -177,14 +185,17 @@ function CommunityQuestInfoInner() {
   return (
     <div className="px-9 py-7 flex flex-col gap-8">
       {/* 페이지 타이틀 */}
-      {/* <Title SubButton={RemoveButton}>Community Quest</Title> */}
 
       {/* 페이지 그리드 */}
       <div className="flex gap-8">
         {/* LEFT */}
         <div className="h-full w-4/8">
           {/* 프로젝트 수정 */}
-          <Title fontSize="text-head2" ActionButton={EditButton}>
+          <Title
+            fontSize="text-head2"
+            ActionButton={EditButton}
+            SubButton={RemoveButton}
+          >
             퀘스트 수정
           </Title>
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ImageUploading, {
   ImageListType,
   ImageType,
@@ -8,7 +7,7 @@ interface ImageUploadingBoxProps {
   images: ImageType[];
   onChange: (imageList: ImageListType, addUpdateIndex?: number[]) => void;
 }
-
+// communityQuestData.logo
 const ImageUploadingBox = ({ images, onChange }: ImageUploadingBoxProps) => {
   const maxNumber = 1;
 
@@ -32,17 +31,19 @@ const ImageUploadingBox = ({ images, onChange }: ImageUploadingBoxProps) => {
         // write your building UI
         <div className="upload__image-wrapper w-full">
           <div className="flex flex-1 justify-between mb-5">
-            <button
-              style={isDragging ? { color: "red" } : undefined}
-              onClick={onImageUpload}
-              className="text-text-secondary"
-              {...dragProps}
-            >
-              <span className="text-text-brand/70 hover:text-text-brand">
-                Click
-              </span>{" "}
-              or Drop here
-            </button>
+            {imageList.length < 1 && (
+              <button
+                style={isDragging ? { color: "red" } : undefined}
+                onClick={onImageUpload}
+                className="text-text-secondary"
+                {...dragProps}
+              >
+                <span className="text-text-brand/70 hover:text-text-brand">
+                  Click
+                </span>{" "}
+                or Drop here
+              </button>
+            )}
 
             <button onClick={onImageRemoveAll} className="text-text-secondary">
               Remove all images
@@ -59,6 +60,7 @@ const ImageUploadingBox = ({ images, onChange }: ImageUploadingBoxProps) => {
                 >
                   Update
                 </button>
+
                 <button
                   onClick={() => onImageRemove(index)}
                   className="py-1 text-text-secondary rounded-sm"

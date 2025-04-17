@@ -38,8 +38,9 @@ export const END_POINT = {
   GET_COMMUNITY_QUESTS: "/api/projects/getAll",
   GET_COMMUNITY_QUEST_DETAIL: (id: string) => `/api/projects/getById?id=${id}`,
   POST_COMMUNITY_QUEST: "/api/projects/create",
-  PUT_COMMUNITY_QUEST: "/api/projects/update",
+  PUT_COMMUNITY_QUEST: "/api/files/projects/update", // FILE
   PUT_COMMUNITY_ENABLED: "/api/projects/toggle",
+  PUT_COMMUNITY_QUEST_DELETE: "/api/projects/delete",
 
   // SUB QUESTS
   GET_SUB_QUESTS: (id: string) => `/api/quests/getAll?projectId=${id}`,
@@ -47,6 +48,7 @@ export const END_POINT = {
   POST_SUB_QUEST: `/api/quests/create`,
   PUT_SUB_QUEST_DETAIL: `/api/quests/update`,
   PUT_SUB_QUEST_TOGGLE: `/api/quests/toggle`,
+  PUT_SUB_QUEST_DELETE: `/api/quests/delete`,
 
   // EXPENSE
   GET_ALL_EXPENSE: (page: number, size: number) =>

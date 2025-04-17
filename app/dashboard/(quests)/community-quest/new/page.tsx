@@ -21,7 +21,10 @@ import {
 } from "@/schemas/community-quest.schema";
 import { Switch } from "@/components/ui/switch";
 import { useMutation } from "@tanstack/react-query";
-// import { postCreateCommunityQuest } from "@/services/dashboard/quest/communityQuest";
+import {
+  postCreateCommunityQuest,
+  putDeleteCommunityQuest,
+} from "@/services/dashboard/quest/communityQuest";
 
 export type Winner = {
   grade: number;
@@ -109,16 +112,17 @@ function NewCommunityQuestInner() {
   });
 
   // 생성 MUTATION
-  // const mutation = useMutation({
-  //   mutationFn: (dto: CommunityQuestConfigType & { logo?: ImageType }) =>
-  //     postCreateCommunityQuest(dto),
-  //   onSuccess: () => {
-  //     window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
-  //   },
-  //   onError: () => {
-  //     window.alert("생성 중 에러가 발생하였습니다.");
-  //   },
-  // });
+  const mutation = useMutation({
+    mutationFn: (dto: CommunityQuestConfigType) =>
+      postCreateCommunityQuest(dto),
+    onSuccess: () => {
+      window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
+      router.back();
+    },
+    onError: () => {
+      window.alert("생성 중 에러가 발생하였습니다.");
+    },
+  });
 
   // 생성 핸들러
   const onChange = (imageList: ImageListType, addUpdateIndex?: number[]) => {
@@ -127,24 +131,14 @@ function NewCommunityQuestInner() {
 
   // 제출 핸들러
   const onSubmit = (data: CommunityQuestConfigType) => {
-    const {
+    const { name, enabled, projectNumber } = data;
+
+    mutation.mutate({
       name,
       enabled,
-      questStartDate,
-      questEndDate,
       projectNumber,
-      description,
-    } = data;
-
-    // mutation.mutate({
-    //   name,
-    //   enabled,
-    //   questStartDate,
-    //   questEndDate,
-    //   description,
-    //   projectNumber,
-    //   logo: images?.[0],
-    // });
+      file: images?.[0],
+    });
   };
 
   // 생성 버튼

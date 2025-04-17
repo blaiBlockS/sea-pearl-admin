@@ -125,7 +125,11 @@ function CommunityQuestInner() {
       cell: ({ getValue }) => {
         const logo = getValue<string>();
         // TODO: 수정
-        return <Image src={logo} alt="logo" width={24} height={24} />;
+        return logo ? (
+          <Image src={logo} alt="logo" width={24} height={24} />
+        ) : (
+          <></>
+        );
       },
     }),
 

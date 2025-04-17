@@ -19,21 +19,18 @@ export const getAllCommunityQuests = async (): Promise<
 };
 
 // COMMUNITY QUEST 생성
-export const postCommunityQuest = async (
-  dto: CommunityQuestConfigType & { logo?: ImageType }
+export const postCreateCommunityQuest = async (
+  dto: CommunityQuestConfigType
 ) => {
-  const { enabled, name, projectNumber, description, logo } = dto;
+  const { enabled, name, projectNumber, file } = dto;
 
   const formData = new FormData();
-  // formData.append("enabled", String(enabled));
+  formData.append("enabled", String(enabled));
   formData.append("projectNumber", String(projectNumber));
   formData.append("name", name);
 
-  if (description) {
-    formData.append("description", String(description));
-  }
-  if (dto?.logo?.file) {
-    formData.append("logo", dto.logo.file);
+  if (dto?.file.file) {
+    formData.append("file", dto.file.file);
   }
 
   try {
@@ -68,20 +65,38 @@ export const postUpdateCommunityQuestToggle = async (id: string) => {
 
 // COMMUNITY QUEST 단일 아이템 조회
 export const getCommunityQuestDetail = async (id: string) => {
-  const res = await clientAxios.get<CommunityQuestConfigType>(
-    END_POINT.GET_COMMUNITY_QUEST_DETAIL(id)
-  );
+  const res = await clientAxios.get<
+    CommunityQuestConfigType & { logo: string }
+  >(END_POINT.GET_COMMUNITY_QUEST_DETAIL(id));
 
   return res.data;
 };
 
 // COMMUNITY QUEST 단일 아이템 수정
 export const putUpdateCommunityQuest = async (
-  dto: QuestConfigWithCombinedPeriod & { id: string }
+  dto: CommunityQuestConfigType & { id: string }
 ) => {
+  const res = await axios.put(
+    "https://seapearladmin-u4lugvc76a-uc.a.run.app" +
+      END_POINT.PUT_COMMUNITY_QUEST,
+    dto,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return res;
+};
+
+// COMMUNITY QUEST 단일 아이템 삭제
+export const putDeleteCommunityQuest = async ({ id }: { id: string }) => {
   const res = await clientAxios.put<{ message: string }>(
-    END_POINT.PUT_COMMUNITY_QUEST,
-    dto
+    END_POINT.PUT_COMMUNITY_QUEST_DELETE,
+    {
+      id,
+    }
   );
 
   return res;

@@ -60,3 +60,13 @@ export const putToggleSubQuest = async (dto: { id: string }) => {
 
   return res;
 };
+
+// COMMUNITY QUEST - SUB QUESTS 토글
+export const deleteToggleSubQuest = async (dto: { id: string }) => {
+  const res = await clientAxios.put<{ message: string }>(
+    END_POINT.PUT_SUB_QUEST_DELETE,
+    dto
+  );
+
+  return res;
+};

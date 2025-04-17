@@ -17,12 +17,16 @@ import {
   CommunityQuestConfigType,
   communityQuestSchema,
 } from "@/schemas/community-quest.schema";
-import { getCommunityQuestDetail } from "@/services/dashboard/quest/communityQuest";
+import {
+  getCommunityQuestDetail,
+  putDeleteCommunityQuest,
+  putUpdateCommunityQuest,
+} from "@/services/dashboard/quest/communityQuest";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { QUERY_KEY } from "@/constants/queryKey";
 import QuestTable from "./_questTable";
-import { putToggleSubQuest } from "@/services/dashboard/quest/communityQuest/subQuest";
+import Image from "next/image";
 
 export default function CommunityQuestInfo() {
   return (
@@ -50,7 +54,11 @@ function CommunityQuestInfoInner() {
   });
 
   // 이미지 데이터
-  const [images, setImages] = useState<ImageType[]>([]);
+  const [images, setImages] = useState<ImageType[]>(
+    communityQuestData.logo
+      ? [{ data_url: communityQuestData.logo }] // File은 없고, dataURL만 있는 상태
+      : []
+  );
 
   // RHF
   const {
@@ -64,14 +72,28 @@ function CommunityQuestInfoInner() {
     defaultValues: communityQuestData,
   });
 
-  // 생성 MUTATION
-  const subQuestToggleMutation = useMutation({
-    mutationFn: ({ id }: { id: string }) => putToggleSubQuest({ id }),
+  // 수정 MUTATION
+  const mutation = useMutation({
+    mutationFn: (dto: CommunityQuestConfigType & { id: string }) =>
+      putUpdateCommunityQuest(dto),
+
     onSuccess: () => {
-      window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
+      window.alert("성공적으로 커뮤니티 퀘스트를 수정하였습니다.");
+    },
+    onError: (error) => {
+      window.alert("수정 중 에러가 발생하였습니다.");
+    },
+  });
+
+  // 삭제 MUTATION
+  const deleteMutation = useMutation({
+    mutationFn: ({ id }: { id: string }) => putDeleteCommunityQuest({ id }),
+    onSuccess: () => {
+      window.alert("성공적으로 커뮤니티 퀘스트를 삭제하였습니다.");
+      router.back();
     },
     onError: () => {
-      window.alert("생성 중 에러가 발생하였습니다.");
+      window.alert("삭제 중 에러가 발생하였습니다.");
     },
   });
 
@@ -80,26 +102,17 @@ function CommunityQuestInfoInner() {
     setImages(imageList);
   };
 
-  // 제출 핸들러
+  // 수정 핸들러
   const onSubmit = (data: CommunityQuestConfigType) => {
-    const {
+    const { name, enabled, projectNumber } = data;
+
+    mutation.mutate({
+      id,
       name,
       enabled,
-      questStartDate,
-      questEndDate,
       projectNumber,
-      description,
-    } = data;
-
-    // mutation.mutate({
-    //   name,
-    //   enabled,
-    //   questStartDate,
-    //   questEndDate,
-    //   description,
-    //   projectNumber,
-    //   logo: images?.[0],
-    // });
+      file: images?.[0],
+    });
   };
 
   // 프로젝트 내역 수정 버튼
@@ -113,20 +126,21 @@ function CommunityQuestInfoInner() {
     );
   };
 
+  // 삭제 핸들러
+  const handleRemove = () => {
+    deleteMutation.mutate({ id });
+  };
+
   // 프로젝트 삭제 버튼
   const RemoveButton = () => {
-    const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
-    };
-
     return (
       <Button
         variant="fill"
         className="bg-button-secondary"
-        onClick={handleNavigateNewRaffle}
+        onClick={handleRemove}
       >
         <div className="flex h-10 items-center gap-2 px-5">
-          <span className="text-body3-medium">프로젝트 삭제</span>
+          <span className="text-body3-medium">삭제</span>
         </div>
       </Button>
     );
@@ -151,14 +165,18 @@ function CommunityQuestInfoInner() {
   return (
     <div className="px-9 py-7 flex flex-col gap-8">
       {/* 페이지 타이틀 */}
-      <Title SubButton={RemoveButton}>Community Quest</Title>
+      <Title>Community Quest</Title>
 
       {/* 페이지 그리드 */}
       <div className="flex gap-8">
         {/* LEFT */}
         <div className="h-full w-3/8">
           {/* 프로젝트 수정 */}
-          <Title fontSize="text-head2" ActionButton={EditButton}>
+          <Title
+            fontSize="text-head2"
+            ActionButton={EditButton}
+            SubButton={RemoveButton}
+          >
             프로젝트 수정
           </Title>
 
@@ -219,7 +237,9 @@ function CommunityQuestInfoInner() {
               <span className="text-body2 flex-1 max-w-1/5">로고</span>
               <div className="flex flex-1 max-w-4/5 gap-4">
                 {/* 이미지 업로드 */}
-                <ImageUploadingBox images={images} onChange={onChange} />
+                <div>
+                  <ImageUploadingBox images={images} onChange={onChange} />
+                </div>
               </div>
             </div>
           </div>

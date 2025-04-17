@@ -58,11 +58,13 @@ function CommunityQuestInfoInner() {
   });
 
   // 생성 MUTATION
+  const router = useRouter();
   const mutation = useMutation({
     mutationFn: (dto: QuestConfigWithCombinedPeriod & { projectId: string }) =>
       postCreateSubQuest(dto),
     onSuccess: () => {
-      window.alert("성공적으로 퀘스트를 수정하였습니다.");
+      window.alert("성공적으로 퀘스트를 생성하였습니다.");
+      router.back();
     },
     onError: () => {
       window.alert("생성 중 에러가 발생하였습니다.");
