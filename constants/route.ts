@@ -44,6 +44,7 @@ export const END_POINT = {
   // SUB QUESTS
   GET_SUB_QUESTS: (id: string) => `/api/quests/getAll?projectId=${id}`,
   GET_SUB_QUEST_DETAIL: (id: string) => `/api/quests/getById?id=${id}`,
+  POST_SUB_QUEST: `/api/quests/create`,
   PUT_SUB_QUEST_DETAIL: `/api/quests/update`,
   PUT_SUB_QUEST_TOGGLE: `/api/quests/toggle`,
 

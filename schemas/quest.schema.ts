@@ -38,9 +38,17 @@ export const questSchema = z.object({
 
   resetCycle: z.enum(["daily", "weekly", "monthly", "none"]), // 8. 반복 주기
 
-  roundInCycle: z
-    .number({ message: "숫자를 입력해주세요." })
-    .min(1, { message: "퀘스트 완료 기준 횟수는 최소 1 이상이어야 합니다." }), // 9. 퀘스트 완료 기준 횟수
+  roundInCycle: z.preprocess(
+    (val) => {
+      if (val === "" || val === null || Number.isNaN(val)) return undefined;
+      console.log(val, "value?!@");
+      return Number(val);
+    },
+    z
+      .number({ message: "숫자를 입력해주세요." })
+      .min(1, { message: "퀘스트 완료 기준 횟수는 최소 1 이상이어야 합니다." })
+      .optional()
+  ), // 9. 퀘스트 완료 기준 횟수
 
   maxParticipants: z.preprocess(
     (val) => {

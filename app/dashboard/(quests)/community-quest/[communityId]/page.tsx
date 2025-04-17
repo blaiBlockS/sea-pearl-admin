@@ -65,18 +65,6 @@ function CommunityQuestInfoInner() {
   });
 
   // 생성 MUTATION
-  // const mutation = useMutation({
-  //   mutationFn: (dto: CommunityQuestConfigType & { logo?: ImageType }) =>
-  //     postCreateCommunityQuest(dto),
-  //   onSuccess: () => {
-  //     window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
-  //   },
-  //   onError: () => {
-  //     window.alert("생성 중 에러가 발생하였습니다.");
-  //   },
-  // });
-
-  // 생성 MUTATION
   const subQuestToggleMutation = useMutation({
     mutationFn: ({ id }: { id: string }) => putToggleSubQuest({ id }),
     onSuccess: () => {
@@ -147,7 +135,7 @@ function CommunityQuestInfoInner() {
   // 새로운 서브 퀘스트 생성 버튼
   const NewQuestButton = () => {
     const handleNavigateNewRaffle = () => {
-      router.push(pathname + "/new");
+      router.push(pathname + "/new-quest");
     };
 
     return (

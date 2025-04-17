@@ -27,19 +27,19 @@ export const getSubQuestDetail = async (
   return res.data;
 };
 
-// COMMUNITY QUEST - SUB QUESTS 단일 아이템 생성
+// COMMUNITY QUEST - SUB QUEST 아이템 생성
 export const postCreateSubQuest = async (
   dto: QuestConfigWithCombinedPeriod
 ) => {
-  const res = await clientAxios.put<{ message: string }>(
-    END_POINT.PUT_COMMUNITY_QUEST,
+  const res = await clientAxios.post<{ message: string }>(
+    END_POINT.POST_SUB_QUEST,
     dto
   );
 
   return res;
 };
 
-// COMMUNITY QUEST - SUB QUESTS 수정
+// COMMUNITY QUEST - SUB QUEST 수정
 export const putUpdateSubQuest = async (
   dto: QuestConfigWithCombinedPeriod & { id: string }
 ) => {
