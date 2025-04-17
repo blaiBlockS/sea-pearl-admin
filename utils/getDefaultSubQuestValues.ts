@@ -1,11 +1,11 @@
 import {
-  QuestConfigRequestType,
+  QuestConfigWithCombinedPeriod,
   QuestConfigType,
-} from "@/schemas/sea-pearl-quest.schema";
+} from "@/schemas/quest.schema";
 import dayjs from "dayjs";
 
-export const getDefaultSeaPearlQuestValues = (
-  data: QuestConfigRequestType
+export const getDefaultSubQuestValues = (
+  data: QuestConfigWithCombinedPeriod
 ): QuestConfigType => {
   const {
     // id,

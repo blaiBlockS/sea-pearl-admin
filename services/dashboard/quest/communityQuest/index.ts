@@ -1,6 +1,6 @@
 import { END_POINT } from "@/constants/route";
 import { CommunityQuestConfigType } from "@/schemas/community-quest.schema";
-import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
+import { QuestConfigWithCombinedPeriod } from "@/schemas/quest.schema";
 import { clientAxios } from "@/services";
 import { CommunityQuestType } from "@/types/communityQuest";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
@@ -19,7 +19,7 @@ export const getAllCommunityQuests = async (): Promise<
 };
 
 // COMMUNITY QUEST 생성
-export const postCreateCommunityQuest = async (
+export const postCommunityQuest = async (
   dto: CommunityQuestConfigType & { logo?: ImageType }
 ) => {
   const { enabled, name, projectNumber, description, logo } = dto;
@@ -77,7 +77,7 @@ export const getCommunityQuestDetail = async (id: string) => {
 
 // COMMUNITY QUEST 단일 아이템 수정
 export const putUpdateCommunityQuest = async (
-  dto: QuestConfigRequestType & { id: string }
+  dto: QuestConfigWithCombinedPeriod & { id: string }
 ) => {
   const res = await clientAxios.put<{ message: string }>(
     END_POINT.PUT_COMMUNITY_QUEST,

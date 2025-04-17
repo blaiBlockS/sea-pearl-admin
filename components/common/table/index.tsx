@@ -27,6 +27,8 @@ interface DataTableProps<TData, TValue> {
   pathname?: string;
 
   noDataText?: string;
+
+  onClick?: (...args: any[]) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -39,6 +41,8 @@ export function DataTable<TData, TValue>({
   pathname,
 
   noDataText = "No results.",
+
+  onClick,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     columns,
@@ -79,6 +83,7 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={onClick}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

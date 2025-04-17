@@ -3,7 +3,7 @@ import Input from "@/components/common/input";
 import { SelectBox } from "@/components/common/selectBox";
 import TimePicker from "@/components/common/timePicker";
 import { Switch } from "@/components/ui/switch";
-import { QuestConfigType } from "@/schemas/sea-pearl-quest.schema";
+import { QuestConfigType } from "@/schemas/quest.schema";
 import dayjs from "dayjs";
 import {
   Control,
@@ -77,7 +77,7 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
           <Controller
             name={"questLogo"}
             control={control}
-            defaultValue="checkin"
+            defaultValue="check-in"
             render={({ field: { onChange, value } }) => (
               <SelectBox
                 onValueChange={onChange}
@@ -91,7 +91,7 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
                   "youtube",
                   "x",
                   "discord",
-                  "checkin",
+                  "check-in",
                 ]}
               />
             )}

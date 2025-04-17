@@ -5,6 +5,7 @@ import { RaffleType } from "@/types/columns";
 import { CommunityQuestType } from "@/types/communityQuest";
 import { ExpenseType } from "@/types/expense";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
+import { SubQuestType } from "@/types/subQuest";
 import { createColumnHelper } from "@tanstack/react-table";
 
 export const raffleColumnHelper = createColumnHelper<RaffleType>();
@@ -14,5 +15,6 @@ export const seaPearlQuestColumnHelper =
   createColumnHelper<SeaPearlQuestType>();
 export const communityQuestColumnHelper =
   createColumnHelper<CommunityQuestType>();
+export const subQuestColumnHelper = createColumnHelper<SubQuestType>();
 
 export const expenseColumnHelper = createColumnHelper<ExpenseType>();

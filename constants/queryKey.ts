@@ -38,6 +38,16 @@ export const QUERY_KEY = {
     id,
   ],
 
+  // SUB-QUESTS
+  GET_COMMUNITY_QUEST_SUB_QUESTS: (id: string) => [
+    "COMMUNITY_QUEST_SUB_QUESTS",
+    id,
+  ],
+  GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL: (id: string) => [
+    "GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL",
+    id,
+  ],
+
   // FINANCE - EXPENSE
   GET_ALL_FINANCE_EXPENSES: ["ALL_FINANCE_EXPENSE"],
   GET_FINANCE_EXPENSE: (

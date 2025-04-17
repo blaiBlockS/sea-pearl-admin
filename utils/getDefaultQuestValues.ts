@@ -1,5 +1,5 @@
 import { GetRaffleFormDataDto } from "@/schemas/raffle.schema";
-import { QuestConfigType } from "@/schemas/sea-pearl-quest.schema";
+import { QuestConfigType } from "@/schemas/quest.schema";
 import dayjs from "dayjs";
 
 export const getDefaultQuestValues = (data: GetRaffleFormDataDto) => {

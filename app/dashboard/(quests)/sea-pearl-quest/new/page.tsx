@@ -3,9 +3,9 @@
 import Button from "@/components/common/button";
 import Title from "@/components/layout/title";
 import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQuestForm";
-import { QuestConfigType, questSchema } from "@/schemas/sea-pearl-quest.schema";
+import { QuestConfigType, questSchema } from "@/schemas/quest.schema";
 import { postCreateSeaPearlQuest } from "@/services/dashboard/quest/seaPearlQuest";
-import { getDefaultSeaPearlQuestValues } from "@/utils/getDefaultSeaPearlQuestValues";
+import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -28,8 +28,6 @@ export default function NewSeaPearlQuest() {
 
 function NewSeaPearlQuestInner() {
   const router = useRouter();
-  const pathname = usePathname();
-  getDefaultSeaPearlQuestValues;
 
   const startDayJs = dayjs(new Date(2024, 12, 31, 0, 0));
   const endDayJs = dayjs(new Date(2050, 12, 31, 0, 0));

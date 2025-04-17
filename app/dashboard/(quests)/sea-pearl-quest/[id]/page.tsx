@@ -4,12 +4,12 @@ import Button from "@/components/common/button";
 import Title from "@/components/layout/title";
 import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQuestForm";
 import { QUERY_KEY } from "@/constants/queryKey";
-import { QuestConfigType, questSchema } from "@/schemas/sea-pearl-quest.schema";
+import { QuestConfigType, questSchema } from "@/schemas/quest.schema";
 import {
   getOneSeaPearlQuest,
   putUpdateSeaPearlQuest,
 } from "@/services/dashboard/quest/seaPearlQuest";
-import { getDefaultSeaPearlQuestValues } from "@/utils/getDefaultSeaPearlQuestValues";
+import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -48,7 +48,7 @@ function SeaPearlQuestDetailInner() {
   } = useForm<QuestConfigType>({
     resolver: zodResolver(questSchema),
     mode: "onChange",
-    defaultValues: getDefaultSeaPearlQuestValues(data),
+    defaultValues: getDefaultSubQuestValues(data),
   });
 
   const mutation = useMutation({

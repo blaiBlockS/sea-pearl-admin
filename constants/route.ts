@@ -41,6 +41,12 @@ export const END_POINT = {
   PUT_COMMUNITY_QUEST: "/api/projects/update",
   PUT_COMMUNITY_ENABLED: "/api/projects/toggle",
 
+  // SUB QUESTS
+  GET_SUB_QUESTS: (id: string) => `/api/quests/getAll?projectId=${id}`,
+  GET_SUB_QUEST_DETAIL: (id: string) => `/api/quests/getById?id=${id}`,
+  PUT_SUB_QUEST_DETAIL: `/api/quests/update`,
+  PUT_SUB_QUEST_TOGGLE: `/api/quests/toggle`,
+
   // EXPENSE
   GET_ALL_EXPENSE: (page: number, size: number) =>
     `/api/expense/get-all?page=${page}&size=${size}&order=asc`,

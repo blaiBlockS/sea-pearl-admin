@@ -1,7 +1,5 @@
 "use client";
 
-import { winnerColumnHelper } from "@/components/common/table/columns";
-import { ColumnDef } from "@tanstack/react-table";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense, useState } from "react";
 import { useParams } from "next/navigation";
@@ -11,7 +9,6 @@ import usePageData from "@/hook/usePageData";
 import Button from "@/components/common/button";
 import { PlusIcon } from "lucide-react";
 import Input from "@/components/common/input";
-import { DataTable } from "@/components/common/table";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import ImageUploadingBox from "@/components/common/imageUploading";
@@ -20,70 +17,12 @@ import {
   CommunityQuestConfigType,
   communityQuestSchema,
 } from "@/schemas/community-quest.schema";
-import {
-  getAllCommunityQuests,
-  getCommunityQuestDetail,
-  postCreateCommunityQuest,
-} from "@/services/dashboard/quest/communityQuest";
+import { getCommunityQuestDetail } from "@/services/dashboard/quest/communityQuest";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { QUERY_KEY } from "@/constants/queryKey";
-
-export type Winner = {
-  grade: number;
-  name: string;
-  reward: number;
-  handle: string | null;
-  lotto_number: string;
-}[];
-
-const raffleColumns = [
-  winnerColumnHelper.accessor("grade", {
-    id: "grade",
-    header: () => <div className="pl-3">등수</div>,
-    cell: ({ getValue }) => (
-      <div className="flex pl-3">{getValue<number>()}</div>
-    ),
-  }),
-
-  winnerColumnHelper.accessor("name", {
-    id: "reward",
-    header: "USDT",
-    cell: ({ getValue }) => {
-      const name = getValue<string>();
-      return name;
-    },
-  }),
-
-  winnerColumnHelper.accessor("reward", {
-    id: "name",
-    header: "Telegram Name",
-    cell: ({ getValue }) => {
-      const reward = getValue<number>();
-      return reward;
-    },
-  }),
-
-  winnerColumnHelper.accessor("handle", {
-    id: "Telegram Handle",
-    header: "Telegram Handle",
-    cell: ({ getValue }) => {
-      const handle = getValue<string>();
-
-      console.log(handle, "handle");
-      return handle ?? "-";
-    },
-  }),
-
-  winnerColumnHelper.accessor("lotto_number", {
-    id: "lotto_number",
-    header: "Lotto Number",
-    cell: ({ getValue }) => {
-      const lottoNumber = getValue<number>();
-      return lottoNumber;
-    },
-  }),
-] as ColumnDef<Winner, unknown>[];
+import QuestTable from "./_questTable";
+import { putToggleSubQuest } from "@/services/dashboard/quest/communityQuest/subQuest";
 
 export default function CommunityQuestInfo() {
   return (
@@ -126,9 +65,20 @@ function CommunityQuestInfoInner() {
   });
 
   // 생성 MUTATION
-  const mutation = useMutation({
-    mutationFn: (dto: CommunityQuestConfigType & { logo?: ImageType }) =>
-      postCreateCommunityQuest(dto),
+  // const mutation = useMutation({
+  //   mutationFn: (dto: CommunityQuestConfigType & { logo?: ImageType }) =>
+  //     postCreateCommunityQuest(dto),
+  //   onSuccess: () => {
+  //     window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
+  //   },
+  //   onError: () => {
+  //     window.alert("생성 중 에러가 발생하였습니다.");
+  //   },
+  // });
+
+  // 생성 MUTATION
+  const subQuestToggleMutation = useMutation({
+    mutationFn: ({ id }: { id: string }) => putToggleSubQuest({ id }),
     onSuccess: () => {
       window.alert("성공적으로 커뮤니티 퀘스트를 생성하였습니다.");
     },
@@ -138,7 +88,7 @@ function CommunityQuestInfoInner() {
   });
 
   // 생성 핸들러
-  const onChange = (imageList: ImageListType, addUpdateIndex?: number[]) => {
+  const onChange = (imageList: ImageListType) => {
     setImages(imageList);
   };
 
@@ -153,15 +103,15 @@ function CommunityQuestInfoInner() {
       description,
     } = data;
 
-    mutation.mutate({
-      name,
-      enabled,
-      questStartDate,
-      questEndDate,
-      description,
-      projectNumber,
-      logo: images?.[0],
-    });
+    // mutation.mutate({
+    //   name,
+    //   enabled,
+    //   questStartDate,
+    //   questEndDate,
+    //   description,
+    //   projectNumber,
+    //   logo: images?.[0],
+    // });
   };
 
   // 프로젝트 내역 수정 버튼
@@ -218,10 +168,10 @@ function CommunityQuestInfoInner() {
       {/* 페이지 그리드 */}
       <div className="flex gap-8">
         {/* LEFT */}
-        <div className="h-full w-3/7">
+        <div className="h-full w-3/8">
           {/* 프로젝트 수정 */}
           <Title fontSize="text-head2" ActionButton={EditButton}>
-            프로젝트 생성
+            프로젝트 수정
           </Title>
 
           {/* 커뮤니티 프로젝트 총 수정 요소 */}
@@ -288,14 +238,14 @@ function CommunityQuestInfoInner() {
         </div>
 
         {/* RIGHT */}
-        <div className="h-full w-4/7">
+        <div className="h-full w-5/8">
           {/* 프로젝트 수정 */}
           <Title fontSize="text-head2" ActionButton={NewQuestButton}>
             퀘스트
           </Title>
 
-          {/* 프로젝트 수정 */}
-          <DataTable columns={raffleColumns} data={[]} />
+          {/* SUB QUESTS */}
+          <QuestTable id={id} />
         </div>
       </div>
     </div>

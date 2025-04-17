@@ -22,7 +22,6 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { useMutation } from "@tanstack/react-query";
 import { postCreateCommunityQuest } from "@/services/dashboard/quest/communityQuest";
-import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
 
 export type Winner = {
   grade: number;
@@ -136,7 +135,6 @@ function NewCommunityQuestInner() {
       projectNumber,
       description,
     } = data;
-    console.log(data, "data!");
 
     mutation.mutate({
       name,

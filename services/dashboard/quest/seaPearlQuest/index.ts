@@ -1,5 +1,5 @@
 import { END_POINT } from "@/constants/route";
-import { QuestConfigRequestType } from "@/schemas/sea-pearl-quest.schema";
+import { QuestConfigWithCombinedPeriod } from "@/schemas/quest.schema";
 import { clientAxios } from "@/services";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 
@@ -15,7 +15,9 @@ export const getAllSeaPearlQuests = async (): Promise<SeaPearlQuestType[]> => {
 };
 
 // SEA PEARL QUEST 생성
-export const postCreateSeaPearlQuest = async (dto: QuestConfigRequestType) => {
+export const postCreateSeaPearlQuest = async (
+  dto: QuestConfigWithCombinedPeriod
+) => {
   const res = await clientAxios.post<{ message: string }>(
     END_POINT.POST_BLOCKS_QUEST,
     dto
@@ -38,7 +40,7 @@ export const postUpdateSeaPearlQuestToggle = async (id: string) => {
 
 // SEA PEARL QUEST 단일 아이템 조회
 export const getOneSeaPearlQuest = async (id: string) => {
-  const res = await clientAxios.get<QuestConfigRequestType>(
+  const res = await clientAxios.get<QuestConfigWithCombinedPeriod>(
     END_POINT.GET_BLOCKS_QUEST_DETAIL(id)
   );
 
@@ -47,7 +49,7 @@ export const getOneSeaPearlQuest = async (id: string) => {
 
 // SEA PEARL QUEST 단일 아이템 수정
 export const putUpdateSeaPearlQuest = async (
-  dto: QuestConfigRequestType & { id: string }
+  dto: QuestConfigWithCombinedPeriod & { id: string }
 ) => {
   const res = await clientAxios.put<{ message: string }>(
     END_POINT.PUT_BLOCKS_QUEST,

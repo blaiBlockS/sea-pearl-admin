@@ -26,7 +26,7 @@ export const questSchema = z.object({
     "youtube",
     "x",
     "discord",
-    "checkin",
+    "check-in",
   ]), // 4. 퀘스트 타입
 
   reward: z // (5. 리워드 분류, 6. 리워드 수량)
@@ -45,7 +45,8 @@ export const questSchema = z.object({
   maxParticipants: z.preprocess(
     (val) => {
       if (val === "" || val === null || Number.isNaN(val)) return undefined;
-      return val;
+      console.log(val, "value?!@");
+      return Number(val);
     },
     z.number({ message: "숫자를 입력해주세요." }).optional()
   ),
@@ -71,7 +72,7 @@ export const questSchema = z.object({
 // 프리박스 설정 타입 추론
 export type QuestRewardItemConfigType = z.infer<typeof questRewardItemSchema>;
 export type QuestConfigType = z.infer<typeof questSchema>;
-export type QuestConfigRequestType = Omit<QuestConfigType, "period"> & {
+export type QuestConfigWithCombinedPeriod = Omit<QuestConfigType, "period"> & {
   period: {
     start: string;
     end: string;
