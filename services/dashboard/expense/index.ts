@@ -22,11 +22,11 @@ export const getAllExpenses = async (
 
 // <GET> 특정 EXPENSE 내역 조회
 export const postCreateShellRaffle = async (id: string) => {
-  const res = await clientAxios.post<ExpenseType>(
+  const res = await clientAxios.get<ExpenseType>(
     END_POINT.GET_EXPENSE_DETAIL(id)
   );
 
-  return res;
+  return res.data;
 };
 
 // <PUT> 지출 내역 업데이트

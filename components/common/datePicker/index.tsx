@@ -16,9 +16,10 @@ import {
 interface DatePickerProps {
   value: Date;
   onChange: (val: Date | undefined) => void;
+  className?: string;
 }
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
+export function DatePicker({ value, onChange, className }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -27,7 +28,8 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
           variant={"outline"}
           className={cn(
             "bg-background-teritary border-stroke-secondary text-body4-medium flex-1 justify-between border text-left font-normal",
-            !value && "text-muted-foreground"
+            !value && "text-muted-foreground",
+            className
           )}
         >
           <div className="flex items-center gap-2">

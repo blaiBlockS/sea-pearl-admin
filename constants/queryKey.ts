@@ -56,4 +56,5 @@ export const QUERY_KEY = {
     start: string,
     end: string
   ) => ["FINANCE_EXPENSE", pageIndex, pageSize, start, end],
+  GET_FINANCE_EXPENSE_DETAIL: (id: string) => ["FINANCE_EXPENSE_DETAIL", id],
 } as const;

@@ -4,19 +4,13 @@ import Button from "@/components/common/button";
 import { DataTable } from "@/components/common/table";
 import { expenseColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
-import { QUERY_KEY } from "@/constants/queryKey";
-import usePageData from "@/hook/usePageData";
-import {
-  // getAllExpenses,
-  getExpensesByDate,
-} from "@/services/dashboard/expense";
 import { ExpenseType } from "@/types/expense";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Skeleton from "react-loading-skeleton";
+import ExpenseSection from "./_expense";
+import IncomeSection from "./_income";
 
 export default function Finance() {
   return (
@@ -222,191 +216,18 @@ function FinanceInnerFallback() {
 }
 
 function FinanceInner() {
-  const { pageIndex, pageSize, pathname } = usePageData();
-  const [start, setStart] = useState(new Date(2025, 1, 1).toISOString());
-  const [end, setEnd] = useState(new Date(2051, 12, 31).toISOString());
-
-  const raffleColumns = [
-    expenseColumnHelper.accessor("id", {
-      id: "id",
-      header: () => <div className="pl-3">번호</div>,
-      size: 100,
-      cell: ({ row }) => {
-        return <div className="pl-3">{row.index + 1}</div>;
-      },
-    }),
-
-    expenseColumnHelper.accessor("createdAt", {
-      id: "createdAt",
-      header: () => <div className="">출금 요청 일자</div>,
-      size: 100,
-      cell: ({ getValue }) => {
-        const createdAt = getValue<string>();
-
-        return (
-          <div>
-            <div>{createdAt ? format(createdAt, "yy-MM-dd") : "-"}</div>
-            <div>{createdAt ? format(createdAt, "HH:mm:ss") : "-"}</div>
-          </div>
-        );
-      },
-    }),
-
-    expenseColumnHelper.accessor("expenseDate", {
-      id: "expenseDate",
-      header: () => <div className="">출금 일자</div>,
-      size: 100,
-      cell: ({ getValue }) => {
-        const expenseDate = getValue<string>();
-
-        return (
-          <div>
-            {expenseDate ? (
-              <>
-                <div>{format(expenseDate, "yy-MM-dd")}</div>
-                <div>{format(expenseDate, "HH:mm:ss")}</div>
-              </>
-            ) : (
-              <div className="text-text-disabled">미입력</div>
-            )}
-          </div>
-        );
-      },
-    }),
-
-    expenseColumnHelper.accessor("userName", {
-      id: "userName",
-      header: () => <div className="">유저명</div>,
-      size: 100,
-      cell: ({ getValue }) => {
-        const userName = getValue<string>();
-
-        return `${userName}`;
-      },
-    }),
-
-    expenseColumnHelper.accessor("order_amount", {
-      id: "order_amount",
-      header: () => "출금 USDT",
-      size: 100,
-      cell: ({ getValue }) => {
-        const id = getValue<number>();
-
-        return `${id?.toLocaleString()}`;
-      },
-    }),
-
-    expenseColumnHelper.accessor("txHashUrl", {
-      id: "txHashUrl",
-      header: () => "TXID",
-      size: 150,
-      cell: ({ getValue }) => {
-        const txHashUrl = getValue<string>();
-
-        return (
-          <div>
-            {txHashUrl ? (
-              <div>{txHashUrl}</div>
-            ) : (
-              <div className="text-text-disabled">미입력</div>
-            )}
-          </div>
-        );
-      },
-    }),
-
-    expenseColumnHelper.display({
-      id: "toDetailPage",
-      header: "출금 등록/상세",
-      size: 250,
-      cell: ({ row }) => (
-        <div className="flex justify-end pr-3">
-          {row?.original?.txHashUrl ? (
-            <Button
-              variant="fill"
-              className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
-              onClick={() => {}}
-            >
-              상세
-            </Button>
-          ) : (
-            <Button variant="fill" className=" h-10 px-4" onClick={() => {}}>
-              등록
-            </Button>
-          )}
-        </div>
-      ),
-    }),
-  ] as ColumnDef<ExpenseType, unknown>[];
-
-  console.log(start, end, "start and end");
-
-  const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_FINANCE_EXPENSE(pageIndex, pageSize, start, end),
-    queryFn: () =>
-      getExpensesByDate({
-        page: pageIndex, //
-        size: pageSize,
-        start,
-        end,
-        order: "asc",
-      }),
-  });
-
-  // const { data: allData } = useSuspenseQuery({
-  //   queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
-  //   queryFn: () => getAllExpenses(pageIndex, pageSize),
-  // });
-
-  // 지출
-  // const { data } = useSuspenseQuery({
-  //   queryKey: QUERY_KEY.GET_FINANCE_EXPENSE(pageIndex, pageSize),
-  //   queryFn: () => getAllShellRaffles(pageIndex, pageSize),
-  // });
-
-  // 수익 업로드 버튼
-  const uploadProfitButton = () => {
-    return (
-      <Button variant="fill" onClick={() => {}}>
-        <div className="flex h-10 items-center gap-2 px-3">
-          <span className="text-body3-medium">수익 입력</span>
-        </div>
-      </Button>
-    );
-  };
-
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
       <Title>수익 및 지출</Title>
 
-      {/* 수익 섹션 */}
+      {/* GRID */}
       <section className="flex gap-8">
-        <div className="flex-1">
-          {/* 수익 타이틀 */}
-          <Title fontSize="text-head2" ActionButton={uploadProfitButton}>
-            <span className="mr-5">수익</span>
-            <span>{} USDT</span>
-          </Title>
-        </div>
+        {/* 수익 */}
+        <IncomeSection />
 
-        {/* 지출 섹션 */}
-        <div className="flex-1">
-          {/* 지출 타이틀 */}
-          <Title fontSize="text-head2">
-            <span className="mr-5">지출</span>
-            <span>{data.totalExpenseAmount} USDT</span>
-          </Title>
-
-          {/* 테이블 */}
-          <DataTable
-            columns={raffleColumns}
-            data={data.expenses}
-            pageSize={pageSize}
-            pageIndex={pageIndex}
-            pathname={pathname}
-          />
-        </div>
+        {/* 지출 */}
+        <ExpenseSection />
       </section>
     </div>
   );
