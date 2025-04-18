@@ -182,6 +182,24 @@ function FinanceInnerFallback() {
             <span className="mr-5">수익</span>
             <span>{} USDT</span>
           </Title>
+
+          {/* 테이블 */}
+          <DataTable
+            columns={expenseColumns}
+            data={new Array(10).fill(undefined).map(() => ({
+              id: "string",
+              userId: "string",
+              telegramUid: 0,
+              firstName: "string",
+              lastName: "string",
+              userName: "string",
+              expenseDate: "2025-04-16T02:43:18.667Z",
+              order_amount: 0,
+              link: "string",
+              createdAt: "2025-04-16T02:43:18.667Z",
+              updatedAt: "2025-04-16T02:43:18.667Z",
+            }))}
+          />
         </div>
 
         {/* 지출 섹션 */}

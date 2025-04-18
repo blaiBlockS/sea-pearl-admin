@@ -50,11 +50,20 @@ export const QUERY_KEY = {
 
   // FINANCE - EXPENSE
   GET_ALL_FINANCE_EXPENSES: ["ALL_FINANCE_EXPENSE"],
-  GET_FINANCE_EXPENSE: (
+  GET_FINANCE_EXPENSES_BY_DATE: (
     pageIndex: number,
     pageSize: number,
     start: string,
     end: string
   ) => ["FINANCE_EXPENSE", pageIndex, pageSize, start, end],
   GET_FINANCE_EXPENSE_DETAIL: (id: string) => ["FINANCE_EXPENSE_DETAIL", id],
+
+  // FINANCE - INCOME
+  GET_ALL_FINANCE_INCOMES: ["ALL_FINANCE_INCOME"],
+  GET_FINANCE_INCOMES_BY_DATE: (
+    pageIndex: number,
+    pageSize: number,
+    start: string,
+    end: string
+  ) => ["FINANCE_INCOME", pageIndex, pageSize, start, end],
 } as const;

@@ -7,7 +7,10 @@ import { expenseColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { getExpensesByDate } from "@/services/dashboard/expense";
+import {
+  getAllExpenses,
+  getExpensesByDate,
+} from "@/services/dashboard/expense";
 import { ExpenseType } from "@/types/expense";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
@@ -143,6 +146,8 @@ const ExpenseSection = () => {
   // 지출 START END DATE 설정
   const [start, setStart] = useState(new Date(2025, 1, 1));
   const [end, setEnd] = useState(new Date(2051, 12, 31));
+  const [confirm, setConfirm] = useState(false);
+
   const handleChangeStartDate = (v: Date | undefined) => {
     if (v === undefined) return;
     setStart(v);
@@ -152,9 +157,9 @@ const ExpenseSection = () => {
     setEnd(v);
   };
 
-  // 지출 조회 데이터 패칭
-  const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_FINANCE_EXPENSE(
+  // 기간 별 지출 조회 데이터 패칭
+  const { data: dateRangedData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_FINANCE_EXPENSES_BY_DATE(
       pageIndex,
       pageSize,
       start.toISOString(),
@@ -170,12 +175,23 @@ const ExpenseSection = () => {
       }),
   });
 
+  // 전체 지출 조회 데이터 패칭
+  const { data: defaultData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
+    queryFn: () => getAllExpenses(pageIndex, pageSize),
+  });
+
   return (
     <div className="flex-1">
       {/* 지출 타이틀 */}
       <Title fontSize="text-head2">
         <span className="mr-5">지출</span>
-        <span>{data.totalExpenseAmount} USDT</span>
+        <span>
+          {confirm
+            ? dateRangedData.totalExpenseAmount
+            : defaultData.totalExpenseAmount}{" "}
+          USDT
+        </span>
       </Title>
 
       {/* Date Picker */}
@@ -190,12 +206,19 @@ const ExpenseSection = () => {
           value={end}
           className="flex-0"
         />
+        <Button
+          onClick={() => setConfirm(true)}
+          variant="fill"
+          className="px-3 bg-background-teritary hover:bg-background-teritary/50"
+        >
+          조회
+        </Button>
       </div>
 
       {/* 테이블 */}
       <DataTable
         columns={raffleColumns}
-        data={data.expenses}
+        data={confirm ? dateRangedData.expenses : defaultData.expenses}
         pageSize={pageSize}
         pageIndex={pageIndex}
         pathname={pathname}

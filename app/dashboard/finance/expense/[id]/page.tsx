@@ -10,7 +10,7 @@ import {
   ExpenseConfigType,
 } from "@/schemas/expense.schema";
 import {
-  postCreateShellRaffle,
+  getExpenseDetail,
   putExpenseUpdate,
 } from "@/services/dashboard/expense";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +37,7 @@ const ExpenseDetailInner = () => {
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_FINANCE_EXPENSE_DETAIL(id),
-    queryFn: () => postCreateShellRaffle(id),
+    queryFn: () => getExpenseDetail(id),
   });
 
   const mutation = useMutation({

@@ -69,4 +69,21 @@ export const END_POINT = {
     order: "asc" | "desc";
   }) =>
     `/api/expense/get-all-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
+
+  GET_ALL_INCOMES: (page: number, size: number) =>
+    `/api/income/get-all?page=${page}&size=${size}&order=asc`,
+  GET_INCOMES_BY_DETAIL: ({
+    page,
+    size,
+    start,
+    end,
+    order = "asc",
+  }: {
+    page: number;
+    size: number;
+    start: string;
+    end: string;
+    order: "asc" | "desc";
+  }) =>
+    `/api/income/get-all-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
 } as const;

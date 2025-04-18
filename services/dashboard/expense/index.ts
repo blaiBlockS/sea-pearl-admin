@@ -16,7 +16,7 @@ export const getAllExpenses = async (
 };
 
 // <GET> 특정 EXPENSE 내역 조회
-export const postCreateShellRaffle = async (id: string) => {
+export const getExpenseDetail = async (id: string) => {
   const res = await clientAxios.get<ExpenseType>(
     END_POINT.GET_EXPENSE_DETAIL(id)
   );
