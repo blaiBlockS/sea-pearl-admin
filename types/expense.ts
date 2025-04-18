@@ -7,7 +7,7 @@ export interface ExpenseType {
   lastName: string;
   userName: string;
   order_amount: number;
-  txHashUrl: string;
+  link: string;
 
   expenseDate: string;
   createdAt: string; // IsoString

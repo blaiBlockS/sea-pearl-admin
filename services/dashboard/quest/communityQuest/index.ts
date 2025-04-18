@@ -1,11 +1,8 @@
 import { END_POINT } from "@/constants/route";
 import { CommunityQuestConfigType } from "@/schemas/community-quest.schema";
-import { QuestConfigWithCombinedPeriod } from "@/schemas/quest.schema";
 import { clientAxios } from "@/services";
 import { CommunityQuestType } from "@/types/communityQuest";
-import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 import axios from "axios";
-import { ImageType } from "react-images-uploading";
 
 // COMMUNITY 전체 리스트 페이지 GET
 export const getAllCommunityQuests = async (): Promise<

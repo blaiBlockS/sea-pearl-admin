@@ -31,7 +31,7 @@ const ExpenseSection = () => {
 
     expenseColumnHelper.accessor("createdAt", {
       id: "createdAt",
-      header: () => <div className="">출금 요청 일자</div>,
+      header: () => <div className="">요청 일자</div>,
       size: 100,
       cell: ({ getValue }) => {
         const createdAt = getValue<string>();
@@ -89,17 +89,17 @@ const ExpenseSection = () => {
       },
     }),
 
-    expenseColumnHelper.accessor("txHashUrl", {
-      id: "txHashUrl",
+    expenseColumnHelper.accessor("link", {
+      id: "link",
       header: () => "TXID",
       size: 150,
       cell: ({ getValue }) => {
-        const txHashUrl = getValue<string>();
+        const link = getValue<string>();
 
         return (
           <div>
-            {txHashUrl ? (
-              <div>{txHashUrl}</div>
+            {link ? (
+              <div>{link}</div>
             ) : (
               <div className="text-text-disabled">미입력</div>
             )}
@@ -114,11 +114,13 @@ const ExpenseSection = () => {
       size: 250,
       cell: ({ row }) => (
         <div className="flex justify-end pr-3">
-          {row?.original?.txHashUrl ? (
+          {row?.original?.link ? (
             <Button
               variant="fill"
               className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
-              onClick={() => {}}
+              onClick={() =>
+                router.push(pathname + `/expense/${row.original.id}`)
+              }
             >
               상세
             </Button>

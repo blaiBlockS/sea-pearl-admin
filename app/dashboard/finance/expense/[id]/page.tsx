@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/common/button";
 import { DatePicker } from "@/components/common/datePicker";
 import Input from "@/components/common/input";
 import Title from "@/components/layout/title";
@@ -8,10 +9,12 @@ import {
   expenseConfigSchema,
   ExpenseConfigType,
 } from "@/schemas/expense.schema";
-import { postCreateShellRaffle } from "@/services/dashboard/expense";
-import { getOneSeaPearlQuest } from "@/services/dashboard/quest/seaPearlQuest";
+import {
+  postCreateShellRaffle,
+  putExpenseUpdate,
+} from "@/services/dashboard/expense";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -37,6 +40,25 @@ const ExpenseDetailInner = () => {
     queryFn: () => postCreateShellRaffle(id),
   });
 
+  const mutation = useMutation({
+    mutationFn: putExpenseUpdate,
+    onSuccess: () => {
+      window.alert("수정 성공");
+    },
+    onError: () => {
+      window.alert("수정 중 에러가 발생하였습니다.");
+    },
+  });
+
+  const onSubmit = (data: ExpenseConfigType) => {
+    const { link, expenseDate } = data;
+    mutation.mutate({
+      id,
+      link: link,
+      expenseDate,
+    });
+  };
+
   const {
     register,
     control,
@@ -47,22 +69,31 @@ const ExpenseDetailInner = () => {
     mode: "onChange",
     defaultValues: {
       expenseDate: data.expenseDate ? new Date(data.expenseDate) : undefined,
-      txHashUrl: data.txHashUrl,
+      link: data.link,
     },
   });
 
-  console.log(data, "data");
+  // 새로운 래플 생성 버튼
+  const EditButton = () => {
+    return (
+      <Button variant="fill" onClick={handleSubmit(onSubmit)}>
+        <div className="flex h-10 items-center gap-2 px-3">
+          <span className="text-body3-medium">수정</span>
+        </div>
+      </Button>
+    );
+  };
 
   return (
     <div className="px-9 py-7">
-      <Title fontSize="text-head2">
+      <Title fontSize="text-head2 w-1/2" ActionButton={EditButton}>
         <span className="mr-5">지출</span>
       </Title>
 
       <div className="bg-background-secondary mb-8 w-1/2 flex flex-col gap-5 rounded-xl p-8">
-        {/* 출금 날짜 */}
+        {/* 출금 일자 */}
         <div className="flex items-center justify-between gap-8">
-          <span className="text-body2 flex-1 max-w-1/5">출금 날짜</span>
+          <span className="text-body2 flex-1 max-w-1/5">출금 일자</span>
           <div className="flex  flex-1 max-w-4/5 gap-4">
             {/* DATE_PICKER */}
             <Controller
@@ -127,8 +158,8 @@ const ExpenseDetailInner = () => {
             <Input
               inputClassName="h-10 input-no-spinner"
               placeholder="Enter quantity"
-              hint={errors?.txHashUrl?.message}
-              {...register("txHashUrl")}
+              hint={errors?.link?.message}
+              {...register("link")}
             />
           </div>
         </div>

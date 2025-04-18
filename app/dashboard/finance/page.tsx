@@ -28,7 +28,7 @@ function FinanceInnerFallback() {
   const expenseColumns = [
     expenseColumnHelper.accessor("id", {
       id: "id",
-      header: () => <div className="pl-3">출금 요청 일자</div>,
+      header: () => <div className="pl-3">요청 일자</div>,
       size: 100,
       cell: () => (
         <div className="flex pl-3 w-full">
@@ -44,7 +44,7 @@ function FinanceInnerFallback() {
 
     expenseColumnHelper.accessor("createdAt", {
       id: "createdAt",
-      header: () => <div className="pl-3">출금 요청 일자</div>,
+      header: () => <div className="pl-3">요청 일자</div>,
       size: 100,
       cell: () => (
         <div className="flex pl-3 w-full">
@@ -125,8 +125,8 @@ function FinanceInnerFallback() {
       },
     }),
 
-    expenseColumnHelper.accessor("txHashUrl", {
-      id: "txHashUrl",
+    expenseColumnHelper.accessor("link", {
+      id: "link",
       header: "TXID",
       size: 150,
       cell: () => {
@@ -204,7 +204,7 @@ function FinanceInnerFallback() {
               userName: "string",
               expenseDate: "2025-04-16T02:43:18.667Z",
               order_amount: 0,
-              txHashUrl: "string",
+              link: "string",
               createdAt: "2025-04-16T02:43:18.667Z",
               updatedAt: "2025-04-16T02:43:18.667Z",
             }))}

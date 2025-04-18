@@ -1,11 +1,6 @@
 import { END_POINT } from "@/constants/route";
 import { clientAxios } from "@/services";
-import { RaffleType, tableResponseType } from "@/types/columns";
-import {
-  CreateRaffleFormDataDto,
-  CreateRaffleFormDataDtoWithId,
-  GetRaffleFormDataDto,
-} from "@/schemas/raffle.schema";
+import { GetRaffleFormDataDto } from "@/schemas/raffle.schema";
 import { ExpenseListType, ExpenseType } from "@/types/expense";
 
 // <GET> 모든 EXPENSE 내역 조회
@@ -30,9 +25,10 @@ export const postCreateShellRaffle = async (id: string) => {
 };
 
 // <PUT> 지출 내역 업데이트
-export const get = async (id: string) => {
-  const res = await clientAxios.get<GetRaffleFormDataDto>(
-    END_POINT.GET_SHELL_RAFFLE_DETAIL(id)
+export const putExpenseUpdate = async (dto: any) => {
+  const res = await clientAxios.put<GetRaffleFormDataDto>(
+    END_POINT.PUT_EXPENSE_UPDATE,
+    dto
   );
 
   return res.data;

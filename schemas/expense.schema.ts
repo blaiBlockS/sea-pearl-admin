@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const expenseConfigSchema = z.object({
-  txHashUrl: z.string(),
+  link: z.string(),
   expenseDate: z.date(),
 });
 
