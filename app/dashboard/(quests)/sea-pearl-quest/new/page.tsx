@@ -82,8 +82,8 @@ function NewSeaPearlQuestInner() {
       "퀘스트을 정말 생성하시겠습니까?\n" +
         `퀘스트 제목: ${submitData.title}\n` +
         `최대 인원: ${submitData.maxParticipants}\n` +
-        `래플 시작시기: ${submitData.period.startDate}\n` +
-        `래플 종료시기: ${submitData.period.endDate}`
+        `래플 시작시기: ${format(submitData.period.startDate, "yyyy.MM.dd.")} ${format(submitData.period.startTime, "HH:mm a")}\n` +
+        `래플 종료시기: ${format(submitData.period.endDate, "yyyy.MM.dd.")} ${format(submitData.period.endTime, "HH:mm a")}`
     );
     if (!confirm) return;
 

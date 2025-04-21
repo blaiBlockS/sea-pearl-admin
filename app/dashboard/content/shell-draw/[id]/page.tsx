@@ -26,6 +26,7 @@ import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { updateDisabledParser } from "@/utils/convertStatus";
 import usePageData from "@/hook/usePageData";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
+import { format } from "date-fns";
 
 export type Winner = {
   grade: number;
@@ -136,8 +137,8 @@ function ShellRaffleDetailInner() {
       "래플을 정말 생성하시겠습니까?\n" +
         `응모 비용: ${data.entry_fee}\n` +
         `최소 인원: ${data.min_participants}\n` +
-        `래플 시작시기: ${data.period.startDate}\n` +
-        `래플 종료시기: ${data.period.endDate}`
+        `래플 시작시기: ${format(data.period.startDate, "yyyy.MM.dd.")} ${format(data.period.startTime, "HH:mm a")}\n` +
+        `래플 종료시기: ${format(data.period.endDate, "yyyy.MM.dd.")} ${format(data.period.endTime, "HH:mm a")}`
     );
     if (!confirm) return;
 

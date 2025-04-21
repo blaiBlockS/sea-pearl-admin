@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import { ClockIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,23 @@ export function CustomTimePicker({
   onChange,
   className,
 }: DatePickerProps) {
-  // const timeValue = `${String(value.getHours()).padStart(2, "0")}:${String(value.getMinutes()).padStart(2, "0")}`;
-  console.log(value, "value Date?");
+  const timeValue = `${String(value.getHours()).padStart(2, "0")}:${String(value.getMinutes()).padStart(2, "0")}`;
+
+  const hours = Array.from({ length: 24 }, (_, i) => i); // 0 ~ 23
+  const minutes = Array.from({ length: 60 }, (_, i) => i); // 0 ~ 59
+
+  const handleHourChange = (h: number) => {
+    const newDate = new Date(value);
+    newDate.setHours(Number(h));
+    onChange(newDate);
+  };
+
+  const handleMinuteChange = (m: number) => {
+    const newDate = new Date(value);
+    newDate.setMinutes(Number(m));
+    onChange(newDate);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -36,8 +51,8 @@ export function CustomTimePicker({
             className
           )}
         >
-          <div className="flex items-center gap-2">{}</div>
-          <ChevronDown />
+          <div className="flex items-center gap-2">{timeValue}</div>
+          <ClockIcon />
         </Button>
       </PopoverTrigger>
 
@@ -45,7 +60,32 @@ export function CustomTimePicker({
         className="border-background-teritary w-auto border bg-[#131A25] p-0 text-gray-200"
         align="start"
       >
-        <div>popover</div>
+        <div className="flex h-40">
+          <section className="flex flex-col h-full overflow-y-scroll scrollbar-hide">
+            {hours.map((h) => (
+              <Button
+                key={h}
+                value={h}
+                className="hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                onClick={() => handleHourChange(h)}
+              >
+                {String(h).padStart(2, "0")}
+              </Button>
+            ))}
+          </section>
+          <section className="flex flex-col h-full overflow-y-scroll">
+            {minutes.map((m) => (
+              <Button
+                key={m}
+                value={m}
+                className="hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                onClick={() => handleMinuteChange(m)}
+              >
+                {String(m).padStart(2, "0")}
+              </Button>
+            ))}
+          </section>
+        </div>
       </PopoverContent>
     </Popover>
   );
