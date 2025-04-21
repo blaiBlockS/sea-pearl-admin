@@ -7,10 +7,6 @@ import { incomeColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import {
-  getAllExpenses,
-  getExpensesByDate,
-} from "@/services/dashboard/expense";
 import { getAllIncomes, getIncomesByDate } from "@/services/dashboard/income";
 import { IncomeType } from "@/types/income";
 import { useSuspenseQuery } from "@tanstack/react-query";
