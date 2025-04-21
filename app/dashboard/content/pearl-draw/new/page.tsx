@@ -87,10 +87,10 @@ function PearlRaffleInner() {
     mode: "onChange",
     defaultValues: {
       period: {
-        startDate: new Date(), // 또는 dayjs().toDate()
-        startTime: new Date(), // dayjs 객체
-        endDate: new Date(), // 또는 dayjs().toDate()
-        endTime: new Date(), // dayjs 객체
+        startDate: new Date(),
+        startTime: new Date(),
+        endDate: new Date(),
+        endTime: new Date(),
       },
       min_participants: 100,
       entry_fee: 1000,

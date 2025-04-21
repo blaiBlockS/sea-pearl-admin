@@ -9,6 +9,7 @@ import usePageData from "@/hook/usePageData";
 import { getAllPearlRaffles } from "@/services/dashboard/content/pearlRaffle";
 import { RaffleType } from "@/types/columns";
 import { cn } from "@/utils/cn";
+import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -34,7 +35,7 @@ function PearlRaffleFallback() {
   const raffleColumns = [
     raffleColumnHelper.accessor("id", {
       id: "id",
-      header: () => <div className="pl-3">ID</div>,
+      header: () => <div className="pl-3">번호</div>,
       size: 100,
       cell: () => (
         <div className="flex pl-3 w-full">
@@ -226,12 +227,12 @@ function PearlRaffleInner() {
   const raffleColumns = [
     raffleColumnHelper.accessor("id", {
       id: "id",
-      header: () => <div className="pl-3">ID</div>,
+      header: () => <div className="pl-3">번호</div>,
       enableResizing: false, //disable resizing for just this column
       size: 100,
-      cell: ({ getValue }) => (
+      cell: ({ row }) => (
         <div className="flex pl-3">
-          {getValue<number>().toString().slice(0, 4)}...
+          {convertPageIndex(row.index, pageIndex)}
         </div>
       ),
     }),

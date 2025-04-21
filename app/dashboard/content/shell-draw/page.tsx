@@ -9,6 +9,7 @@ import usePageData from "@/hook/usePageData";
 import { cn } from "@/lib/utils";
 import { getAllShellRaffles } from "@/services/dashboard/content/shellRaffle";
 import { RaffleType } from "@/types/columns";
+import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -229,9 +230,9 @@ function ShellRaffleInner() {
       header: () => <div className="pl-3">ID</div>,
       enableResizing: false, //disable resizing for just this column
       size: 100,
-      cell: ({ getValue }) => (
+      cell: ({ row }) => (
         <div className="flex pl-3">
-          {getValue<number>().toString().slice(0, 4)}...
+          {convertPageIndex(row.index, pageIndex)}
         </div>
       ),
     }),

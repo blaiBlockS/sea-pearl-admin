@@ -9,7 +9,7 @@ export interface IncomeType {
 }
 
 export interface IncomeListType {
-  expenses: IncomeType[];
+  incomes: IncomeType[];
   totalCount: number;
-  totalExpenseAmount: number;
+  totalIncomeAmount: number;
 }

@@ -9,21 +9,24 @@ import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import { getAllIncomes, getIncomesByDate } from "@/services/dashboard/income";
 import { IncomeType } from "@/types/income";
+import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useState } from "react";
 
-const ExpenseSection = () => {
+const IncomeSection = () => {
   const { pageIndex, pageSize, pathname } = usePageData();
 
-  const raffleColumns = [
+  const incomeColumns = [
     incomeColumnHelper.accessor("id", {
       id: "id",
       header: () => <div className="pl-3">번호</div>,
       size: 100,
       cell: ({ row }) => {
-        return <div className="pl-3">{row.index + 1}</div>;
+        return (
+          <div className="pl-3">{convertPageIndex(row.index, pageIndex)}</div>
+        );
       },
     }),
 
@@ -110,7 +113,6 @@ const ExpenseSection = () => {
   // 지출 START END DATE 설정
   const [start, setStart] = useState(new Date(2025, 1, 1));
   const [end, setEnd] = useState(new Date(2051, 12, 31));
-  const [confirm, setConfirm] = useState(false);
 
   const handleChangeStartDate = (v: Date | undefined) => {
     if (v === undefined) return;
@@ -128,7 +130,7 @@ const ExpenseSection = () => {
   });
 
   // 기간 별 지출 수익 데이터 패칭
-  const { data: dateRangedData } = useSuspenseQuery({
+  const { data: allIncomeDataByDate } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_FINANCE_INCOMES_BY_DATE(
       pageIndex,
       pageSize,
@@ -145,19 +147,12 @@ const ExpenseSection = () => {
       }),
   });
 
-  console.log(allIncomeData, "allIncomeData");
-
   return (
     <div className="flex-1">
       {/* 지출 타이틀 */}
       <Title fontSize="text-head2">
         <span className="mr-5">수익</span>
-        {/* <span>
-          {confirm
-            ? dateRangedData.totalExpenseAmount
-            : defaultData.totalExpenseAmount}{" "}
-          USDT
-        </span> */}
+        <span>{allIncomeDataByDate.totalIncomeAmount} USDT</span>
       </Title>
 
       {/* Date Picker */}
@@ -172,25 +167,18 @@ const ExpenseSection = () => {
           value={end}
           className="flex-0"
         />
-        <Button
-          onClick={() => setConfirm(true)}
-          variant="fill"
-          className="px-3 bg-background-teritary hover:bg-background-teritary/50"
-        >
-          조회
-        </Button>
       </div>
 
       {/* 테이블 */}
-      {/* <DataTable
-        columns={raffleColumns}
-        data={confirm ? dateRangedData.expenses : defaultData.expenses}
+      <DataTable
+        columns={incomeColumns}
+        data={allIncomeDataByDate.incomes}
         pageSize={pageSize}
         pageIndex={pageIndex}
         pathname={pathname}
-      /> */}
+      />
     </div>
   );
 };
 
-export default ExpenseSection;
+export default IncomeSection;

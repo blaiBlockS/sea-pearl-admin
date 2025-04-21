@@ -16,6 +16,7 @@ import {
 import { ExpenseType } from "@/types/expense";
 import { ExpenseStatusType } from "@/types/expenseStatus";
 import { cn } from "@/utils/cn";
+import { convertPageIndex } from "@/utils/covertPageIndex";
 import { isExpenseStatus } from "@/utils/isExpenseStatus";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
@@ -33,7 +34,9 @@ const ExpenseSection = () => {
       header: () => <div className="pl-3">번호</div>,
       size: 100,
       cell: ({ row }) => {
-        return <div className="pl-3">{row.index + 1}</div>;
+        return (
+          <div className="pl-3">{convertPageIndex(row.index, pageIndex)}</div>
+        );
       },
     }),
 

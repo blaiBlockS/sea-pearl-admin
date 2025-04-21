@@ -15,6 +15,7 @@ import {
   postUpdateSeaPearlQuestToggle,
 } from "@/services/dashboard/quest/seaPearlQuest";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
+import { convertPageIndex } from "@/utils/covertPageIndex";
 import {
   useMutation,
   useQueryClient,
@@ -80,7 +81,11 @@ function SeaPearlQuestInner() {
       header: () => <div className="pl-3">번호</div>,
       enableResizing: false,
       size: 50,
-      cell: ({ row }) => <div className="flex pl-3">{row.index + 1}</div>,
+      cell: ({ row }) => (
+        <div className="flex pl-3">
+          {convertPageIndex(row.index, pageIndex)}
+        </div>
+      ),
     }),
 
     seaPearlQuestColumnHelper.accessor("enabled", {
