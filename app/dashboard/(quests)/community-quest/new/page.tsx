@@ -21,10 +21,7 @@ import {
 } from "@/schemas/community-quest.schema";
 import { Switch } from "@/components/ui/switch";
 import { useMutation } from "@tanstack/react-query";
-import {
-  postCreateCommunityQuest,
-  putDeleteCommunityQuest,
-} from "@/services/dashboard/quest/communityQuest";
+import { postCreateCommunityQuest } from "@/services/dashboard/quest/communityQuest";
 
 export type Winner = {
   grade: number;

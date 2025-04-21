@@ -42,7 +42,7 @@ export default function CommunityQuest() {
 
 function CommunityQuestInner() {
   const router = useRouter();
-  const { pathname } = usePageData();
+  const { pathname, pageIndex, pageSize } = usePageData();
 
   const queryClient = useQueryClient();
 
@@ -70,7 +70,7 @@ function CommunityQuestInner() {
 
       // 수정 후 invalidate로 재패칭
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS,
+        queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS(pageIndex, pageSize),
       });
     }
   };
@@ -224,8 +224,8 @@ function CommunityQuestInner() {
   ] as ColumnDef<CommunityQuestType, unknown>[];
 
   const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS,
-    queryFn: getAllCommunityQuests,
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS(pageIndex, pageSize),
+    queryFn: () => getAllCommunityQuests(pageIndex, pageSize),
   });
 
   // 새로운 래플 생성 버튼
@@ -252,7 +252,10 @@ function CommunityQuestInner() {
       {/* 테이블 */}
       <DataTable
         columns={raffleColumns}
-        data={data?.filter((item) => item.name !== "Block s") ?? []}
+        data={data.projects?.filter((item) => item.name !== "Block s") ?? []}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
+        pathname={pathname}
       />
     </div>
   );

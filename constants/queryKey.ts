@@ -32,7 +32,11 @@ export const QUERY_KEY = {
   ],
 
   // COMMUNITY-QUEST
-  GET_COMMUNITY_QUESTS: ["COMMUNITY_QUESTS"],
+  GET_COMMUNITY_QUESTS: (pageIndex: number, pageSize: number) => [
+    "COMMUNITY_QUESTS",
+    pageIndex,
+    pageSize,
+  ],
   GET_COMMUNITY_QUESTS_DETAIL: (id: string | string[]) => [
     "COMMUNITY_QUEST_DETAIL",
     id,

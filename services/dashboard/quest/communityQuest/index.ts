@@ -1,15 +1,19 @@
 import { END_POINT } from "@/constants/route";
 import { CommunityQuestConfigType } from "@/schemas/community-quest.schema";
 import { clientAxios } from "@/services";
-import { CommunityQuestType } from "@/types/communityQuest";
+import {
+  CommunityQuestListType,
+  CommunityQuestType,
+} from "@/types/communityQuest";
 import axios from "axios";
 
 // COMMUNITY 전체 리스트 페이지 GET
-export const getAllCommunityQuests = async (): Promise<
-  CommunityQuestType[]
-> => {
-  const res = await clientAxios.get<CommunityQuestType[]>(
-    END_POINT.GET_COMMUNITY_QUESTS
+export const getAllCommunityQuests = async (
+  pageIndex: number,
+  pageSize: number
+): Promise<CommunityQuestListType> => {
+  const res = await clientAxios.get<CommunityQuestListType>(
+    END_POINT.GET_COMMUNITY_QUESTS(pageIndex, pageSize)
   );
 
   return res.data;

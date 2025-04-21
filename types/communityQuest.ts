@@ -16,3 +16,8 @@ export interface CommunityQuestType {
     end: string;
   };
 }
+
+export interface CommunityQuestListType {
+  projects: CommunityQuestType[];
+  totalCount: number;
+}
