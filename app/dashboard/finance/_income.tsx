@@ -121,6 +121,12 @@ const ExpenseSection = () => {
     setEnd(v);
   };
 
+  // 전체 수익 조회 데이터 패칭
+  const { data: allIncomeData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_ALL_FINANCE_INCOMES,
+    queryFn: () => getAllIncomes(pageIndex, pageSize),
+  });
+
   // 기간 별 지출 수익 데이터 패칭
   const { data: dateRangedData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_FINANCE_INCOMES_BY_DATE(
@@ -139,26 +145,19 @@ const ExpenseSection = () => {
       }),
   });
 
-  // 전체 수익 조회 데이터 패칭
-  const { data: defaultData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_ALL_FINANCE_INCOMES,
-    queryFn: () => getAllIncomes(pageIndex, pageSize),
-  });
-
-  console.log(dateRangedData, "dateRangedData");
-  console.log(defaultData, "defaultData");
+  console.log(allIncomeData, "allIncomeData");
 
   return (
     <div className="flex-1">
       {/* 지출 타이틀 */}
       <Title fontSize="text-head2">
         <span className="mr-5">수익</span>
-        <span>
+        {/* <span>
           {confirm
             ? dateRangedData.totalExpenseAmount
             : defaultData.totalExpenseAmount}{" "}
           USDT
-        </span>
+        </span> */}
       </Title>
 
       {/* Date Picker */}
@@ -183,13 +182,13 @@ const ExpenseSection = () => {
       </div>
 
       {/* 테이블 */}
-      <DataTable
+      {/* <DataTable
         columns={raffleColumns}
         data={confirm ? dateRangedData.expenses : defaultData.expenses}
         pageSize={pageSize}
         pageIndex={pageIndex}
         pathname={pathname}
-      />
+      /> */}
     </div>
   );
 };

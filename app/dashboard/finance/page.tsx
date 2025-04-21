@@ -242,7 +242,7 @@ function FinanceInner() {
       {/* GRID */}
       <section className="flex gap-8">
         {/* 수익 */}
-        {/* <IncomeSection /> */}
+        <IncomeSection />
 
         {/* 지출 */}
         <ExpenseSection />

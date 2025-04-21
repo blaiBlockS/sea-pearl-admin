@@ -94,5 +94,5 @@ export const END_POINT = {
     end: string;
     order: "asc" | "desc";
   }) =>
-    `/api/income/get-all-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
+    `/api/income/get-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
 } as const;

@@ -215,7 +215,7 @@ const ExpenseSection = () => {
         <span>
           {expenseStatus === "지급완료"
             ? allPaidDataByDate.totalExpenseAmount
-            : 0}{" "}
+            : "-"}{" "}
           USDT
         </span>
       </Title>
