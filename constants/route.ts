@@ -1,4 +1,10 @@
 export const END_POINT = {
+  // USER
+  GET_USERS: (pageNumber: number, pageSize: number) =>
+    `/api/users/getAll?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+  GET_USER_DETAIL: `/api/users/detail`,
+  GET_USER_SEARCH: `/api/users/search`,
+
   // SHELL RAFFLE
   GET_SHELL_RAFFLES: (pageNumber: number, pageSize: number) =>
     `/api/shellRaffle/getAllShellRaffle?pageNumber=${pageNumber}&pageSize=${pageSize}`,

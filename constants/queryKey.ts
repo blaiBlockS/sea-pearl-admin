@@ -1,4 +1,13 @@
 export const QUERY_KEY = {
+  // USER
+  GET_USERS: (pageIndex: number, pageSize: number) => [
+    "USERS",
+    pageIndex,
+    pageSize,
+  ],
+  GET_USER_DETAIL: (id: string) => ["SHELL_RAFFLE_DETAIL", id],
+  GET_USER_SEARCH: () => [],
+
   // SHELL RAFFLE
   GET_SHELL_RAFFLES: (pageIndex: number, pageSize: number) => [
     "SHELL_RAFFLE",
