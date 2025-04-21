@@ -150,7 +150,11 @@ function RouletteInner() {
             control={rouletteControl}
             defaultValue="usdt"
             render={({ field: { onChange, value } }) => (
-              <SelectBox onValueChange={onChange} value={value} />
+              <SelectBox
+                onValueChange={onChange}
+                value={value}
+                valueList={["shell", "usdt"]}
+              />
             )}
           />
         );
