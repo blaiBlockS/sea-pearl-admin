@@ -24,8 +24,14 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const EXPENSE_PAGE_INDEX = "expenseIndex";
+const EXPENSE_PAGE_SIZE = "expenseSize";
+
 const ExpenseSection = () => {
-  const { pageIndex, pageSize, pathname } = usePageData();
+  const { pageIndex, pageSize, pathname } = usePageData({
+    customPageIndexKey: EXPENSE_PAGE_INDEX,
+    customPageSizeKey: EXPENSE_PAGE_SIZE,
+  });
   const router = useRouter();
 
   const raffleColumns = [
@@ -270,6 +276,10 @@ const ExpenseSection = () => {
         pageSize={pageSize}
         pageIndex={pageIndex}
         pathname={pathname}
+        customPageData={{
+          customPageIndexKey: EXPENSE_PAGE_INDEX,
+          customPageSizeKey: EXPENSE_PAGE_SIZE,
+        }}
       />
     </div>
   );

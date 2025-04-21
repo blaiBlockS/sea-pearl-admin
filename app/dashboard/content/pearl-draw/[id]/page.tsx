@@ -211,7 +211,7 @@ function PearlRaffleDetailInner() {
     trigger();
   };
 
-  const { pageIndex, pageSize, pathname } = usePageData();
+  const { pageIndex, pageSize, pathname } = usePageData({});
 
   return (
     <div className="flex gap-8 px-9 py-7">

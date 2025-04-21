@@ -339,7 +339,7 @@ const QuestTableInner = ({ id }: { id: string }) => {
     },
   });
 
-  const { pathname } = usePageData();
+  const { pathname } = usePageData({});
   const router = useRouter();
 
   // 커뮤니티 퀘스트 단일 데이터 조회

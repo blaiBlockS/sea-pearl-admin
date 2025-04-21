@@ -29,6 +29,7 @@ interface DataTableProps<TData, TValue> {
   noDataText?: string;
 
   onClick?: (...args: any[]) => void;
+  customPageData?: { customPageIndexKey: string; customPageSizeKey: string };
 }
 
 export function DataTable<TData, TValue>({
@@ -43,6 +44,8 @@ export function DataTable<TData, TValue>({
   noDataText = "No results.",
 
   onClick,
+
+  customPageData,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     columns,
@@ -108,6 +111,7 @@ export function DataTable<TData, TValue>({
           pageIndex={pageIndex}
           pageSize={pageSize}
           pathname={pathname}
+          customPageData={customPageData}
         />
       )}
     </div>

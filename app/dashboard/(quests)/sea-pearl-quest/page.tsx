@@ -42,7 +42,7 @@ export default function SeaPearlQuest() {
 
 function SeaPearlQuestInner() {
   const router = useRouter();
-  const { pageIndex, pageSize, pathname } = usePageData();
+  const { pageIndex, pageSize, pathname } = usePageData({});
 
   const queryClient = useQueryClient();
 

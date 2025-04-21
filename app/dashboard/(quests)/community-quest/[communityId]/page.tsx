@@ -45,7 +45,7 @@ function CommunityQuestInfoInner() {
     : params.communityId;
 
   const router = useRouter();
-  const { pathname } = usePageData();
+  const { pathname } = usePageData({});
 
   // 커뮤니티 퀘스트 단일 데이터 조회
   const { data: communityQuestData } = useSuspenseQuery({

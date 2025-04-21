@@ -221,7 +221,7 @@ function PearlRaffleFallback() {
 }
 
 function PearlRaffleInner() {
-  const { pageSize, pageIndex, pathname } = usePageData();
+  const { pageSize, pageIndex, pathname } = usePageData({});
   const router = useRouter();
 
   const raffleColumns = [

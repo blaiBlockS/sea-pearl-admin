@@ -15,6 +15,11 @@ interface PagenationDeckProps {
   pageIndex: number;
   pathname: string;
   pageSize: number;
+
+  customPageData?: {
+    customPageIndexKey: string;
+    customPageSizeKey: string;
+  };
 }
 
 export function PaginationDeck({
@@ -23,6 +28,8 @@ export function PaginationDeck({
   pageIndex,
   pageSize,
   pathname,
+
+  customPageData,
 }: PagenationDeckProps) {
   console.log(pageIndex, "pageIndex");
 
@@ -34,6 +41,9 @@ export function PaginationDeck({
   const prevClass = cn(isFirstPage && "opacity-20", isEmpty && "opacity-20");
   const nextClass = cn(isLastPage && "opacity-20", isEmpty && "opacity-20");
 
+  const customPageIndexKey = customPageData?.customPageIndexKey;
+  const customPageSizeKey = customPageData?.customPageSizeKey;
+
   return (
     <Pagination className="mt-4">
       <PaginationContent>
@@ -43,7 +53,7 @@ export function PaginationDeck({
             href={
               isFirstPage
                 ? ""
-                : `${pathname}?page=${pageIndex - 1}&size=${pageSize}`
+                : `${pathname}?${customPageIndexKey || "page"}=${pageIndex - 1}&${customPageSizeKey || "size"}=${pageSize}`
             }
           />
         </PaginationItem>
@@ -61,7 +71,7 @@ export function PaginationDeck({
             href={
               isLastPage
                 ? ""
-                : `${pathname}?page=${pageIndex + 1}&size=${pageSize}`
+                : `${pathname}?${customPageIndexKey || "page"}=${pageIndex + 1}&${customPageSizeKey || "size"}=${pageSize}`
             }
           />
         </PaginationItem>

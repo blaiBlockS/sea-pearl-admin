@@ -221,7 +221,7 @@ function ShellRaffleFallback() {
 }
 
 function ShellRaffleInner() {
-  const { pageSize, pageIndex, pathname } = usePageData();
+  const { pageSize, pageIndex, pathname } = usePageData({});
   const router = useRouter();
 
   const raffleColumns = [

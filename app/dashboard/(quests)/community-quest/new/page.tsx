@@ -91,7 +91,7 @@ export default function NewCommunityQuest() {
 
 function NewCommunityQuestInner() {
   const router = useRouter();
-  const { pathname } = usePageData();
+  const { pathname } = usePageData({});
 
   // 이미지 데이터
   const [images, setImages] = useState<ImageType[]>([]);

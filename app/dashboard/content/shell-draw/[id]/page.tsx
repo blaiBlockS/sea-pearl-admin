@@ -107,7 +107,7 @@ function ShellRaffleDetailInner() {
     refetchOnWindowFocus: true,
   });
 
-  const { pageSize, pageIndex, pathname } = usePageData();
+  const { pageSize, pageIndex, pathname } = usePageData({});
 
   const {
     register,

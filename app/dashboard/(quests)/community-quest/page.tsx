@@ -43,7 +43,7 @@ export default function CommunityQuest() {
 
 function CommunityQuestInner() {
   const router = useRouter();
-  const { pathname, pageIndex, pageSize } = usePageData();
+  const { pathname, pageIndex, pageSize } = usePageData({});
 
   const queryClient = useQueryClient();
 

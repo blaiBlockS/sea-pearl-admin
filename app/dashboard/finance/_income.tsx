@@ -19,8 +19,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useRef, useState } from "react";
 
+const INCOME_PAGE_INDEX = "incomeIndex";
+const INCOME_PAGE_SIZE = "incomeSize";
+
 const IncomeSection = () => {
-  const { pageIndex, pageSize, pathname } = usePageData();
+  const { pageIndex, pageSize, pathname } = usePageData({
+    customPageIndexKey: INCOME_PAGE_INDEX,
+    customPageSizeKey: INCOME_PAGE_SIZE,
+  });
 
   const incomeColumns = [
     incomeColumnHelper.accessor("id", {
@@ -202,6 +208,10 @@ const IncomeSection = () => {
         pageSize={pageSize}
         pageIndex={pageIndex}
         pathname={pathname}
+        customPageData={{
+          customPageIndexKey: INCOME_PAGE_INDEX,
+          customPageSizeKey: INCOME_PAGE_SIZE,
+        }}
       />
     </div>
   );

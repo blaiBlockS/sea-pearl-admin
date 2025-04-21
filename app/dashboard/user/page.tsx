@@ -37,7 +37,7 @@ function FinanceInnerFallback() {
 }
 
 function FinanceInner() {
-  const { pageIndex, pageSize, pathname } = usePageData();
+  const { pageIndex, pageSize, pathname } = usePageData({});
 
   const tableColumns = [
     expenseColumnHelper.accessor("id", {
