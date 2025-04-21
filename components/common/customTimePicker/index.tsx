@@ -39,6 +39,9 @@ export function CustomTimePicker({
     onChange(newDate);
   };
 
+  const settingHour = value.getHours();
+  const settingMinute = value.getMinutes();
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -66,7 +69,10 @@ export function CustomTimePicker({
               <Button
                 key={h}
                 value={h}
-                className="hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                className={cn(
+                  settingHour === h && "bg-background-teritary",
+                  "hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                )}
                 onClick={() => handleHourChange(h)}
               >
                 {String(h).padStart(2, "0")}
@@ -78,7 +84,10 @@ export function CustomTimePicker({
               <Button
                 key={m}
                 value={m}
-                className="hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                className={cn(
+                  settingMinute === m && "bg-background-teritary",
+                  "hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                )}
                 onClick={() => handleMinuteChange(m)}
               >
                 {String(m).padStart(2, "0")}
