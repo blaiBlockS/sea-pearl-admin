@@ -30,8 +30,8 @@ const IncomeSection = () => {
       },
     }),
 
-    incomeColumnHelper.accessor("createdAt", {
-      id: "createdAt",
+    incomeColumnHelper.accessor("settlement_date", {
+      id: "settlement_date",
       header: () => <div className="">정산 날짜</div>,
       size: 100,
       cell: ({ getValue }) => {
@@ -47,65 +47,46 @@ const IncomeSection = () => {
     }),
 
     incomeColumnHelper.accessor("our_ads", {
-      id: "expenseDate",
+      id: "our_ads",
       header: () => <div className="">자체 집계한 광고 시청 횟수</div>,
       size: 100,
       cell: ({ getValue }) => {
-        const expenseDate = getValue<string>();
+        const ourAds = getValue<number>();
 
-        return (
-          <div>
-            {expenseDate ? (
-              <>
-                <div>{format(expenseDate, "yy-MM-dd")}</div>
-                <div>{format(expenseDate, "HH:mm:ss")}</div>
-              </>
-            ) : (
-              <div className="text-text-disabled">미입력</div>
-            )}
-          </div>
-        );
+        return <div>{ourAds && ourAds.toLocaleString()}</div>;
       },
     }),
 
     incomeColumnHelper.accessor("real_ads", {
-      id: "userName",
+      id: "realAds",
       header: () => <div className="">실제 집계된 광고 시청 횟수</div>,
       size: 100,
       cell: ({ getValue }) => {
-        const userName = getValue<string>();
+        const realAds = getValue<number>();
 
-        return `${userName}`;
+        return <div>{realAds && realAds.toLocaleString()}</div>;
       },
     }),
 
     incomeColumnHelper.accessor("usdt", {
-      id: "order_amount",
+      id: "usdt",
       header: () => "정산 USDT",
       size: 100,
       cell: ({ getValue }) => {
-        const id = getValue<number>();
+        const usdt = getValue<number>();
 
-        return `${id?.toLocaleString()}`;
+        return `${usdt?.toLocaleString()}`;
       },
     }),
 
     incomeColumnHelper.accessor("avg_price", {
-      id: "link",
+      id: "avg_price",
       header: () => "평균 광고 단가",
       size: 150,
       cell: ({ getValue }) => {
-        const link = getValue<string>();
+        const avgPrice = getValue<string>();
 
-        return (
-          <div>
-            {link ? (
-              <div>{link}</div>
-            ) : (
-              <div className="text-text-disabled">미입력</div>
-            )}
-          </div>
-        );
+        return <div>{avgPrice}</div>;
       },
     }),
   ] as ColumnDef<IncomeType, unknown>[];
