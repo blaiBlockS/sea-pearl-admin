@@ -1,10 +1,9 @@
+import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { DatePicker } from "@/components/common/datePicker";
 import Input from "@/components/common/input";
 import { SelectBox } from "@/components/common/selectBox";
-import TimePicker from "@/components/common/timePicker";
 import { Switch } from "@/components/ui/switch";
 import { QuestConfigType } from "@/schemas/quest.schema";
-import dayjs from "dayjs";
 import {
   Control,
   Controller,
@@ -212,11 +211,10 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
             name="period.startTime"
             control={control}
             render={({ field }) => (
-              <TimePicker
+              <CustomTimePicker
                 {...field}
                 value={field.value}
-                onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                format="HH:mm"
+                onChange={(value: Date | undefined) => field.onChange(value)}
               />
             )}
           />
@@ -244,11 +242,10 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
             name="period.endTime"
             control={control}
             render={({ field }) => (
-              <TimePicker
+              <CustomTimePicker
                 {...field}
                 value={field.value}
-                onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                format="HH:mm"
+                onChange={(value: Date | undefined) => field.onChange(value)}
               />
             )}
           />

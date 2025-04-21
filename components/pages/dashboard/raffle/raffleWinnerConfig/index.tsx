@@ -7,7 +7,6 @@ import { Control, UseFormRegister, useWatch } from "react-hook-form";
 import {
   CreateRaffleFormData,
   CreateRewardFormData,
-  // CreateRewardFormData,
 } from "@/schemas/raffle.schema";
 import { useEffect, useState } from "react";
 

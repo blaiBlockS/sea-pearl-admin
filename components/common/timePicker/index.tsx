@@ -1,7 +1,7 @@
 import { TimePicker as AntDTimePicker } from "antd";
 import "./TimePickerDark.css";
 import { Dayjs } from "dayjs";
-import React, { MutableRefObject } from "react";
+import React from "react";
 
 interface TimePickerProps {
   value: Dayjs;

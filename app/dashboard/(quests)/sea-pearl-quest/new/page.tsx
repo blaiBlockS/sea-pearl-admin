@@ -5,9 +5,11 @@ import Title from "@/components/layout/title";
 import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQuestForm";
 import { QuestConfigType, questSchema } from "@/schemas/quest.schema";
 import { postCreateSeaPearlQuest } from "@/services/dashboard/quest/seaPearlQuest";
+import { combineDateAndTime } from "@/utils/combineDateAndTime";
 import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
@@ -29,8 +31,8 @@ export default function NewSeaPearlQuest() {
 function NewSeaPearlQuestInner() {
   const router = useRouter();
 
-  const startDayJs = dayjs(new Date(2024, 12, 31, 0, 0));
-  const endDayJs = dayjs(new Date(2050, 12, 31, 0, 0));
+  const startDay = new Date(2024, 12, 31, 0, 0);
+  const endDay = new Date(2050, 12, 31, 0, 0);
 
   const {
     register,
@@ -44,10 +46,10 @@ function NewSeaPearlQuestInner() {
     defaultValues: {
       enabled: false,
       period: {
-        startDate: startDayJs.startOf("day").toDate(),
-        startTime: dayjs(startDayJs.format("HH:mm:ss"), "HH:mm:ss"), // dayjs 객체
-        endDate: endDayJs.startOf("day").toDate(), // 또는 dayjs().toDate()
-        endTime: dayjs(endDayJs.format("HH:mm:ss"), "HH:mm:ss"),
+        startDate: new Date(2024, 12, 31, 0, 0),
+        startTime: new Date(2050, 12, 31, 0, 0), // dayjs 객체
+        endDate: new Date(2050, 12, 31, 0, 0), // 또는 dayjs().toDate()
+        endTime: new Date(2050, 12, 31, 0, 0),
       },
       questLogo: "check-in",
       questNumber: 100,
@@ -101,21 +103,15 @@ function NewSeaPearlQuestInner() {
       period,
     } = submitData;
 
-    const mergedStartDate = dayjs(period.startDate)
-      .set("hour", period.startTime.hour())
-      .set("minute", period.startTime.minute())
-      .set("second", period.startTime.second())
-      .set("millisecond", period.startTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedStartDate = combineDateAndTime(
+      period.startDate,
+      period.startTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    const mergedEndDate = dayjs(period.endDate)
-      .set("hour", period.endTime.hour())
-      .set("minute", period.endTime.minute())
-      .set("second", period.endTime.second())
-      .set("millisecond", period.endTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedEndDate = combineDateAndTime(
+      period.endDate,
+      period.endTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
     mutation.mutate({
       questNumber,

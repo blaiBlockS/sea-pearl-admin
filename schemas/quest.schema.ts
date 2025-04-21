@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { z } from "zod";
 
 const questRewardItemSchema = z.object({
@@ -61,19 +60,9 @@ export const questSchema = z.object({
   period: z.object({
     // 10. 퀘스트 시작 일시 / 11. 퀘스트 종료 일시
     startDate: z.date(),
-    startTime: z.custom<dayjs.Dayjs>(
-      (val) => dayjs.isDayjs(val) && val.isValid(),
-      {
-        message: "유효한 시간을 선택해주세요.",
-      }
-    ),
+    startTime: z.date(),
     endDate: z.date(),
-    endTime: z.custom<dayjs.Dayjs>(
-      (val) => dayjs.isDayjs(val) && val.isValid(),
-      {
-        message: "유효한 시간을 선택해주세요.",
-      }
-    ),
+    endTime: z.date(),
   }),
 });
 

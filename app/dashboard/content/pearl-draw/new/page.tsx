@@ -21,6 +21,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { combineDateAndTime } from "@/utils/combineDateAndTime";
 
 const raffleColumns = [
   raffleColumnHelper.accessor("id", {
@@ -88,9 +89,9 @@ function PearlRaffleInner() {
     defaultValues: {
       period: {
         startDate: new Date(), // 또는 dayjs().toDate()
-        startTime: dayjs(), // dayjs 객체
+        startTime: new Date(), // dayjs 객체
         endDate: new Date(), // 또는 dayjs().toDate()
-        endTime: dayjs(), // dayjs 객체
+        endTime: new Date(), // dayjs 객체
       },
       min_participants: 100,
       entry_fee: 1000,
@@ -141,8 +142,8 @@ function PearlRaffleInner() {
       "래플을 정말 생성하시겠습니까?\n" +
         `응모 비용: ${data.entry_fee}\n` +
         `최소 인원: ${data.min_participants}\n` +
-        `래플 시작시기: ${format(data.period.startDate, "yyyy.MM.dd.")} ${data.period.startTime.format("A HH:mm")}\n` +
-        `래플 종료시기: ${format(data.period.endDate, "yyyy.MM.dd.")} ${data.period.endTime.format("A HH:mm")}`
+        `래플 시작시기: ${format(data.period.startDate, "yyyy.MM.dd.")} ${format(data.period.startTime, "hh:mm a")}\n` +
+        `래플 종료시기: ${format(data.period.endDate, "yyyy.MM.dd.")} ${format(data.period.endTime, "hh:mm a")}`
     );
     if (!confirm) return;
 
@@ -155,21 +156,15 @@ function PearlRaffleInner() {
       period,
     } = data;
 
-    const mergedStartDate = dayjs(period.startDate)
-      .set("hour", period.startTime.hour())
-      .set("minute", period.startTime.minute())
-      .set("second", period.startTime.second())
-      .set("millisecond", period.startTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedStartDate = combineDateAndTime(
+      period.startDate,
+      period.startTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    const mergedEndDate = dayjs(period.endDate)
-      .set("hour", period.endTime.hour())
-      .set("minute", period.endTime.minute())
-      .set("second", period.endTime.second())
-      .set("millisecond", period.endTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedEndDate = combineDateAndTime(
+      period.endDate,
+      period.endTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
     // fetching...
 

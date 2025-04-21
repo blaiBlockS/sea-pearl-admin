@@ -8,9 +8,8 @@ import {
 } from "react-hook-form";
 import { DatePicker } from "../datePicker";
 import Input from "../input";
-import TimePicker from "../timePicker";
-import dayjs from "dayjs";
 import { CreateRaffleFormData } from "@/schemas/raffle.schema";
+import { CustomTimePicker } from "../customTimePicker";
 
 interface RaffleInfoConfigProps {
   register: UseFormRegister<CreateRaffleFormData>;
@@ -43,11 +42,10 @@ const FormContainer = ({
             name="period.startTime"
             control={control}
             render={({ field }) => (
-              <TimePicker
+              <CustomTimePicker
                 {...field}
                 value={field.value}
-                onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                format="HH:mm"
+                onChange={(value: Date | undefined) => field.onChange(value)}
               />
             )}
           />
@@ -75,11 +73,10 @@ const FormContainer = ({
             name="period.endTime"
             control={control}
             render={({ field }) => (
-              <TimePicker
+              <CustomTimePicker
                 {...field}
                 value={field.value}
-                onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                format="HH:mm"
+                onChange={(value: Date | undefined) => field.onChange(value)}
               />
             )}
           />

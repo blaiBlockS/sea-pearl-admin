@@ -12,7 +12,6 @@ import {
 } from "@/schemas/raffle.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ColumnDef } from "@tanstack/react-table";
-import dayjs from "dayjs";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import {
@@ -26,6 +25,7 @@ import { useParams } from "next/navigation";
 import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { updateDisabledParser } from "@/utils/convertStatus";
 import usePageData from "@/hook/usePageData";
+import { combineDateAndTime } from "@/utils/combineDateAndTime";
 
 export type Winner = {
   grade: number;
@@ -150,23 +150,16 @@ function ShellRaffleDetailInner() {
       period,
     } = data;
 
-    const mergedStartDate = dayjs(period.startDate)
-      .set("hour", period.startTime.hour())
-      .set("minute", period.startTime.minute())
-      .set("second", period.startTime.second())
-      .set("millisecond", period.startTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedStartDate = combineDateAndTime(
+      period.startDate,
+      period.startTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    const mergedEndDate = dayjs(period.endDate)
-      .set("hour", period.endTime.hour())
-      .set("minute", period.endTime.minute())
-      .set("second", period.endTime.second())
-      .set("millisecond", period.endTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedEndDate = combineDateAndTime(
+      period.endDate,
+      period.endTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    // fetching...
     mutation.mutate({
       id,
       entry_fee,

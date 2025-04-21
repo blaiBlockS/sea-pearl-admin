@@ -1,8 +1,7 @@
+import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { DatePicker } from "@/components/common/datePicker";
 import Input from "@/components/common/input";
-import TimePicker from "@/components/common/timePicker";
 import { CreateRaffleFormData } from "@/schemas/raffle.schema";
-import dayjs from "dayjs";
 import {
   Control,
   Controller,
@@ -41,11 +40,10 @@ const RaffleInfoConfig = ({
             name="period.startTime"
             control={control}
             render={({ field }) => (
-              <TimePicker
+              <CustomTimePicker
                 {...field}
                 value={field.value}
-                onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                format="HH:mm"
+                onChange={(value: Date | undefined) => field.onChange(value)}
               />
             )}
           />
@@ -73,11 +71,10 @@ const RaffleInfoConfig = ({
             name="period.endTime"
             control={control}
             render={({ field }) => (
-              <TimePicker
+              <CustomTimePicker
                 {...field}
                 value={field.value}
-                onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                format="HH:mm"
+                onChange={(value: Date | undefined) => field.onChange(value)}
               />
             )}
           />

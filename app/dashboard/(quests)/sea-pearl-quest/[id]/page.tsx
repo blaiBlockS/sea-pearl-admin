@@ -9,10 +9,11 @@ import {
   getOneSeaPearlQuest,
   putUpdateSeaPearlQuest,
 } from "@/services/dashboard/quest/seaPearlQuest";
+import { combineDateAndTime } from "@/utils/combineDateAndTime";
 import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import { useParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -67,8 +68,8 @@ function SeaPearlQuestDetailInner() {
       "퀘스트을 정말 수정하시겠습니까?\n" +
         `퀘스트 제목: ${submitData.title}\n` +
         `최대 인원: ${submitData.maxParticipants}\n` +
-        `래플 시작시기: ${submitData.period.startDate}\n` +
-        `래플 종료시기: ${submitData.period.endDate}`
+        `래플 시작시기: ${format(submitData.period.startDate, "yyyy.MM.dd.")} ${format(submitData.period.startTime, "hh:mm a")}\n` +
+        `래플 종료시기: ${format(submitData.period.endDate, "yyyy.MM.dd.")} ${format(submitData.period.endTime, "hh:mm a")}`
     );
     if (!confirm) return;
 
@@ -88,21 +89,15 @@ function SeaPearlQuestDetailInner() {
       period,
     } = submitData;
 
-    const mergedStartDate = dayjs(period.startDate)
-      .set("hour", period.startTime.hour())
-      .set("minute", period.startTime.minute())
-      .set("second", period.startTime.second())
-      .set("millisecond", period.startTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedStartDate = combineDateAndTime(
+      period.startDate,
+      period.startTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    const mergedEndDate = dayjs(period.endDate)
-      .set("hour", period.endTime.hour())
-      .set("minute", period.endTime.minute())
-      .set("second", period.endTime.second())
-      .set("millisecond", period.endTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedEndDate = combineDateAndTime(
+      period.endDate,
+      period.endTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
     mutation.mutate({
       id,

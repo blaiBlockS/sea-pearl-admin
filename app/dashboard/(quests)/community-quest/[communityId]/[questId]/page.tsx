@@ -28,9 +28,9 @@ import {
 } from "@/services/dashboard/quest/communityQuest/subQuest";
 import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 import { DatePicker } from "@/components/common/datePicker";
-import TimePicker from "@/components/common/timePicker";
-import dayjs from "dayjs";
 import { SelectBox } from "@/components/common/selectBox";
+import { CustomTimePicker } from "@/components/common/customTimePicker";
+import { combineDateAndTime } from "@/utils/combineDateAndTime";
 
 export default function CommunityQuestInfo() {
   return (
@@ -106,21 +106,15 @@ function CommunityQuestInfoInner() {
       period,
     } = data;
 
-    const mergedStartDate = dayjs(period.startDate)
-      .set("hour", period.startTime.hour())
-      .set("minute", period.startTime.minute())
-      .set("second", period.startTime.second())
-      .set("millisecond", period.startTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedStartDate = combineDateAndTime(
+      period.startDate,
+      period.startTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    const mergedEndDate = dayjs(period.endDate)
-      .set("hour", period.endTime.hour())
-      .set("minute", period.endTime.minute())
-      .set("second", period.endTime.second())
-      .set("millisecond", period.endTime.millisecond())
-      .toDate()
-      .toISOString(); // ← 최종적으로 JS Date 객체로 변환
+    const mergedEndDate = combineDateAndTime(
+      period.endDate,
+      period.endTime
+    ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
     updateMutation.mutate({
       id,
@@ -395,11 +389,12 @@ function CommunityQuestInfoInner() {
                   name="period.startTime"
                   control={control}
                   render={({ field }) => (
-                    <TimePicker
+                    <CustomTimePicker
                       {...field}
                       value={field.value}
-                      onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                      format="HH:mm"
+                      onChange={(value: Date | undefined) =>
+                        field.onChange(value)
+                      }
                     />
                   )}
                 />
@@ -427,11 +422,12 @@ function CommunityQuestInfoInner() {
                   name="period.endTime"
                   control={control}
                   render={({ field }) => (
-                    <TimePicker
+                    <CustomTimePicker
                       {...field}
                       value={field.value}
-                      onChange={(value: dayjs.Dayjs) => field.onChange(value)}
-                      format="HH:mm"
+                      onChange={(value: Date | undefined) =>
+                        field.onChange(value)
+                      }
                     />
                   )}
                 />

@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { z } from "zod";
 
 const rewardItemSchema = z.object({
@@ -14,19 +13,9 @@ const rewardItemSchema = z.object({
 export const raffleFormSchema = z.object({
   period: z.object({
     startDate: z.date(),
-    startTime: z.custom<dayjs.Dayjs>(
-      (val) => dayjs.isDayjs(val) && val.isValid(),
-      {
-        message: "유효한 시간을 선택해주세요.",
-      }
-    ),
+    startTime: z.date(),
     endDate: z.date(),
-    endTime: z.custom<dayjs.Dayjs>(
-      (val) => dayjs.isDayjs(val) && val.isValid(),
-      {
-        message: "유효한 시간을 선택해주세요.",
-      }
-    ),
+    endTime: z.date(),
   }),
   min_participants: z.preprocess(
     (val) => Number(val),

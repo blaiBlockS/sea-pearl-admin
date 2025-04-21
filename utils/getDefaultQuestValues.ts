@@ -13,15 +13,15 @@ export const getDefaultQuestValues = (data: GetRaffleFormDataDto) => {
     winners,
   } = data;
 
-  const startDayJs = dayjs(start);
-  const endDayJs = dayjs(end);
+  const startDayJs = new Date(start);
+  const endDayJs = new Date(end);
 
   return {
     period: {
-      startDate: startDayJs.startOf("day").toDate(),
-      startTime: dayjs(startDayJs.format("HH:mm:ss"), "HH:mm:ss"), // dayjs 객체
-      endDate: endDayJs.startOf("day").toDate(), // 또는 dayjs().toDate()
-      endTime: dayjs(endDayJs.format("HH:mm:ss"), "HH:mm:ss"),
+      startDate: new Date(),
+      startTime: new Date(), // dayjs 객체
+      endDate: new Date(), // 또는 dayjs().toDate()
+      endTime: new Date(),
     },
   };
 };

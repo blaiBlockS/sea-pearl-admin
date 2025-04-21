@@ -5,7 +5,7 @@ import {
 import dayjs from "dayjs";
 
 export const getDefaultValues = (
-  data: GetRaffleFormDataDto,
+  data: GetRaffleFormDataDto
 ): ProcessedRaffleFormDataDto => {
   const {
     min_participants,
@@ -22,10 +22,10 @@ export const getDefaultValues = (
 
   return {
     period: {
-      startDate: startDayJs.startOf("day").toDate(),
-      startTime: dayjs(startDayJs.format("HH:mm:ss"), "HH:mm:ss"), // dayjs 객체
-      endDate: endDayJs.startOf("day").toDate(), // 또는 dayjs().toDate()
-      endTime: dayjs(endDayJs.format("HH:mm:ss"), "HH:mm:ss"),
+      startDate: new Date(),
+      startTime: new Date(), // dayjs 객체
+      endDate: new Date(), // 또는 dayjs().toDate()
+      endTime: new Date(),
     },
 
     min_participants,
