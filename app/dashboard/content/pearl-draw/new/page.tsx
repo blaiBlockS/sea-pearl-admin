@@ -166,8 +166,6 @@ function PearlRaffleInner() {
       period.endTime
     ).toISOString(); // ← 최종적으로 JS Date 객체로 변환
 
-    // fetching...
-
     try {
       await mutation.mutate({
         entry_fee,
