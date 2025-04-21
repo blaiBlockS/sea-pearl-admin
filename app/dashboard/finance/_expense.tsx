@@ -2,16 +2,21 @@
 
 import Button from "@/components/common/button";
 import { DatePicker } from "@/components/common/datePicker";
+import { SelectBox } from "@/components/common/selectBox";
 import { DataTable } from "@/components/common/table";
 import { expenseColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import {
-  getAllExpenses,
-  getExpensesByDate,
+  getAllNotYetPaidExpenses,
+  getAllPaidExpenses,
+  getPaidExpensesByDate,
 } from "@/services/dashboard/expense";
 import { ExpenseType } from "@/types/expense";
+import { ExpenseStatusType } from "@/types/expenseStatus";
+import { cn } from "@/utils/cn";
+import { isExpenseStatus } from "@/utils/isExpenseStatus";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -146,8 +151,6 @@ const ExpenseSection = () => {
   // 지출 START END DATE 설정
   const [start, setStart] = useState(new Date(2025, 1, 1));
   const [end, setEnd] = useState(new Date(2051, 12, 31));
-  const [confirm, setConfirm] = useState(false);
-
   const handleChangeStartDate = (v: Date | undefined) => {
     if (v === undefined) return;
     setStart(v);
@@ -157,8 +160,23 @@ const ExpenseSection = () => {
     setEnd(v);
   };
 
-  // 기간 별 지출 조회 데이터 패칭
-  const { data: dateRangedData } = useSuspenseQuery({
+  // 출금요청 | 지급완료 필터
+  const [expenseStatus, setExpenseStatus] =
+    useState<ExpenseStatusType>("출금요청"); // 출금요청 | 지급완료
+  const handleExpenseStatus = (v: string) => {
+    if (isExpenseStatus(v)) {
+      setExpenseStatus(v);
+    }
+  };
+
+  // '지급 요청' 조회 데이터 패칭
+  const { data: allNotYetPaidData } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
+    queryFn: () => getAllNotYetPaidExpenses(pageIndex, pageSize),
+  });
+
+  // '지급 완료' 기간 별 조회 데이터 패칭
+  const { data: allPaidDataByDate } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_FINANCE_EXPENSES_BY_DATE(
       pageIndex,
       pageSize,
@@ -166,7 +184,7 @@ const ExpenseSection = () => {
       end.toISOString()
     ),
     queryFn: () =>
-      getExpensesByDate({
+      getPaidExpensesByDate({
         page: pageIndex, //
         size: pageSize,
         start: start.toISOString(),
@@ -175,11 +193,19 @@ const ExpenseSection = () => {
       }),
   });
 
-  // 전체 지출 조회 데이터 패칭
-  const { data: defaultData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
-    queryFn: () => getAllExpenses(pageIndex, pageSize),
-  });
+  // '지급 완료' 조회 데이터 패칭
+  // const { data: allPaidData } = useSuspenseQuery({
+  //   queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
+  //   queryFn: () => getAllPaidExpenses(pageIndex, pageSize),
+  // });
+
+  console.log(allNotYetPaidData, "allNotYetPaidData");
+  console.log(allPaidDataByDate, "allPaidDataByDate");
+
+  const data =
+    expenseStatus === "지급완료"
+      ? allPaidDataByDate.expenses
+      : allNotYetPaidData.expenses;
 
   return (
     <div className="flex-1">
@@ -187,38 +213,57 @@ const ExpenseSection = () => {
       <Title fontSize="text-head2">
         <span className="mr-5">지출</span>
         <span>
-          {confirm
-            ? dateRangedData.totalExpenseAmount
-            : defaultData.totalExpenseAmount}{" "}
+          {expenseStatus === "지급완료"
+            ? allPaidDataByDate.totalExpenseAmount
+            : 0}{" "}
           USDT
         </span>
       </Title>
 
       {/* Date Picker */}
       <div className="py-4 flex gap-4">
-        <DatePicker
-          onChange={handleChangeStartDate}
-          value={start}
-          className="flex-0"
+        {/* 날짜 조회 */}
+
+        <div
+          className={cn(
+            "flex gap-2",
+            expenseStatus === "출금요청" && "opacity-30 pointer-events-none"
+          )}
+        >
+          <DatePicker
+            onChange={handleChangeStartDate}
+            value={start}
+            className="flex-0"
+          />
+          <DatePicker
+            onChange={handleChangeEndDate}
+            value={end}
+            className="flex-0"
+          />
+        </div>
+
+        {/* 출금요청/지급완료 박스 */}
+        <SelectBox
+          onValueChange={handleExpenseStatus}
+          value={expenseStatus}
+          valueList={["출금요청", "지급완료"]}
+          triggerClassName={"bg-background-teritary border"}
         />
-        <DatePicker
-          onChange={handleChangeEndDate}
-          value={end}
-          className="flex-0"
-        />
-        <Button
+
+        {/* 조회 버튼 */}
+        {/* <Button
           onClick={() => setConfirm(true)}
           variant="fill"
           className="px-3 bg-background-teritary hover:bg-background-teritary/50"
         >
           조회
-        </Button>
+        </Button> */}
       </div>
 
       {/* 테이블 */}
       <DataTable
         columns={raffleColumns}
-        data={confirm ? dateRangedData.expenses : defaultData.expenses}
+        data={data}
         pageSize={pageSize}
         pageIndex={pageIndex}
         pathname={pathname}

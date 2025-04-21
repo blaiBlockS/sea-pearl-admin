@@ -173,7 +173,7 @@ function FinanceInner() {
   ] as ColumnDef<ExpenseType, unknown>[];
 
   const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_PEARL_RAFFLES(pageIndex, pageSize),
+    queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize),
     queryFn: () => getAllPearlRaffles(pageIndex, pageSize),
   });
 
@@ -190,13 +190,13 @@ function FinanceInner() {
       </div>
 
       {/* 테이블 */}
-      <DataTable
+      {/* <DataTable
         columns={tableColumns}
         data={data}
         pageIndex={pageIndex}
         pageSize={pageSize}
         pathname={pathname}
-      />
+      /> */}
     </div>
   );
 }

@@ -58,11 +58,13 @@ export const END_POINT = {
   PUT_SUB_QUEST_DELETE: `/api/quests/delete`,
 
   // EXPENSE
-  GET_ALL_EXPENSE: (page: number, size: number) =>
-    `/api/expense/get-all?page=${page}&size=${size}&order=asc`,
+  GET_ALL_NOT_YET_PAID_EXPENSE: (page: number, size: number) =>
+    `/api/expense/get-all-not-yet-paid?page=${page}&size=${size}`,
+  GET_ALL_PAID_EXPENSE: (page: number, size: number) =>
+    `/api/expense/get-all-already-paid?page=${page}&size=${size}`,
   GET_EXPENSE_DETAIL: (id: string) => `/api/expense/detail?id=${id}`,
   PUT_EXPENSE_UPDATE: "/api/expense/update",
-  GET_EXPENSE_BY_DATE: ({
+  GET_ALL_PAID_EXPENSE_BY_DATE: ({
     page,
     size,
     start,
