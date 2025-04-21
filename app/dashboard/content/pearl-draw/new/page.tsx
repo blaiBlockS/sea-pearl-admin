@@ -20,6 +20,7 @@ import { postCreatePearlRaffle } from "@/services/dashboard/content/pearlRaffle"
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 
 const raffleColumns = [
   raffleColumnHelper.accessor("id", {
@@ -140,8 +141,8 @@ function PearlRaffleInner() {
       "래플을 정말 생성하시겠습니까?\n" +
         `응모 비용: ${data.entry_fee}\n` +
         `최소 인원: ${data.min_participants}\n` +
-        `래플 시작시기: ${data.period.startDate}\n` +
-        `래플 종료시기: ${data.period.endDate}`
+        `래플 시작시기: ${format(data.period.startDate, "yyyy.MM.dd.")} ${data.period.startTime.format("A HH:mm")}\n` +
+        `래플 종료시기: ${format(data.period.endDate, "yyyy.MM.dd.")} ${data.period.endTime.format("A HH:mm")}`
     );
     if (!confirm) return;
 

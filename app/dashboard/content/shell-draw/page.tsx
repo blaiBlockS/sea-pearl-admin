@@ -366,6 +366,7 @@ function ShellRaffleInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_SHELL_RAFFLES(pageIndex, pageSize),
     queryFn: () => getAllShellRaffles(pageIndex, pageSize),
+    refetchOnWindowFocus: true,
   });
 
   // 새로운 래플 생성 버튼
