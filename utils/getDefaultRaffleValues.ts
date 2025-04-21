@@ -21,7 +21,7 @@ export const getDefaultValues = (
       startDate: new Date(start),
       startTime: new Date(start),
       endDate: new Date(end),
-      endTime: new Date(start),
+      endTime: new Date(end),
     },
 
     min_participants,
