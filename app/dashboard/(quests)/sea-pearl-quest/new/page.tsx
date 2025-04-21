@@ -6,12 +6,10 @@ import QuestForm from "@/components/pages/dashboard/quests/seaPearl/seaPearlQues
 import { QuestConfigType, questSchema } from "@/schemas/quest.schema";
 import { postCreateSeaPearlQuest } from "@/services/dashboard/quest/seaPearlQuest";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
-import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
-import dayjs from "dayjs";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
@@ -47,8 +45,8 @@ function NewSeaPearlQuestInner() {
       enabled: false,
       period: {
         startDate: new Date(2024, 12, 31, 0, 0),
-        startTime: new Date(2050, 12, 31, 0, 0), // dayjs 객체
-        endDate: new Date(2050, 12, 31, 0, 0), // 또는 dayjs().toDate()
+        startTime: new Date(2050, 12, 31, 0, 0),
+        endDate: new Date(2050, 12, 31, 0, 0),
         endTime: new Date(2050, 12, 31, 0, 0),
       },
       questLogo: "check-in",

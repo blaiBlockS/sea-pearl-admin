@@ -13,7 +13,6 @@ import {
 import { RaffleType } from "@/types/columns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ColumnDef } from "@tanstack/react-table";
-import dayjs from "dayjs";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { postCreatePearlRaffle } from "@/services/dashboard/content/pearlRaffle";

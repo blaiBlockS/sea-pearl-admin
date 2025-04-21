@@ -2,7 +2,6 @@ import {
   GetRaffleFormDataDto,
   ProcessedRaffleFormDataDto,
 } from "@/schemas/raffle.schema";
-import dayjs from "dayjs";
 
 export const getDefaultValues = (
   data: GetRaffleFormDataDto
@@ -17,15 +16,12 @@ export const getDefaultValues = (
     winners,
   } = data;
 
-  const startDayJs = dayjs(start);
-  const endDayJs = dayjs(end);
-
   return {
     period: {
-      startDate: new Date(),
-      startTime: new Date(), // dayjs 객체
-      endDate: new Date(), // 또는 dayjs().toDate()
-      endTime: new Date(),
+      startDate: new Date(start),
+      startTime: new Date(start),
+      endDate: new Date(end),
+      endTime: new Date(start),
     },
 
     min_participants,

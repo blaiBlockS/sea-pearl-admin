@@ -2,7 +2,6 @@ import {
   QuestConfigWithCombinedPeriod,
   QuestConfigType,
 } from "@/schemas/quest.schema";
-import dayjs from "dayjs";
 
 export const getDefaultSubQuestValues = (
   data: QuestConfigWithCombinedPeriod
@@ -35,8 +34,8 @@ export const getDefaultSubQuestValues = (
 
     period: {
       startDate: startDay,
-      startTime: startDay, // dayjs 객체
-      endDate: endDay, // 또는 dayjs().toDate()
+      startTime: startDay,
+      endDate: endDay,
       endTime: endDay,
     },
   };
