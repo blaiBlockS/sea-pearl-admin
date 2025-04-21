@@ -41,7 +41,7 @@ export default function SeaPearlQuest() {
 
 function SeaPearlQuestInner() {
   const router = useRouter();
-  const { pathname } = usePageData();
+  const { pageIndex, pageSize, pathname } = usePageData();
 
   const queryClient = useQueryClient();
 
@@ -69,7 +69,7 @@ function SeaPearlQuestInner() {
 
       // 수정 후 invalidate로 재패칭
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS,
+        queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS(pageIndex, pageSize),
       });
     }
   };
@@ -218,11 +218,9 @@ function SeaPearlQuestInner() {
   ] as ColumnDef<SeaPearlQuestType, unknown>[];
 
   const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS,
+    queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS(pageIndex, pageSize),
     queryFn: getAllSeaPearlQuests,
   });
-
-  console.log(data, "data");
 
   // 새로운 래플 생성 버튼
   const NewQuestButton = () => {
