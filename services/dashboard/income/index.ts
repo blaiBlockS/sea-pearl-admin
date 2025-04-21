@@ -16,10 +16,8 @@ export const getAllIncomes = async (
 };
 
 // <GET> INCOME CSV 내보내기
-export const getExpensesByDate = async (id: string) => {
-  const res = await clientAxios.get<ExpenseType>(
-    END_POINT.GET_EXPENSE_DETAIL(id)
-  );
+export const postUploadIncomeCsv = async (file: any) => {
+  const res = await clientAxios.post<{}>(END_POINT.POST_UPLOAD_INCOME_CSV);
 
   return res.data;
 };

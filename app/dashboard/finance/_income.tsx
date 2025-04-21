@@ -7,13 +7,17 @@ import { incomeColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { getAllIncomes, getIncomesByDate } from "@/services/dashboard/income";
+import {
+  getAllIncomes,
+  getIncomesByDate,
+  postUploadIncomeCsv,
+} from "@/services/dashboard/income";
 import { IncomeType } from "@/types/income";
 import { convertPageIndex } from "@/utils/covertPageIndex";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const IncomeSection = () => {
   const { pageIndex, pageSize, pathname } = usePageData();
@@ -128,10 +132,51 @@ const IncomeSection = () => {
       }),
   });
 
+  const uploadMutation = useMutation({
+    mutationFn: ({ id }: { id: string }) => postUploadIncomeCsv({ id }),
+    onSuccess: () => {
+      window.alert("업로드 완료.");
+    },
+    onError: () => {
+      window.alert("업로드 중 에러가 발생하였습니다.");
+    },
+  });
+
+  const UploadButton = () => {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleButtonClick = () => {
+      fileInputRef.current?.click(); // input 클릭 트리거
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        console.log("선택된 파일:", file.name);
+        // 여기서 CSV 파싱하거나 서버로 전송하는 로직 넣기
+      }
+    };
+
+    return (
+      <Button variant="fill" onClick={handleButtonClick}>
+        <div className="flex h-10 items-center gap-2 px-5">
+          <span className="text-body3-medium">수익 입력</span>
+          <input
+            type="file"
+            accept=".csv"
+            ref={fileInputRef}
+            style={{ display: "none" }} // 숨김 처리
+            onChange={handleFileChange}
+          />
+        </div>
+      </Button>
+    );
+  };
+
   return (
     <div className="flex-1">
       {/* 지출 타이틀 */}
-      <Title fontSize="text-head2">
+      <Title fontSize="text-head2" ActionButton={UploadButton}>
         <span className="mr-5">수익</span>
         <span>{allIncomeDataByDate.totalIncomeAmount} USDT</span>
       </Title>

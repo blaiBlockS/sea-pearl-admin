@@ -95,4 +95,5 @@ export const END_POINT = {
     order: "asc" | "desc";
   }) =>
     `/api/income/get-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
+  POST_UPLOAD_INCOME_CSV: `/api/files/income/upload-csv`,
 } as const;
