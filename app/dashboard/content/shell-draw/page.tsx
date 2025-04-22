@@ -330,7 +330,7 @@ function ShellRaffleInner() {
       size: 150,
       cell: ({ row }) => {
         const { entry_type, entry_fee } = row.original;
-        if (entry_type && entry_fee) {
+        if (entry_type && Number.isInteger(entry_fee)) {
           return `${entry_fee.toLocaleString()}`;
         }
       },
