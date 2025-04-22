@@ -8,7 +8,6 @@ import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import {
-  getAllIncomes,
   getIncomesByDate,
   postUploadIncomeCsv,
 } from "@/services/dashboard/income";
@@ -113,12 +112,6 @@ const IncomeSection = () => {
     if (v === undefined) return;
     setEnd(v);
   };
-
-  // 전체 수익 조회 데이터 패칭
-  const { data: allIncomeData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_ALL_FINANCE_INCOMES,
-    queryFn: () => getAllIncomes(pageIndex, pageSize),
-  });
 
   // 기간 별 지출 수익 데이터 패칭
   const { data: allIncomeDataByDate } = useSuspenseQuery({
