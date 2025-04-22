@@ -10,6 +10,7 @@ export type RaffleType = {
 
   start: string;
   end: string;
+  round_number: number;
 
   reward: number;
   entry_fee: number;

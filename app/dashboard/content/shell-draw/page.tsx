@@ -36,7 +36,7 @@ function ShellRaffleFallback() {
   const raffleColumns = [
     raffleColumnHelper.accessor("id", {
       id: "id",
-      header: () => <div className="pl-3">ID</div>,
+      header: () => <div className="pl-3">번호</div>,
       size: 100,
       cell: () => (
         <div className="flex pl-3 w-full">
@@ -48,6 +48,23 @@ function ShellRaffleFallback() {
           />
         </div>
       ),
+    }),
+
+    raffleColumnHelper.accessor("round_number", {
+      id: "round_number",
+      header: "회차",
+      enableResizing: false, //disable resizing for just this column
+      size: 100,
+      cell: () => {
+        <div className="flex pl-3 w-full">
+          <Skeleton
+            baseColor="#333"
+            highlightColor="#222"
+            width={50}
+            height={24}
+          />
+        </div>;
+      },
     }),
 
     raffleColumnHelper.accessor("status", {
@@ -190,6 +207,7 @@ function ShellRaffleFallback() {
 
       start: new Date().toDateString(),
       end: new Date().toDateString(),
+      round_number: 0,
 
       reward: 0,
       entry_fee: 0,
@@ -236,6 +254,17 @@ function ShellRaffleInner() {
           {convertPageIndex(row.index, pageIndex)}
         </div>
       ),
+    }),
+
+    raffleColumnHelper.accessor("round_number", {
+      id: "round_number",
+      header: "회차",
+      enableResizing: false, //disable resizing for just this column
+      size: 100,
+      cell: ({ getValue }) => {
+        const value = getValue<number>();
+        return `${value}회차`;
+      },
     }),
 
     raffleColumnHelper.accessor("status", {

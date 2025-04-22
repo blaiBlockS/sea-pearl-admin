@@ -3,12 +3,12 @@
 import Button from "@/components/common/button";
 import { DataTable } from "@/components/common/table";
 import { raffleColumnHelper } from "@/components/common/table/columns";
+import Tag from "@/components/common/tag";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import { getAllPearlRaffles } from "@/services/dashboard/content/pearlRaffle";
 import { RaffleType } from "@/types/columns";
-import { cn } from "@/utils/cn";
 import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
@@ -36,6 +36,22 @@ function PearlRaffleFallback() {
     raffleColumnHelper.accessor("id", {
       id: "id",
       header: () => <div className="pl-3">번호</div>,
+      size: 100,
+      cell: () => (
+        <div className="flex pl-3 w-full">
+          <Skeleton
+            baseColor="#333"
+            highlightColor="#222"
+            width={50}
+            height={24}
+          />
+        </div>
+      ),
+    }),
+
+    raffleColumnHelper.accessor("round_number", {
+      id: "round_number",
+      header: () => <div className="pl-3">회차</div>,
       size: 100,
       cell: () => (
         <div className="flex pl-3 w-full">
@@ -189,6 +205,7 @@ function PearlRaffleFallback() {
 
       start: new Date().toDateString(),
       end: new Date().toDateString(),
+      round_number: 0,
 
       reward: 0,
       entry_fee: 0,
@@ -237,50 +254,25 @@ function PearlRaffleInner() {
       ),
     }),
 
+    raffleColumnHelper.accessor("round_number", {
+      id: "round_number",
+      header: "회차",
+      enableResizing: false, //disable resizing for just this column
+      size: 100,
+      cell: ({ getValue }) => {
+        const value = getValue<number>();
+        return `${value}회차`;
+      },
+    }),
+
     raffleColumnHelper.accessor("status", {
       id: "status",
-      header: () => <div className="pl-3">상태</div>,
+      header: "상태",
       size: 200,
       cell: ({ getValue }) => {
         const value = getValue<string>();
-        let result = "";
-        let statusStyle = "";
-        switch (value) {
-          case "1":
-            result = "대기중";
-            statusStyle = "bg-text-teritary/20 text-text-teritary";
-            break;
-          case "2":
-            result = "진행중";
-            statusStyle = "bg-background-brand/20 text-text-brand";
-            break;
-          case "3":
-            result = "완료됨";
-            statusStyle = "bg-[#00E6B8]/20 text-[#00E6B8]";
-            break;
-          case "4":
-            result = "취소환불";
-            statusStyle = "bg-red-500/20 text-red-500";
-            break;
-          case "5":
-          default:
-            result = "서버에러";
-            statusStyle = "bg-[#FF6600]/20 text-[#FF6600]";
-            break;
-        }
 
-        return (
-          <div className="flex pl-3">
-            <div
-              className={cn(
-                "px-2 py-1 rounded text-body4-semibold",
-                statusStyle
-              )}
-            >
-              {result}
-            </div>
-          </div>
-        );
+        return <Tag value={value} />;
       },
     }),
 
