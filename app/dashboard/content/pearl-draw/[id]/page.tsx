@@ -222,6 +222,10 @@ function PearlRaffleDetailInner() {
 
         {/* 기본정보 설정 테이블 */}
         <RaffleInfoConfig
+          roundMetaData={{
+            index: data.round_number,
+            status: data.status,
+          }}
           register={register}
           control={control}
           errors={errors}

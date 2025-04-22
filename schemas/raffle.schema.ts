@@ -85,6 +85,7 @@ export type GetRaffleFormDataDto = Omit<CreateRaffleFormDataDto, "period"> & {
   start: string;
   end: string;
   status: string;
+  round_number: number;
   winners: Winner[];
 };
 
