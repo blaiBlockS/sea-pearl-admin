@@ -139,7 +139,7 @@ const IncomeSection = () => {
   });
 
   const uploadMutation = useMutation({
-    mutationFn: ({ id }: { id: string }) => postUploadIncomeCsv({ id }),
+    mutationFn: (formData: FormData) => postUploadIncomeCsv(formData),
     onSuccess: () => {
       window.alert("업로드 완료.");
     },
@@ -155,11 +155,17 @@ const IncomeSection = () => {
       fileInputRef.current?.click(); // input 클릭 트리거
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
       const file = event.target.files?.[0];
       if (file) {
         console.log("선택된 파일:", file.name);
-        // 여기서 CSV 파싱하거나 서버로 전송하는 로직 넣기
+
+        const formData = new FormData();
+        formData.append("file", file); // 'file'이라는 키로 백엔드에 전달
+
+        await uploadMutation.mutateAsync(formData);
       }
     };
 

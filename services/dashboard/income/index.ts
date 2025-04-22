@@ -2,6 +2,7 @@ import { END_POINT } from "@/constants/route";
 import { clientAxios } from "@/services";
 import { ExpenseListType, ExpenseType } from "@/types/expense";
 import { IncomeListType } from "@/types/income";
+import axios from "axios";
 
 // <GET> 모든 INCOME 내역 조회
 export const getAllIncomes = async (
@@ -11,13 +12,6 @@ export const getAllIncomes = async (
   const res = await clientAxios.get<IncomeListType>(
     END_POINT.GET_ALL_INCOMES(page, size)
   );
-
-  return res.data;
-};
-
-// <GET> INCOME CSV 내보내기
-export const postUploadIncomeCsv = async (file: any) => {
-  const res = await clientAxios.post<{}>(END_POINT.POST_UPLOAD_INCOME_CSV);
 
   return res.data;
 };
@@ -47,4 +41,23 @@ export const getIncomesByDate = async ({
   );
 
   return res.data;
+};
+
+export const postUploadIncomeCsv = async (formData: FormData) => {
+  try {
+    const res = await clientAxios.post(
+      "/api/files/income/upload-csv",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log("업로드 성공:", res.data);
+    return res.data;
+  } catch (err) {
+    console.error("업로드 실패:", err);
+  }
 };
