@@ -7,7 +7,7 @@ export const END_POINT = {
 
   // SHELL RAFFLE
   GET_SHELL_RAFFLES: (pageNumber: number, pageSize: number) =>
-    `/api/shellRaffle/getAllShellRaffle?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    `/api/shellRaffle/getAllShellRaffle?pageNumber=${pageNumber}&pageSize=${pageSize}&order=desc`,
   POST_SHELL_RAFFLES: "/api/shellRaffle/createShellRaffle",
   GET_SHELL_RAFFLE_DETAIL: (id: string) =>
     `api/shellRaffle/detailShellRaffle?id=${id}`,
@@ -15,7 +15,7 @@ export const END_POINT = {
 
   // PEARL RAFFLE
   GET_PEARL_RAFFLES: (pageNumber: number, pageSize: number) =>
-    `/api/pearlRaffle/getAllPearlRaffle?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    `/api/pearlRaffle/getAllPearlRaffle?pageNumber=${pageNumber}&pageSize=${pageSize}&order=desc`,
   POST_PEARL_RAFFLES: "/api/pearlRaffle/createPearlRaffle",
   GET_PEARL_RAFFLE_DETAIL: (id: string) =>
     `api/pearlRaffle/detailPearlRaffle?id=${id}`,
@@ -69,7 +69,7 @@ export const END_POINT = {
     size,
     start,
     end,
-    order = "asc",
+    order = "desc",
   }: {
     page: number;
     size: number;
@@ -86,7 +86,7 @@ export const END_POINT = {
     size,
     start,
     end,
-    order = "asc",
+    order = "desc",
   }: {
     page: number;
     size: number;

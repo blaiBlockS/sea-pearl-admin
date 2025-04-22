@@ -198,7 +198,7 @@ const ExpenseSection = () => {
         size: pageSize,
         start: start.toISOString(),
         end: end.toISOString(),
-        order: "asc",
+        order: "desc",
       }),
   });
 

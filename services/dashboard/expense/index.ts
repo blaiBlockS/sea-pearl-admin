@@ -33,7 +33,7 @@ export const getPaidExpensesByDate = async ({
   size,
   start,
   end,
-  order = "asc",
+  order = "desc",
 }: {
   page: number;
   size: number;

@@ -28,7 +28,7 @@ export const getIncomesByDate = async ({
   size,
   start,
   end,
-  order = "asc",
+  order = "desc",
 }: {
   page: number;
   size: number;
