@@ -31,7 +31,219 @@ export default function User() {
 }
 
 function FinanceInnerFallback() {
-  return <div className="px-9 py-7"></div>;
+  const userColumns = [
+    userColumnHelper.accessor("id", {
+      id: "id",
+      header: () => <div className="pl-3">번호</div>,
+      size: 100,
+      cell: () => (
+        <div className="flex pl-3 w-full">
+          <Skeleton
+            baseColor="#333"
+            highlightColor="#222"
+            width={50}
+            height={24}
+          />
+        </div>
+      ),
+    }),
+
+    userColumnHelper.accessor("userName", {
+      id: "settlement_date",
+      header: () => (
+        <div className="">
+          <div>Telegram Name</div>
+          <div>Telegram Handle</div>
+        </div>
+      ),
+      size: 100,
+      cell: () => {
+        return (
+          <div className="flex pl-3 w-full">
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={50}
+              height={24}
+            />
+          </div>
+        );
+      },
+    }),
+
+    userColumnHelper.accessor("inviteCount", {
+      id: "inviteCount",
+      header: () => <div className="">초대한 유저 수</div>,
+      size: 100,
+      cell: () => {
+        return (
+          <div className="flex pl-3 w-full">
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={50}
+              height={24}
+            />
+          </div>
+        );
+      },
+    }),
+
+    userColumnHelper.accessor("adCount", {
+      id: "adCount",
+      header: () => <div className="">시청한 광고 수</div>,
+      size: 100,
+      cell: () => {
+        return (
+          <div className="flex pl-3 w-full">
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={50}
+              height={24}
+            />
+          </div>
+        );
+      },
+    }),
+
+    userColumnHelper.accessor("shell", {
+      id: "shell",
+      header: () => "얻은 Shell 수",
+      size: 100,
+      cell: () => {
+        return (
+          <div className="flex pl-3 w-full">
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={50}
+              height={24}
+            />
+          </div>
+        );
+      },
+    }),
+
+    userColumnHelper.accessor("usdt", {
+      id: "usdt",
+      header: () => "얻은 USDT 양",
+      size: 150,
+      cell: () => {
+        return (
+          <div className="flex pl-3 w-full">
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={50}
+              height={24}
+            />
+          </div>
+        );
+      },
+    }),
+
+    // 마지막 방문
+
+    userColumnHelper.accessor("updatedAt", {
+      id: "updatedAt",
+      header: () => "마지막 접속일",
+      size: 150,
+      cell: () => {
+        return (
+          <div>
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={60}
+              height={12}
+            />
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={60}
+              height={12}
+            />
+          </div>
+        );
+      },
+    }),
+
+    userColumnHelper.accessor("createdAt", {
+      id: "createdAt",
+      header: () => "가입일",
+      size: 150,
+      cell: () => {
+        return (
+          <div>
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={60}
+              height={12}
+            />
+            <Skeleton
+              baseColor="#333"
+              highlightColor="#222"
+              width={60}
+              height={12}
+            />
+          </div>
+        );
+      },
+    }),
+
+    userColumnHelper.display({
+      id: "toDetailPage",
+      header: () => <div className="flex">상세 보기</div>,
+      size: 250,
+      cell: () => (
+        <div className="flex justify-end pr-3">
+          <Button
+            variant="fill"
+            className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
+          >
+            상세내역
+          </Button>
+        </div>
+      ),
+    }),
+  ] as ColumnDef<UserType, unknown>[];
+
+  const data: UserType[] = new Array(10).fill(undefined).map((_, index) => {
+    return {
+      id: `id-${index}`,
+      telegramUid: "-",
+      firstName: "-",
+      lastName: "-",
+      userName: "-",
+
+      inviteCount: 0,
+      adCount: 0,
+
+      shell: 0,
+      pearl: 0,
+      usdt: 0,
+
+      createdAt: new Date().toDateString(),
+      updatedAt: new Date().toDateString(),
+    };
+  });
+
+  return (
+    <div className="px-9 py-7">
+      {/* 타이틀 */}
+      <Title>총 유저 수 {}명</Title>
+      {/* 조회 필터 */}
+      <div>
+        <Input />
+        <Button variant="fill">조회</Button>
+        <Button variant="fill">초기화</Button>
+      </div>
+      {/* 테이블 */}
+      <DataTable columns={userColumns} data={data} />;
+    </div>
+  );
 }
 
 function FinanceInner() {
@@ -68,7 +280,9 @@ function FinanceInner() {
             <div>
               {first} {last}
             </div>
-            <div>@{username}</div>
+            <div className="text-text-teritary">
+              {username ? `@${username}` : "-"}
+            </div>
           </div>
         );
       },

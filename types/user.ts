@@ -12,8 +12,8 @@ export interface UserType {
   pearl: number;
   usdt: number;
 
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserListType {
