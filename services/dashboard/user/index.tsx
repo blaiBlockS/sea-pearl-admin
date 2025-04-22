@@ -6,10 +6,11 @@ import { UserFilterType, UserListType } from "@/types/user";
 export const getAllUsers = async (
   page: number,
   size: number,
+  order: "asc" | "desc",
   category: UserFilterType
 ): Promise<UserListType> => {
   const res = await clientAxios.get<{ data: UserListType }>(
-    END_POINT.GET_USERS(page, size, category)
+    END_POINT.GET_USERS(page, size, order, category)
   );
 
   return res.data.data;

@@ -21,4 +21,10 @@ export interface UserListType {
   users: UserType[];
 }
 
-export type UserFilterType = "friends" | "ads" | "pearl" | "shell" | "usdt";
+export type UserFilterType =
+  | "friends"
+  | "ads"
+  | "pearl"
+  | "shell"
+  | "usdt"
+  | "createdAt";

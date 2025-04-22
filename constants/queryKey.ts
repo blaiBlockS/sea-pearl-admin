@@ -1,10 +1,13 @@
+import { UserFilterType } from "@/types/user";
+
 export const QUERY_KEY = {
   // USER
-  GET_USERS: (pageIndex: number, pageSize: number) => [
-    "USERS",
-    pageIndex,
-    pageSize,
-  ],
+  GET_USERS: (
+    pageIndex: number,
+    pageSize: number,
+    order: "asc" | "desc",
+    category: UserFilterType
+  ) => ["USERS", pageIndex, pageSize, order, category],
   GET_USER_DETAIL: (id: string) => ["SHELL_RAFFLE_DETAIL", id],
   GET_USER_SEARCH: () => [],
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
+import FilterIconSwitch from "@/components/common/filterIconSwitch";
 import Input from "@/components/common/input";
 import { DataTable } from "@/components/common/table";
 import { userColumnHelper } from "@/components/common/table/columns";
@@ -14,6 +15,7 @@ import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import Image from "next/image";
 import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Skeleton from "react-loading-skeleton";
@@ -158,12 +160,6 @@ function FinanceInnerFallback() {
               width={60}
               height={12}
             />
-            <Skeleton
-              baseColor="#333"
-              highlightColor="#222"
-              width={60}
-              height={12}
-            />
           </div>
         );
       },
@@ -182,12 +178,6 @@ function FinanceInnerFallback() {
               width={60}
               height={12}
             />
-            <Skeleton
-              baseColor="#333"
-              highlightColor="#222"
-              width={60}
-              height={12}
-            />
           </div>
         );
       },
@@ -195,7 +185,7 @@ function FinanceInnerFallback() {
 
     userColumnHelper.display({
       id: "toDetailPage",
-      header: () => <div className="flex">상세 보기</div>,
+      header: () => <div className="flex"></div>,
       size: 250,
       cell: () => (
         <div className="flex justify-end pr-3">
@@ -233,12 +223,20 @@ function FinanceInnerFallback() {
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
-      <Title>총 유저 수 {}명</Title>
+      <Title>총 유저 수 -명</Title>
       {/* 조회 필터 */}
-      <div>
-        <Input />
-        <Button variant="fill">조회</Button>
-        <Button variant="fill">초기화</Button>
+      <div className="w-2/3 flex py-8 gap-3 justify-start">
+        <Input className="h-12 w-full bg-background-teritary rounded-md p-4" />
+
+        <Button variant="fill" className="w-24">
+          조회
+        </Button>
+        <Button
+          variant="fill"
+          className="w-24 bg-button-secondary hover:bg-button-secondary/50"
+        >
+          초기화
+        </Button>
       </div>
       {/* 테이블 */}
       <DataTable columns={userColumns} data={data} />;
@@ -290,7 +288,17 @@ function FinanceInner() {
 
     userColumnHelper.accessor("inviteCount", {
       id: "inviteCount",
-      header: () => <div className="">초대한 유저 수</div>,
+      header: () => (
+        <div className="">
+          <span>초대한 유저 수</span>
+          <FilterIconSwitch
+            currentCategory={category}
+            currentOrder={order}
+            baseCategory="friends"
+            onClick={() => handleSwitchCategoryAndOrder("friends")}
+          />
+        </div>
+      ),
       size: 100,
       cell: ({ getValue }) => {
         const adCount = getValue<number>();
@@ -344,7 +352,6 @@ function FinanceInner() {
         return (
           <div>
             <div>{updatedAt ? format(updatedAt, "yy-MM-dd") : "-"}</div>
-            <div>{updatedAt ? format(updatedAt, "HH:mm:ss") : "-"}</div>
           </div>
         );
       },
@@ -360,7 +367,6 @@ function FinanceInner() {
         return (
           <div>
             <div>{createdAt ? format(createdAt, "yy-MM-dd") : "-"}</div>
-            <div>{createdAt ? format(createdAt, "HH:mm:ss") : "-"}</div>
           </div>
         );
       },
@@ -368,8 +374,8 @@ function FinanceInner() {
 
     userColumnHelper.display({
       id: "toDetailPage",
-      header: () => <div className="flex">상세 보기</div>,
-      size: 250,
+      header: () => <div className="flex"></div>,
+      size: 100,
       cell: () => (
         <div className="flex justify-end pr-3">
           <Button
@@ -384,23 +390,44 @@ function FinanceInner() {
   ] as ColumnDef<UserType, unknown>[];
 
   const [category, setCategory] = useState<UserFilterType>("friends");
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
   const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize),
-    queryFn: () => getAllUsers(pageIndex, pageSize, category),
+    queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize, order, category),
+    queryFn: () => getAllUsers(pageIndex, pageSize, order, category),
   });
 
-  console.log(data, "get user");
+  const handleSwitchCategoryAndOrder = (target: UserFilterType) => {
+    if (category === target) {
+      console.log(category, target, "1");
+      setOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      console.log(category, target, "2");
+      setCategory(target);
+      setOrder("desc");
+    }
+  };
 
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
-      <Title>총 유저 수 {}명</Title>
+      <Title>총 유저 수 {data.totalCount}명</Title>
 
       {/* 조회 필터 */}
-      <div>
-        <Input />
-        <Button variant="fill">조회</Button>
-        <Button variant="fill">초기화</Button>
+      <div className="w-2/3 flex py-8 gap-3 justify-start">
+        <Input
+          className="h-12 w-full bg-background-teritary rounded-md p-4"
+          placeholder="Enter Telegram Handle / Telegram ID / Sea Pearl UID"
+        />
+
+        <Button variant="fill" className="w-24">
+          조회
+        </Button>
+        <Button
+          variant="fill"
+          className="w-24 bg-button-secondary hover:bg-button-secondary/50"
+        >
+          초기화
+        </Button>
       </div>
 
       {/* 테이블 */}

@@ -5,9 +5,10 @@ export const END_POINT = {
   GET_USERS: (
     pageNumber: number,
     pageSize: number,
+    order: "asc" | "desc",
     cateogory: UserFilterType
   ) =>
-    `/api/users/getAll?pageNumber=${pageNumber}&pageSize=${pageSize}&order=desc&category=${cateogory}`,
+    `/api/users/getAll?pageNumber=${pageNumber}&pageSize=${pageSize}&order=${order}&category=${cateogory}`,
   GET_USER_DETAIL: `/api/users/detail`,
   GET_USER_SEARCH: `/api/users/search`,
 
