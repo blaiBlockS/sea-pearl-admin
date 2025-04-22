@@ -7,8 +7,10 @@ import { ExpenseType } from "@/types/expense";
 import { IncomeType } from "@/types/income";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 import { SubQuestType } from "@/types/subQuest";
+import { UserType } from "@/types/user";
 import { createColumnHelper } from "@tanstack/react-table";
 
+export const userColumnHelper = createColumnHelper<UserType>();
 export const raffleColumnHelper = createColumnHelper<RaffleType>();
 export const winnerColumnHelper = createColumnHelper<Winner>();
 

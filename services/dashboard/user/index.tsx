@@ -1,17 +1,18 @@
 import { END_POINT } from "@/constants/route";
 import { clientAxios } from "@/services";
-import { IncomeListType } from "@/types/income";
+import { UserFilterType, UserListType } from "@/types/user";
 
 // <GET> 모든 INCOME 내역 조회
-export const getAllIncomes = async (
+export const getAllUsers = async (
   page: number,
-  size: number
-): Promise<IncomeListType> => {
-  const res = await clientAxios.get<IncomeListType>(
-    END_POINT.GET_ALL_INCOMES(page, size)
+  size: number,
+  category: UserFilterType
+): Promise<UserListType> => {
+  const res = await clientAxios.get<{ data: UserListType }>(
+    END_POINT.GET_USERS(page, size, category)
   );
 
-  return res.data;
+  return res.data.data;
 };
 
 // <GET> 날짜 별 INCOME 내역 조회
@@ -28,7 +29,7 @@ export const getIncomesByDate = async ({
   end: string;
   order: "asc" | "desc";
 }) => {
-  const res = await clientAxios.get<IncomeListType>(
+  const res = await clientAxios.get<{}>(
     END_POINT.GET_INCOMES_BY_DETAIL({
       page,
       size,

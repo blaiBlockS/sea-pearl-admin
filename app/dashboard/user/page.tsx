@@ -3,15 +3,18 @@
 import Button from "@/components/common/button";
 import Input from "@/components/common/input";
 import { DataTable } from "@/components/common/table";
-import { expenseColumnHelper } from "@/components/common/table/columns";
+import { userColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { getAllPearlRaffles } from "@/services/dashboard/content/pearlRaffle";
+import { getAllUsers } from "@/services/dashboard/user";
 import { ExpenseType } from "@/types/expense";
+import { UserFilterType, UserType } from "@/types/user";
+import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { Suspense } from "react";
+import { format } from "date-fns";
+import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Skeleton from "react-loading-skeleton";
 
@@ -28,138 +31,132 @@ export default function User() {
 }
 
 function FinanceInnerFallback() {
-  return (
-    <div className="px-9 py-7">
-      {/* 타이틀 */}
-      <Title>총 유저 수 {}명</Title>
-    </div>
-  );
+  return <div className="px-9 py-7"></div>;
 }
 
 function FinanceInner() {
   const { pageIndex, pageSize, pathname } = usePageData({});
 
-  const tableColumns = [
-    expenseColumnHelper.accessor("id", {
+  const userColumns = [
+    userColumnHelper.accessor("id", {
       id: "id",
-      header: () => <div className="pl-3">요청 일자</div>,
+      header: () => <div className="pl-3">번호</div>,
       size: 100,
-      cell: () => (
-        <div className="flex pl-3 w-full">
-          <Skeleton
-            baseColor="#333"
-            highlightColor="#222"
-            width={50}
-            height={24}
-          />
-        </div>
-      ),
-    }),
-
-    expenseColumnHelper.accessor("createdAt", {
-      id: "createdAt",
-      header: () => <div className="pl-3">요청 일자</div>,
-      size: 100,
-      cell: () => (
-        <div className="flex pl-3 w-full">
-          <Skeleton
-            baseColor="#333"
-            highlightColor="#222"
-            width={50}
-            height={24}
-          />
-        </div>
-      ),
-    }),
-
-    expenseColumnHelper.accessor("expenseDate", {
-      id: "status",
-      header: () => <div className="pl-3">출금 일자</div>,
-      size: 200,
-      cell: () => {
+      cell: ({ row }) => {
         return (
-          <div className="flex pl-3">
-            <div
-              className={
-                "px-2 py-1 rounded text-body4-semibold bg-text-teritary/20 text-text-teritary"
-              }
-            >
-              로딩중
+          <div className="pl-3">{convertPageIndex(row.index, pageIndex)}</div>
+        );
+      },
+    }),
+
+    userColumnHelper.accessor("userName", {
+      id: "settlement_date",
+      header: () => (
+        <div className="">
+          <div>Telegram Name</div>
+          <div>Telegram Handle</div>
+        </div>
+      ),
+      size: 100,
+      cell: ({ row }) => {
+        const username = row.original.userName;
+        const first = row.original.firstName;
+        const last = row.original.lastName;
+
+        return (
+          <div>
+            <div>
+              {first} {last}
             </div>
+            <div>@{username}</div>
           </div>
         );
       },
     }),
 
-    expenseColumnHelper.accessor("userName", {
-      id: "username",
-      header: () => "유저명",
+    userColumnHelper.accessor("inviteCount", {
+      id: "inviteCount",
+      header: () => <div className="">초대한 유저 수</div>,
+      size: 100,
+      cell: ({ getValue }) => {
+        const adCount = getValue<number>();
+
+        return <div>{adCount?.toLocaleString() ?? 0}</div>;
+      },
+    }),
+
+    userColumnHelper.accessor("adCount", {
+      id: "adCount",
+      header: () => <div className="">시청한 광고 수</div>,
+      size: 100,
+      cell: ({ getValue }) => {
+        const adCount = getValue<number>();
+
+        return <div>{adCount?.toLocaleString() ?? 0}</div>;
+      },
+    }),
+
+    userColumnHelper.accessor("shell", {
+      id: "shell",
+      header: () => "얻은 Shell 수",
+      size: 100,
+      cell: ({ getValue }) => {
+        const shell = getValue<number>();
+
+        return `${shell?.toLocaleString()}`;
+      },
+    }),
+
+    userColumnHelper.accessor("usdt", {
+      id: "usdt",
+      header: () => "얻은 USDT 양",
       size: 150,
-      cell: () => {
+      cell: ({ getValue }) => {
+        const usdt = getValue<string>();
+
+        return <div>{usdt}</div>;
+      },
+    }),
+
+    // 마지막 방문
+
+    userColumnHelper.accessor("updatedAt", {
+      id: "updatedAt",
+      header: () => "마지막 접속일",
+      size: 150,
+      cell: ({ getValue }) => {
+        const updatedAt = getValue<string>();
+
         return (
           <div>
-            <Skeleton
-              baseColor="#333"
-              highlightColor="#222"
-              width={60}
-              height={12}
-            />
-            <Skeleton
-              baseColor="#333"
-              highlightColor="#222"
-              width={60}
-              height={12}
-            />
+            <div>{updatedAt ? format(updatedAt, "yy-MM-dd") : "-"}</div>
+            <div>{updatedAt ? format(updatedAt, "HH:mm:ss") : "-"}</div>
           </div>
         );
       },
     }),
 
-    expenseColumnHelper.accessor("order_amount", {
-      id: "order_amount",
-      header: () => "출금 USDT",
-      size: 200,
-      cell: () => {
+    userColumnHelper.accessor("createdAt", {
+      id: "createdAt",
+      header: () => "가입일",
+      size: 150,
+      cell: ({ getValue }) => {
+        const createdAt = getValue<string>();
+
         return (
           <div>
-            <Skeleton
-              baseColor="#333"
-              highlightColor="#222"
-              width={60}
-              height={12}
-            />
-            <Skeleton
-              baseColor="#333"
-              highlightColor="#222"
-              width={60}
-              height={12}
-            />
+            <div>{createdAt ? format(createdAt, "yy-MM-dd") : "-"}</div>
+            <div>{createdAt ? format(createdAt, "HH:mm:ss") : "-"}</div>
           </div>
         );
       },
     }),
 
-    expenseColumnHelper.accessor("link", {
-      id: "link",
-      header: "TXID",
-      size: 150,
-      cell: () => {
-        return (
-          <Skeleton
-            baseColor="#333"
-            highlightColor="#222"
-            width={60}
-            height={12}
-          />
-        );
-      },
-    }),
-
-    expenseColumnHelper.display({
+    userColumnHelper.display({
       id: "toDetailPage",
-      header: "출금 등록/상세",
+      header: () => <div className="flex">상세 보기</div>,
       size: 250,
-      cell: ({ row }) => (
+      cell: () => (
         <div className="flex justify-end pr-3">
           <Button
             variant="fill"
@@ -170,12 +167,15 @@ function FinanceInner() {
         </div>
       ),
     }),
-  ] as ColumnDef<ExpenseType, unknown>[];
+  ] as ColumnDef<UserType, unknown>[];
 
+  const [category, setCategory] = useState<UserFilterType>("friends");
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize),
-    queryFn: () => getAllPearlRaffles(pageIndex, pageSize),
+    queryFn: () => getAllUsers(pageIndex, pageSize, category),
   });
+
+  console.log(data, "get user");
 
   return (
     <div className="px-9 py-7">
@@ -190,13 +190,13 @@ function FinanceInner() {
       </div>
 
       {/* 테이블 */}
-      {/* <DataTable
-        columns={tableColumns}
-        data={data}
+      <DataTable
+        columns={userColumns}
+        data={data.users}
         pageIndex={pageIndex}
         pageSize={pageSize}
         pathname={pathname}
-      /> */}
+      />
     </div>
   );
 }
