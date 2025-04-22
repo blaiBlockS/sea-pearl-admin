@@ -263,7 +263,11 @@ function ShellRaffleInner() {
       size: 100,
       cell: ({ getValue }) => {
         const value = getValue<number>();
-        return `${value}회차`;
+        return value ? (
+          <span>{value}회차</span>
+        ) : (
+          <span className="text-text-secondary">미정</span>
+        );
       },
     }),
 

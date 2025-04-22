@@ -51,9 +51,10 @@ function PearlRaffleFallback() {
 
     raffleColumnHelper.accessor("round_number", {
       id: "round_number",
-      header: () => <div className="pl-3">회차</div>,
+      header: "회차",
+      enableResizing: false, //disable resizing for just this column
       size: 100,
-      cell: () => (
+      cell: () => {
         <div className="flex pl-3 w-full">
           <Skeleton
             baseColor="#333"
@@ -61,8 +62,8 @@ function PearlRaffleFallback() {
             width={50}
             height={24}
           />
-        </div>
-      ),
+        </div>;
+      },
     }),
 
     raffleColumnHelper.accessor("status", {
@@ -261,7 +262,11 @@ function PearlRaffleInner() {
       size: 100,
       cell: ({ getValue }) => {
         const value = getValue<number>();
-        return `${value}회차`;
+        return value ? (
+          <span>{value}회차</span>
+        ) : (
+          <span className="text-text-secondary">미정</span>
+        );
       },
     }),
 
