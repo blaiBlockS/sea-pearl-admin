@@ -1,6 +1,6 @@
 import { END_POINT } from "@/constants/route";
 import { clientAxios } from "@/services";
-import { UserFilterType, UserListType } from "@/types/user";
+import { UserFilterType, UserListType, UserType } from "@/types/user";
 
 // <GET> 모든 INCOME 내역 조회
 export const getAllUsers = async (
@@ -24,7 +24,11 @@ export const getUserDetail = async ({ search }: { search: string }) => {
 };
 
 export const postSearchUser = async (search: string) => {
-  const res = await clientAxios.post(END_POINT.GET_USER_SEARCH, { search });
+  console.log("search", search);
+  const res = await clientAxios.post<{ data: UserType[] }>(
+    END_POINT.GET_USER_SEARCH,
+    { search }
+  );
 
-  return res.data;
+  return res.data.data;
 };

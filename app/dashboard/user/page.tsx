@@ -285,9 +285,7 @@ function FinanceInner() {
             <div>
               {first} {last}
             </div>
-            <div className="text-text-teritary">
-              {username ? `@${username}` : "-"}
-            </div>
+            <div className="text-text-teritary">{username || "-"}</div>
           </div>
         );
       },
@@ -470,11 +468,9 @@ function FinanceInner() {
   const mutation = useMutation({
     mutationFn: (search: string) => postSearchUser(search),
     onSuccess: () => {
-      window.alert("검색 완료");
       setListContext("SEARCH");
     },
     onError: () => {
-      window.alert("검색 에러");
       setListContext("SEARCH");
     },
   });
@@ -494,6 +490,8 @@ function FinanceInner() {
 
     await mutation.mutateAsync(trimmed);
   };
+
+  const searchedData: UserType[] = mutation.data ?? [];
 
   return (
     <div className="px-9 py-7">
@@ -528,7 +526,7 @@ function FinanceInner() {
       {/* 테이블 */}
       <DataTable
         columns={userColumns}
-        data={listContext === "DEFAULT" ? data.users : []} // 빈 배열은 mutation.data로 교체 예정
+        data={listContext === "DEFAULT" ? data.users : searchedData} // 빈 배열은 mutation.data로 교체 예정
         pageIndex={pageIndex}
         pageSize={pageSize}
         pathname={pathname}
