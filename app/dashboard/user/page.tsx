@@ -368,9 +368,9 @@ function FinanceInner() {
       ),
       size: 150,
       cell: ({ getValue }) => {
-        const usdt = getValue<string>();
+        const usdt = getValue<number>();
 
-        return <div>{usdt}</div>;
+        return <div>{usdt?.toLocaleString()}</div>;
       },
     }),
 
