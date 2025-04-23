@@ -8,16 +8,23 @@ import { userColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { getAllUsers } from "@/services/dashboard/user";
+import {
+  UserSearchFormData,
+  userSearchSchema,
+} from "@/schemas/user-search.schema";
+import { postUpdateCommunityQuestToggle } from "@/services/dashboard/quest/communityQuest";
+import { getAllUsers, postSearchUser } from "@/services/dashboard/user";
 import { ExpenseType } from "@/types/expense";
 import { UserFilterType, UserType } from "@/types/user";
 import { convertPageIndex } from "@/utils/covertPageIndex";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Image from "next/image";
 import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 
 export default function User() {
@@ -429,13 +436,11 @@ function FinanceInner() {
     }),
   ] as ColumnDef<UserType, unknown>[];
 
+  /**
+   * @필터
+   */
   const [category, setCategory] = useState<UserFilterType>("friends");
   const [order, setOrder] = useState<"asc" | "desc">("desc");
-  const { data } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize, order, category),
-    queryFn: () => getAllUsers(pageIndex, pageSize, order, category),
-  });
-
   const handleSwitchCategoryAndOrder = (target: UserFilterType) => {
     if (category === target) {
       console.log(category, target, "1");
@@ -446,6 +451,49 @@ function FinanceInner() {
       setOrder("desc");
     }
   };
+  const [listContext, setListContext] = useState<"SEARCH" | "DEFAULT">(
+    "DEFAULT"
+  );
+
+  /**
+   * @데이터조회
+   */
+
+  const { data } = useSuspenseQuery({
+    queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize, order, category),
+    queryFn: () => getAllUsers(pageIndex, pageSize, order, category),
+  });
+
+  /**
+   * @검색
+   */
+  const mutation = useMutation({
+    mutationFn: (search: string) => postSearchUser(search),
+    onSuccess: () => {
+      window.alert("검색 완료");
+      setListContext("SEARCH");
+    },
+    onError: () => {
+      window.alert("검색 에러");
+      setListContext("SEARCH");
+    },
+  });
+  // RHF + ZOD 유효성검사
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserSearchFormData>({
+    resolver: zodResolver(userSearchSchema),
+  });
+  // 제출 검사
+  const onSubmit = async (data: UserSearchFormData) => {
+    const { search } = data;
+
+    const trimmed = search.trim();
+
+    await mutation.mutateAsync(trimmed);
+  };
 
   return (
     <div className="px-9 py-7">
@@ -453,27 +501,34 @@ function FinanceInner() {
       <Title>총 유저 수 {data.totalCount}명</Title>
 
       {/* 조회 필터 */}
-      <div className="w-2/3 flex py-8 gap-3 justify-start">
+      <form
+        className="w-2/3 flex py-8 gap-3 justify-start"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Input
           className="h-12 w-full bg-background-teritary rounded-md p-4"
           placeholder="Enter Telegram Handle / Telegram ID / Sea Pearl UID"
+          {...register("search")}
+          hint={errors.search?.message}
         />
 
-        <Button variant="fill" className="w-24">
+        <Button variant="fill" className="w-24 h-12" type="submit">
           조회
         </Button>
+
         <Button
+          onClick={() => setListContext("DEFAULT")} // 전환
           variant="fill"
-          className="w-24 bg-button-secondary hover:bg-button-secondary/50"
+          className="w-24 h-12 bg-button-secondary hover:bg-button-secondary/50"
         >
           초기화
         </Button>
-      </div>
+      </form>
 
       {/* 테이블 */}
       <DataTable
         columns={userColumns}
-        data={data.users}
+        data={listContext === "DEFAULT" ? data.users : []} // 빈 배열은 mutation.data로 교체 예정
         pageIndex={pageIndex}
         pageSize={pageSize}
         pathname={pathname}

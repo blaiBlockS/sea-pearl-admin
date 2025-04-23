@@ -17,47 +17,14 @@ export const getAllUsers = async (
 };
 
 // <GET> 날짜 별 INCOME 내역 조회
-export const getIncomesByDate = async ({
-  page,
-  size,
-  start,
-  end,
-  order = "desc",
-}: {
-  page: number;
-  size: number;
-  start: string;
-  end: string;
-  order: "asc" | "desc";
-}) => {
-  const res = await clientAxios.get<{}>(
-    END_POINT.GET_INCOMES_BY_DETAIL({
-      page,
-      size,
-      start,
-      end,
-      order,
-    })
-  );
+export const getUserDetail = async ({ search }: { search: string }) => {
+  const res = await clientAxios.get<{}>(END_POINT.GET_USER_DETAIL);
 
   return res.data;
 };
 
-export const postUploadIncomeCsv = async (formData: FormData) => {
-  try {
-    const res = await clientAxios.post(
-      "/api/files/income/upload-csv",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+export const postSearchUser = async (search: string) => {
+  const res = await clientAxios.post(END_POINT.GET_USER_SEARCH, { search });
 
-    console.log("업로드 성공:", res.data);
-    return res.data;
-  } catch (err) {
-    console.error("업로드 실패:", err);
-  }
+  return res.data;
 };
