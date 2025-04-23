@@ -12,16 +12,14 @@ import {
   UserSearchFormData,
   userSearchSchema,
 } from "@/schemas/user-search.schema";
-import { postUpdateCommunityQuestToggle } from "@/services/dashboard/quest/communityQuest";
 import { getAllUsers, postSearchUser } from "@/services/dashboard/user";
-import { ExpenseType } from "@/types/expense";
 import { UserFilterType, UserType } from "@/types/user";
 import { convertPageIndex } from "@/utils/covertPageIndex";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
@@ -253,6 +251,7 @@ function FinanceInnerFallback() {
 
 function FinanceInner() {
   const { pageIndex, pageSize, pathname } = usePageData({});
+  const router = useRouter();
 
   const userColumns = [
     userColumnHelper.accessor("id", {
@@ -421,11 +420,12 @@ function FinanceInner() {
       id: "toDetailPage",
       header: () => <div className="flex"></div>,
       size: 100,
-      cell: () => (
+      cell: ({ row }) => (
         <div className="flex justify-end pr-3">
           <Button
             variant="fill"
             className="bg-button-secondary hover:bg-button-disabled h-10 px-4"
+            onClick={() => router.push(pathname + `/${row.original.id}`)}
           >
             상세내역
           </Button>

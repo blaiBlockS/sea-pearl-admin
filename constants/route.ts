@@ -9,7 +9,7 @@ export const END_POINT = {
     cateogory: UserFilterType
   ) =>
     `/api/users/getAll?pageNumber=${pageNumber}&pageSize=${pageSize}&order=${order}&category=${cateogory}`,
-  GET_USER_DETAIL: `/api/users/detail`,
+  GET_USER_DETAIL: (id: string) => `/api/users/detail?id=${id}`,
   GET_USER_SEARCH: `/api/users/search`,
 
   // SHELL RAFFLE
