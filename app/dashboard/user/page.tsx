@@ -289,7 +289,7 @@ function FinanceInner() {
     userColumnHelper.accessor("inviteCount", {
       id: "inviteCount",
       header: () => (
-        <div className="">
+        <div className="flex items-center">
           <span>초대한 유저 수</span>
           <FilterIconSwitch
             currentCategory={category}
@@ -309,7 +309,17 @@ function FinanceInner() {
 
     userColumnHelper.accessor("adCount", {
       id: "adCount",
-      header: () => <div className="">시청한 광고 수</div>,
+      header: () => (
+        <div className="flex items-center">
+          <span>시청한 광고 수</span>
+          <FilterIconSwitch
+            currentCategory={category}
+            currentOrder={order}
+            baseCategory="ads"
+            onClick={() => handleSwitchCategoryAndOrder("ads")}
+          />
+        </div>
+      ),
       size: 100,
       cell: ({ getValue }) => {
         const adCount = getValue<number>();
@@ -320,7 +330,17 @@ function FinanceInner() {
 
     userColumnHelper.accessor("shell", {
       id: "shell",
-      header: () => "얻은 Shell 수",
+      header: () => (
+        <div className="flex items-center">
+          <span>얻은 Shell 수</span>
+          <FilterIconSwitch
+            currentCategory={category}
+            currentOrder={order}
+            baseCategory="shell"
+            onClick={() => handleSwitchCategoryAndOrder("shell")}
+          />
+        </div>
+      ),
       size: 100,
       cell: ({ getValue }) => {
         const shell = getValue<number>();
@@ -331,7 +351,17 @@ function FinanceInner() {
 
     userColumnHelper.accessor("usdt", {
       id: "usdt",
-      header: () => "얻은 USDT 양",
+      header: () => (
+        <div className="flex items-center">
+          <span>얻은 USDT 량</span>
+          <FilterIconSwitch
+            currentCategory={category}
+            currentOrder={order}
+            baseCategory="usdt"
+            onClick={() => handleSwitchCategoryAndOrder("usdt")}
+          />
+        </div>
+      ),
       size: 150,
       cell: ({ getValue }) => {
         const usdt = getValue<string>();
@@ -359,7 +389,17 @@ function FinanceInner() {
 
     userColumnHelper.accessor("createdAt", {
       id: "createdAt",
-      header: () => "가입일",
+      header: () => (
+        <div className="flex items-center">
+          <span>가입일</span>
+          <FilterIconSwitch
+            currentCategory={category}
+            currentOrder={order}
+            baseCategory="createdAt"
+            onClick={() => handleSwitchCategoryAndOrder("createdAt")}
+          />
+        </div>
+      ),
       size: 150,
       cell: ({ getValue }) => {
         const createdAt = getValue<string>();

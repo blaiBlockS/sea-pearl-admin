@@ -18,7 +18,7 @@ const FilterIconSwitch = ({
   onClick,
 }: FilterIconSwitchProps) => {
   return (
-    <Button onClick={onClick}>
+    <Button onClick={onClick} className="scale-75">
       {currentCategory === baseCategory &&
         (currentOrder === "desc" ? (
           <Image //
