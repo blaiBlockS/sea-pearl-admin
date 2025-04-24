@@ -83,7 +83,9 @@ function FreeBoxInner() {
     const reduced = reward.reduce((acc, cur) => {
       return acc + (Number(cur.chance) || 0);
     }, 0);
+
     setTotalSum(reduced); // 필요한 계산만 여기서
+    return reduced;
   };
 
   // 4. HEADER / CELL 메타 정보
@@ -181,7 +183,7 @@ function FreeBoxInner() {
   // 최종 제출 핸들러
   const onSubmit = async (data: FreeBoxConfigType) => {
     try {
-      if (totalSum !== 100) {
+      if (totalSum !== 100 || handleChance() !== 100) {
         window.alert(
           "프리박스 설정을 변경하려면 총 당첨 확률이 100%여야 합니다. 확률을 확인해주세요."
         );
