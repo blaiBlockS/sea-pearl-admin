@@ -31,7 +31,6 @@ export const getUserDetail = async (id: string) => {
 };
 
 export const postSearchUser = async (search: string) => {
-  console.log("search", search);
   const res = await clientAxios.post<{ data: UserType[] }>(
     END_POINT.GET_USER_SEARCH,
     { search }

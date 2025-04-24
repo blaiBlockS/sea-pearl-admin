@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash2 as TrashIcon } from "lucide-react";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -77,6 +77,15 @@ function FreeBoxInner() {
 
   const [totalSum, setTotalSum] = useState<number>(100);
 
+  const handleChance = () => {
+    const reward = rouletteGetValues("reward");
+
+    const reduced = reward.reduce((acc, cur) => {
+      return acc + (Number(cur.chance) || 0);
+    }, 0);
+    setTotalSum(reduced); // 필요한 계산만 여기서
+  };
+
   // 4. HEADER / CELL 메타 정보
   const rouletteColumns = [
     rouletteColumnHelper.display({
@@ -131,14 +140,7 @@ function FreeBoxInner() {
             {...rouletteRegister(`reward.${row.index}.chance`, {
               valueAsNumber: true,
             })}
-            onBlur={() => {
-              const reward = rouletteGetValues("reward");
-
-              const reduced = reward.reduce((acc, cur) => {
-                return acc + (Number(cur.chance) || 0);
-              }, 0);
-              setTotalSum(reduced); // 필요한 계산만 여기서
-            }}
+            onBlur={handleChance}
           />
         );
       },
@@ -154,6 +156,7 @@ function FreeBoxInner() {
               variant="unstyled"
               onClick={() => {
                 remove(row.index);
+                handleChance();
               }}
             >
               <TrashIcon size={16} />
