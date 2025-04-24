@@ -19,8 +19,12 @@ export const getDefaultSubQuestValues = (
     url,
   } = data;
 
-  const startDay = new Date(period.start) || new Date(2024, 12, 31, 0, 0);
-  const endDay = new Date(period.end) || new Date(2050, 12, 31, 0, 0);
+  const startDay = period.start
+    ? new Date(period.start)
+    : new Date(2024, 12, 31, 0, 0);
+  const endDay = period.start
+    ? new Date(period.end)
+    : new Date(2050, 12, 31, 0, 0);
 
   return {
     enabled,
