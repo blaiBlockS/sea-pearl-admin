@@ -5,15 +5,12 @@ import { Suspense } from "react";
 import { useParams } from "next/navigation";
 import Title from "@/components/layout/title";
 import { useRouter } from "next/navigation";
-import usePageData from "@/hook/usePageData";
 import Button from "@/components/common/button";
-import { PlusIcon } from "lucide-react";
 import Input from "@/components/common/input";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QUERY_KEY } from "@/constants/queryKey";
 import {
   QuestConfigType,
   QuestConfigWithCombinedPeriod,
@@ -24,6 +21,7 @@ import { DatePicker } from "@/components/common/datePicker";
 import { SelectBox } from "@/components/common/selectBox";
 import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
+import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 
 export default function CommunityQuestInfo() {
   return (
@@ -50,6 +48,22 @@ function CommunityQuestInfoInner() {
   } = useForm<QuestConfigType>({
     resolver: zodResolver(questSchema),
     mode: "onChange",
+    defaultValues: {
+      enabled: false,
+      period: {
+        startDate: new Date(),
+        startTime: new Date(),
+        endTime: new Date(),
+        endDate: new Date(),
+      },
+      questLogo: "check-in",
+
+      resetCycle: "daily",
+      reward: [{ type: "shell", amount: 0 }],
+      roundInCycle: 0,
+      title: "",
+      url: "",
+    },
   });
 
   // 생성 MUTATION

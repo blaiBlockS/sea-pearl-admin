@@ -22,7 +22,7 @@ export function CustomTimePicker({
   onChange,
   className,
 }: DatePickerProps) {
-  const timeValue = `${String(value.getHours()).padStart(2, "0")}:${String(value.getMinutes()).padStart(2, "0")}`;
+  const timeValue = `${String(value?.getHours()).padStart(2, "0")}:${String(value?.getMinutes()).padStart(2, "0")}`;
 
   const hours = Array.from({ length: 24 }, (_, i) => i); // 0 ~ 23
   const minutes = Array.from({ length: 60 }, (_, i) => i); // 0 ~ 59
@@ -39,8 +39,8 @@ export function CustomTimePicker({
     onChange(newDate);
   };
 
-  const settingHour = value.getHours();
-  const settingMinute = value.getMinutes();
+  const settingHour = value?.getHours();
+  const settingMinute = value?.getMinutes();
 
   return (
     <Popover>

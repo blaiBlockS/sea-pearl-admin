@@ -57,7 +57,8 @@ export const END_POINT = {
   PUT_COMMUNITY_QUEST_DELETE: "/api/projects/delete",
 
   // SUB QUESTS
-  GET_SUB_QUESTS: (id: string) => `/api/quests/getAll?projectId=${id}`,
+  GET_SUB_QUESTS: (id: string, page: number, size: number) =>
+    `/api/quests/getAll?projectId=${id}&page=${page}&size=${size}`,
   GET_SUB_QUEST_DETAIL: (id: string) => `/api/quests/getById?id=${id}`,
   POST_SUB_QUEST: `/api/quests/create`,
   PUT_SUB_QUEST_DETAIL: `/api/quests/update`,

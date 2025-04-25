@@ -339,13 +339,13 @@ const QuestTableInner = ({ id }: { id: string }) => {
     },
   });
 
-  const { pathname } = usePageData({});
+  const { pathname, pageIndex, pageSize } = usePageData({});
   const router = useRouter();
 
   // 커뮤니티 퀘스트 단일 데이터 조회
   const { data: communityQuestData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(id),
-    queryFn: () => getSubQuestsByCommunityId(id),
+    queryFn: () => getSubQuestsByCommunityId(id, pageIndex, pageSize),
   });
 
   return <DataTable columns={raffleColumns} data={communityQuestData} />;

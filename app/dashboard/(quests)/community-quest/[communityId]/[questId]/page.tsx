@@ -50,10 +50,10 @@ function CommunityQuestInfoInner() {
     : params.communityId;
 
   console.log(projectId, "projectId");
-  // 커뮤니티 퀘스트 단일 데이터 조회
+  // 커뮤니티 서브 퀘스트 단일 데이터 조회
   const { data: subQuestData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL(id),
-    queryFn: () => getSubQuestDetail(id),
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL(projectId),
+    queryFn: () => getSubQuestDetail(projectId),
   });
 
   // RHF

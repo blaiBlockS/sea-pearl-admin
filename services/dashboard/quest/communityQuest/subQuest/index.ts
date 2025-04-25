@@ -7,10 +7,12 @@ import { clientAxios } from "@/services";
 
 // COMMUNITY QUEST - SUB QUESTS 전체 조회
 export const getSubQuestsByCommunityId = async (
-  id: string
+  id: string,
+  page: number,
+  size: number
 ): Promise<QuestConfigType[]> => {
   const res = await clientAxios.get<QuestConfigType[]>(
-    END_POINT.GET_SUB_QUESTS(id)
+    END_POINT.GET_SUB_QUESTS(id, page, size)
   );
 
   return res.data;
