@@ -364,6 +364,7 @@ function PearlRaffleInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_PEARL_RAFFLES(pageIndex, pageSize),
     queryFn: () => getAllPearlRaffles(pageIndex, pageSize),
+    refetchOnWindowFocus: true,
   });
 
   // 새로운 래플 생성 버튼

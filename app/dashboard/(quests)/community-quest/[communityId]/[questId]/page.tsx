@@ -45,15 +45,15 @@ export default function CommunityQuestInfo() {
 function CommunityQuestInfoInner() {
   const params = useParams();
   const id = Array.isArray(params.questId) ? params.questId[0] : params.questId;
-  const projectId = Array.isArray(params.communityId)
-    ? params.communityId[0]
-    : params.communityId;
+  const questId = Array.isArray(params.questId)
+    ? params.questId[0]
+    : params.questId;
 
-  console.log(projectId, "projectId");
+  console.log(questId, "projquestIdectId");
   // 커뮤니티 서브 퀘스트 단일 데이터 조회
   const { data: subQuestData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL(projectId),
-    queryFn: () => getSubQuestDetail(projectId),
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL(questId),
+    queryFn: () => getSubQuestDetail(questId),
   });
 
   // RHF
