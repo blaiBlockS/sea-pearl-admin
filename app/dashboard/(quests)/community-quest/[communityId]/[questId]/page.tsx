@@ -140,7 +140,7 @@ function CommunityQuestInfoInner() {
   const handleDelete = async () => {
     await removeMutation.mutateAsync({ id });
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(projectId),
+      queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(questId),
     });
     router.back();
   };
