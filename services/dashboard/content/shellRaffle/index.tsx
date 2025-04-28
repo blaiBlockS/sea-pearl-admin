@@ -11,12 +11,12 @@ import {
 export const getAllShellRaffles = async (
   pageIndex: number,
   pageSize: number
-): Promise<RaffleType[]> => {
+): Promise<tableResponseType<RaffleType[]>> => {
   const res = await clientAxios.get<tableResponseType<RaffleType[]>>(
     END_POINT.GET_SHELL_RAFFLES(pageIndex, pageSize)
   );
 
-  return res.data.data;
+  return res.data;
 };
 
 // SHELL 생성 페이지 POST

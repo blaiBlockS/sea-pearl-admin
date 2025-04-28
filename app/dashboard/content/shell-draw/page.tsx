@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
+import { PaginationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { raffleColumnHelper } from "@/components/common/table/columns";
 import Tag from "@/components/common/tag";
@@ -383,19 +384,19 @@ function ShellRaffleInner() {
     );
   };
 
+  let totalPages = 1;
+  if (pageSize && data.totalCount) {
+    totalPages = Math.ceil(data.totalCount / pageSize);
+  }
+
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
       <Title ActionButton={NewRaffleButton}>Shell Raffle</Title>
 
       {/* 테이블 */}
-      <DataTable
-        columns={raffleColumns}
-        data={data}
-        pageSize={pageSize}
-        pageIndex={pageIndex}
-        pathname={pathname}
-      />
+      <DataTable columns={raffleColumns} data={data.data} />
+      <PaginationDeck totalPages={totalPages} currentPage={pageIndex} />
     </div>
   );
 }

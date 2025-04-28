@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
+import { PaginationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import {
   seaPearlQuestColumnHelper,
@@ -243,6 +244,11 @@ function SeaPearlQuestInner() {
     );
   };
 
+  let totalPages = 1;
+  if (pageSize && data.totalCount) {
+    totalPages = Math.ceil(data.totalCount / pageSize);
+  }
+
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
@@ -250,6 +256,11 @@ function SeaPearlQuestInner() {
 
       {/* 테이블 */}
       <DataTable columns={raffleColumns} data={data.quests} />
+      <PaginationDeck
+        currentPage={pageIndex}
+        totalPages={totalPages}
+        size={pageSize}
+      />
     </div>
   );
 }

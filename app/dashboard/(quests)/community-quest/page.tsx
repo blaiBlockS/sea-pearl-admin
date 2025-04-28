@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
+import { PaginationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import {
   communityQuestColumnHelper,
@@ -249,6 +250,11 @@ function CommunityQuestInner() {
     );
   };
 
+  let totalPages = 1;
+  if (pageSize && data.totalCount) {
+    totalPages = Math.ceil(data.totalCount / pageSize);
+  }
+
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
@@ -258,9 +264,11 @@ function CommunityQuestInner() {
       <DataTable
         columns={raffleColumns}
         data={data.projects?.filter((item) => item.name !== "Block s") ?? []}
-        pageIndex={pageIndex}
-        pageSize={pageSize}
-        pathname={pathname}
+      />
+      <PaginationDeck
+        currentPage={pageIndex}
+        totalPages={totalPages}
+        size={pageSize}
       />
     </div>
   );

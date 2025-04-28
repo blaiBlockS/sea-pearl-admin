@@ -11,14 +11,14 @@ import {
 export const getAllPearlRaffles = async (
   pageIndex: number,
   pageSize: number
-): Promise<RaffleType[]> => {
+): Promise<tableResponseType<RaffleType[]>> => {
   const res = await clientAxios.get<{ data: tableResponseType<RaffleType[]> }>(
     END_POINT.GET_PEARL_RAFFLES(pageIndex, pageSize)
   );
 
   console.log(res, "res!");
 
-  return res.data.data.data;
+  return res.data.data;
 };
 
 // PEARL 생성 페이지 POST

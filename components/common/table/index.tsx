@@ -22,30 +22,18 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 
-  pageSize?: number;
-  pageIndex?: number;
-  pathname?: string;
-
   noDataText?: string;
 
   onClick?: (...args: any[]) => void;
-  customPageData?: { customPageIndexKey: string; customPageSizeKey: string };
 }
 
 export function DataTable<TData, TValue>({
-  isPageNationOn = true,
   columns,
   data,
-
-  pageSize,
-  pageIndex,
-  pathname,
 
   noDataText = "No results.",
 
   onClick,
-
-  customPageData,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     columns,
@@ -53,8 +41,6 @@ export function DataTable<TData, TValue>({
     columnResizeMode: "onEnd",
     getCoreRowModel: getCoreRowModel(),
   });
-
-  const pageNationOn = isPageNationOn && pageSize && pageIndex && pathname;
 
   return (
     <div>
@@ -104,16 +90,6 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-
-      {pageNationOn && (
-        <PaginationDeck
-          data={data}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          pathname={pathname}
-          customPageData={customPageData}
-        />
-      )}
     </div>
   );
 }

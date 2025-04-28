@@ -1,6 +1,6 @@
 export interface tableResponseType<T> {
   data: T;
-  total: number;
+  totalCount: number;
 }
 
 export type RaffleType = {

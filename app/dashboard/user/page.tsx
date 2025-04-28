@@ -3,6 +3,7 @@
 import Button from "@/components/common/button";
 import FilterIconSwitch from "@/components/common/filterIconSwitch";
 import Input from "@/components/common/input";
+import { PaginationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { userColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
@@ -493,6 +494,11 @@ function FinanceInner() {
 
   const searchedData: UserType[] = mutation.data ?? [];
 
+  let totalPages = 1;
+  if (pageSize && data.totalCount) {
+    totalPages = Math.ceil(data.totalCount / pageSize);
+  }
+
   return (
     <div className="px-9 py-7">
       {/* 타이틀 */}
@@ -526,11 +532,9 @@ function FinanceInner() {
       {/* 테이블 */}
       <DataTable
         columns={userColumns}
-        data={listContext === "DEFAULT" ? data.users : searchedData} // 빈 배열은 mutation.data로 교체 예정
-        pageIndex={pageIndex}
-        pageSize={pageSize}
-        pathname={pathname}
+        data={listContext === "DEFAULT" ? data.users : searchedData}
       />
+      <PaginationDeck totalPages={totalPages} currentPage={pageIndex} />
     </div>
   );
 }
