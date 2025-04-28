@@ -1,8 +1,6 @@
-import Button from "@/components/common/button";
 import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { userUsdtColumnHelper } from "@/components/common/table/columns";
-import Tag from "@/components/common/tag";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import { getUserUsdtExpense } from "@/services/dashboard/user";
@@ -29,7 +27,7 @@ const UsdtExpenseTable = () => {
 };
 
 const UsdtExpenseTableFallback = () => {
-  const { pageSize, pageIndex, pathname } = usePageData({});
+  const { pageSize, pageIndex } = usePageData({});
   const router = useRouter();
 
   const userUsdtExpenseColumns = [
@@ -92,11 +90,13 @@ const UsdtExpenseTableFallback = () => {
 };
 
 const UsdtExpenseTableInner = () => {
-  const { pageSize, pageIndex, pathname } = usePageData({
-    customPageIndexKey: "usdtPage",
-    customPageSizeKey: "usdtSize",
+  const USDT_PAGE = "usdtPage";
+  const USDT_SIZE = "usdtSize";
+
+  const { pageSize, pageIndex } = usePageData({
+    customPageIndexKey: USDT_PAGE,
+    customPageSizeKey: USDT_SIZE,
   });
-  const router = useRouter();
 
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -192,8 +192,8 @@ const UsdtExpenseTableInner = () => {
       {/* 테이블 */}
       <DataTable columns={userUsdtExpenseColumns} data={data.expenses} />
       <PagenationDeck
-        currentPageKeyAlias={"usdtPage"}
-        totalPageKeyAlias={"usdtSize"}
+        currentPageKeyAlias={USDT_PAGE}
+        totalPageKeyAlias={USDT_SIZE}
         currentPage={pageIndex}
         totalPages={totalPages}
       />

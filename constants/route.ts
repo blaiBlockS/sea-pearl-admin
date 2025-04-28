@@ -27,7 +27,7 @@ export const END_POINT = {
     order: "asc" | "desc"
   ) =>
     `/api/users/rewards?userId=${id}&page=${page}&size=${size}&order=${order}`,
-  GET_USER_QUESTDONE: (
+  GET_USER_QUEST_DONE: (
     id: string,
     page: number,
     size: number,

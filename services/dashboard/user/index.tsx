@@ -4,6 +4,8 @@ import {
   UserDetailType,
   UserFilterType,
   UserListType,
+  UserQuestDoneType,
+  UserRewardsType,
   UserType,
   UserUsdtExpenseType,
 } from "@/types/user";
@@ -50,6 +52,32 @@ export const getUserUsdtExpense = async (
   const res = await clientAxios.get<{
     data: { expenses: UserUsdtExpenseType[]; totalCount: number };
   }>(END_POINT.GET_USER_USDTEXPENSE(id, pageIndex, pageSize, order));
+
+  return res.data.data;
+};
+
+export const getUserRewards = async (
+  id: string,
+  pageIndex: number,
+  pageSize: number,
+  order: "asc" | "desc" = "asc"
+) => {
+  const res = await clientAxios.get<{
+    data: { rewards: UserRewardsType[]; totalCount: number };
+  }>(END_POINT.GET_USER_REWARDS(id, pageIndex, pageSize, order));
+
+  return res.data.data;
+};
+
+export const getUserQuestDone = async (
+  id: string,
+  pageIndex: number,
+  pageSize: number,
+  order: "asc" | "desc" = "asc"
+) => {
+  const res = await clientAxios.get<{
+    data: { data: UserQuestDoneType[]; totalCount: number };
+  }>(END_POINT.GET_USER_QUEST_DONE(id, pageIndex, pageSize, order));
 
   return res.data.data;
 };

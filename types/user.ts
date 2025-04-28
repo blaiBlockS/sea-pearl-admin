@@ -78,3 +78,20 @@ export interface UserUsdtExpenseType {
   amount: number;
   link: string;
 }
+
+export interface UserRewardsType {
+  id: string;
+  expenseDate: string;
+  fee_type: string;
+  reason: string;
+  amount: number;
+}
+
+export interface UserQuestDoneType {
+  id: string;
+  projectName: string;
+  questName: string;
+  rewardAmount: number;
+  rewardType: string;
+  createdAt: string;
+}

@@ -18,8 +18,18 @@ export const QUERY_KEY = {
     pageIndex,
     pageSize,
   ],
-  GET_USER_REWARDS: (id: string) => ["USER_REWARDS", id],
-  GET_USER_QUEST_DONE: (id: string) => ["USER_QUEST_DONE", id],
+  GET_USER_REWARDS: (id: string, pageIndex: number, pageSize: number) => [
+    "USER_REWARDS",
+    id,
+    pageIndex,
+    pageSize,
+  ],
+  GET_USER_QUEST_DONE: (id: string, pageIndex: number, pageSize: number) => [
+    "QUEST_DONE",
+    id,
+    pageIndex,
+    pageSize,
+  ],
 
   // SHELL RAFFLE
   GET_SHELL_RAFFLES: (pageIndex: number, pageSize: number) => [
