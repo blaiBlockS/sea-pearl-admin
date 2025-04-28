@@ -92,7 +92,10 @@ const UsdtExpenseTableFallback = () => {
 };
 
 const UsdtExpenseTableInner = () => {
-  const { pageSize, pageIndex, pathname } = usePageData({});
+  const { pageSize, pageIndex, pathname } = usePageData({
+    customPageIndexKey: "usdtPage",
+    customPageSizeKey: "usdtSize",
+  });
   const router = useRouter();
 
   const params = useParams();
@@ -152,6 +155,26 @@ const UsdtExpenseTableInner = () => {
         return to ? to.toLocaleString() : "-";
       },
     }),
+
+    userUsdtColumnHelper.accessor("amount", {
+      id: "amount",
+      header: "Amount",
+
+      cell: ({ getValue }) => {
+        const to = getValue<number>();
+        return to ? `${to.toLocaleString()} USDT` : "-";
+      },
+    }),
+
+    userUsdtColumnHelper.accessor("link", {
+      id: "txid",
+      header: "TXID",
+
+      cell: ({ getValue }) => {
+        const to = getValue<string>();
+        return to ? to : "-";
+      },
+    }),
   ] as ColumnDef<UserUsdtExpenseType, unknown>[];
 
   const { data } = useSuspenseQuery({
@@ -168,7 +191,12 @@ const UsdtExpenseTableInner = () => {
     <div className="">
       {/* 테이블 */}
       <DataTable columns={userUsdtExpenseColumns} data={data.expenses} />
-      <PagenationDeck totalPages={totalPages} currentPage={pageIndex} />
+      <PagenationDeck
+        currentPageKeyAlias={"usdtPage"}
+        totalPageKeyAlias={"usdtSize"}
+        currentPage={pageIndex}
+        totalPages={totalPages}
+      />
     </div>
   );
 };

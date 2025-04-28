@@ -16,6 +16,9 @@ interface PagenationDeckProps {
   totalPages: number;
   keyword?: string;
   size?: number;
+
+  currentPageKeyAlias?: string;
+  totalPageKeyAlias?: string;
 }
 
 export function PagenationDeck({
@@ -23,6 +26,9 @@ export function PagenationDeck({
   totalPages,
   keyword,
   size = 10,
+
+  currentPageKeyAlias,
+  totalPageKeyAlias,
 }: PagenationDeckProps) {
   /**
    * @페이지_갯수_로직
@@ -57,13 +63,29 @@ export function PagenationDeck({
     processedKeyword = "";
   }
 
+  let currentPagekey = "page";
+  if (currentPageKeyAlias) {
+    currentPagekey = currentPageKeyAlias;
+  }
+
+  let totalPagekey = "size";
+  if (totalPageKeyAlias) {
+    totalPagekey = totalPageKeyAlias;
+  }
+
   return (
     <Pagination className="mt-4">
       <PaginationContent>
         {/* 맨 뒤로가기 꺾쇠 */}
         <PaginationItem className={prevClass}>
           <PaginationPrevious
-            href={{ query: { page: 1, size, keyword: processedKeyword } }}
+            href={{
+              query: {
+                [currentPagekey]: 1,
+                [totalPagekey]: size,
+                keyword: processedKeyword,
+              },
+            }}
           />
         </PaginationItem>
         {/* 좌측 ...꺽쇠 */}
@@ -72,8 +94,8 @@ export function PagenationDeck({
             <PaginationLink
               href={{
                 query: {
-                  page: currentPage - RANGE / 2,
-                  size,
+                  [currentPagekey]: currentPage - RANGE / 2,
+                  [totalPagekey]: size,
                   keyword: processedKeyword,
                 },
               }}
@@ -88,7 +110,11 @@ export function PagenationDeck({
           <PaginationItem key={item}>
             <PaginationLink
               href={{
-                query: { page: item, size, keyword: processedKeyword },
+                query: {
+                  [currentPagekey]: item,
+                  [totalPagekey]: size,
+                  keyword: processedKeyword,
+                },
               }}
               isActive={item === currentPage}
             >
@@ -103,8 +129,8 @@ export function PagenationDeck({
             <PaginationLink
               href={{
                 query: {
-                  page: currentPage + RANGE / 2,
-                  size,
+                  [currentPagekey]: currentPage + RANGE / 2,
+                  [totalPagekey]: size,
                   keyword: processedKeyword,
                 },
               }}
@@ -118,7 +144,11 @@ export function PagenationDeck({
         <PaginationItem className={nextClass}>
           <PaginationNext
             href={{
-              query: { page: totalPages, size, keyword: processedKeyword },
+              query: {
+                [currentPagekey]: totalPages,
+                [totalPagekey]: size,
+                keyword: processedKeyword,
+              },
             }}
           />
         </PaginationItem>
