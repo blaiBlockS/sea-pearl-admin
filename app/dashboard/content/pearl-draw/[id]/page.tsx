@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
-import { PaginationDeck } from "@/components/common/pagenation";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { winnerColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";

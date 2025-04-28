@@ -2,6 +2,7 @@
 
 import Button from "@/components/common/button";
 import { DatePicker } from "@/components/common/datePicker";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { SelectBox } from "@/components/common/selectBox";
 import { DataTable } from "@/components/common/table";
 import { expenseColumnHelper } from "@/components/common/table/columns";
@@ -10,7 +11,6 @@ import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
 import {
   getAllNotYetPaidExpenses,
-  getAllPaidExpenses,
   getPaidExpensesByDate,
 } from "@/services/dashboard/expense";
 import { ExpenseType } from "@/types/expense";
@@ -211,6 +211,11 @@ const ExpenseSection = () => {
   console.log(allNotYetPaidData, "allNotYetPaidData");
   console.log(allPaidDataByDate, "allPaidDataByDate");
 
+  let totalPages = 1;
+  if (pageSize && allNotYetPaidData.totalCount) {
+    totalPages = Math.ceil(allNotYetPaidData.totalCount / pageSize);
+  }
+
   const data =
     expenseStatus === "지급완료"
       ? allPaidDataByDate.expenses
@@ -270,17 +275,8 @@ const ExpenseSection = () => {
       </div>
 
       {/* 테이블 */}
-      <DataTable
-        columns={raffleColumns}
-        data={data}
-        pageSize={pageSize}
-        pageIndex={pageIndex}
-        pathname={pathname}
-        customPageData={{
-          customPageIndexKey: EXPENSE_PAGE_INDEX,
-          customPageSizeKey: EXPENSE_PAGE_SIZE,
-        }}
-      />
+      <DataTable columns={raffleColumns} data={data} />
+      <PagenationDeck totalPages={totalPages} currentPage={pageIndex} />
     </div>
   );
 };

@@ -3,7 +3,7 @@
 import Button from "@/components/common/button";
 import FilterIconSwitch from "@/components/common/filterIconSwitch";
 import Input from "@/components/common/input";
-import { PaginationDeck } from "@/components/common/pagenation";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { userColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
@@ -534,7 +534,7 @@ function FinanceInner() {
         columns={userColumns}
         data={listContext === "DEFAULT" ? data.users : searchedData}
       />
-      <PaginationDeck totalPages={totalPages} currentPage={pageIndex} />
+      <PagenationDeck totalPages={totalPages} currentPage={pageIndex} />
     </div>
   );
 }

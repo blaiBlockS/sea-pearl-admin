@@ -1,5 +1,5 @@
 import Button from "@/components/common/button";
-import { PaginationDeck } from "@/components/common/pagenation";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { userUsdtColumnHelper } from "@/components/common/table/columns";
 import Tag from "@/components/common/tag";
@@ -168,7 +168,7 @@ const UsdtExpenseTableInner = () => {
     <div className="">
       {/* 테이블 */}
       <DataTable columns={userUsdtExpenseColumns} data={data.expenses} />
-      <PaginationDeck totalPages={totalPages} currentPage={pageIndex} />
+      <PagenationDeck totalPages={totalPages} currentPage={pageIndex} />
     </div>
   );
 };

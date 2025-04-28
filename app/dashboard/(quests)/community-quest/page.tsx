@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
-import { PaginationDeck } from "@/components/common/pagenation";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import {
   communityQuestColumnHelper,
@@ -265,7 +265,7 @@ function CommunityQuestInner() {
         columns={raffleColumns}
         data={data.projects?.filter((item) => item.name !== "Block s") ?? []}
       />
-      <PaginationDeck
+      <PagenationDeck
         currentPage={pageIndex}
         totalPages={totalPages}
         size={pageSize}

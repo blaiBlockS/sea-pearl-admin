@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
-import { PaginationDeck } from "@/components/common/pagenation";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import {
   seaPearlQuestColumnHelper,
@@ -256,7 +256,7 @@ function SeaPearlQuestInner() {
 
       {/* 테이블 */}
       <DataTable columns={raffleColumns} data={data.quests} />
-      <PaginationDeck
+      <PagenationDeck
         currentPage={pageIndex}
         totalPages={totalPages}
         size={pageSize}

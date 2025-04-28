@@ -18,7 +18,7 @@ interface PagenationDeckProps {
   size?: number;
 }
 
-export function PaginationDeck({
+export function PagenationDeck({
   currentPage,
   totalPages,
   keyword,
