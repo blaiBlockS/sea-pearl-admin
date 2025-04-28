@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button";
+import { PaginationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { winnerColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
@@ -248,14 +249,7 @@ function PearlRaffleDetailInner() {
         <Title>결과</Title>
 
         {/* 결과 테이블 */}
-        <DataTable
-          isPageNationOn={false}
-          columns={raffleColumns}
-          data={data.winners}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          pathname={pathname}
-        />
+        <DataTable columns={raffleColumns} data={data.winners} />
       </div>
     </div>
   );
