@@ -10,6 +10,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 interface PagenationDeckProps {
   currentPage: number;
@@ -30,6 +31,12 @@ export function PagenationDeck({
   currentPageKeyAlias,
   totalPageKeyAlias,
 }: PagenationDeckProps) {
+  /**
+   * @기존_쿼리_유지_로직
+   */
+  const searchParams = useSearchParams();
+  const currentParams = Object.fromEntries(searchParams.entries());
+
   /**
    * @페이지_갯수_로직
    */
@@ -81,6 +88,7 @@ export function PagenationDeck({
           <PaginationPrevious
             href={{
               query: {
+                ...currentParams,
                 [currentPagekey]: 1,
                 [totalPagekey]: size,
                 keyword: processedKeyword,
@@ -94,6 +102,7 @@ export function PagenationDeck({
             <PaginationLink
               href={{
                 query: {
+                  ...currentParams,
                   [currentPagekey]: currentPage - RANGE / 2,
                   [totalPagekey]: size,
                   keyword: processedKeyword,
@@ -111,6 +120,7 @@ export function PagenationDeck({
             <PaginationLink
               href={{
                 query: {
+                  ...currentParams,
                   [currentPagekey]: item,
                   [totalPagekey]: size,
                   keyword: processedKeyword,
@@ -129,6 +139,7 @@ export function PagenationDeck({
             <PaginationLink
               href={{
                 query: {
+                  ...currentParams,
                   [currentPagekey]: currentPage + RANGE / 2,
                   [totalPagekey]: size,
                   keyword: processedKeyword,
@@ -145,6 +156,7 @@ export function PagenationDeck({
           <PaginationNext
             href={{
               query: {
+                ...currentParams,
                 [currentPagekey]: totalPages,
                 [totalPagekey]: size,
                 keyword: processedKeyword,
