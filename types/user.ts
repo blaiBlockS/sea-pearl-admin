@@ -73,6 +73,7 @@ export interface UserDetailType {
 export interface UserUsdtExpenseType {
   id: string;
   expenseDate: string;
+  from: string;
   to: string;
   amount: number;
   link: string;

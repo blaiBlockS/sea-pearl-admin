@@ -8,7 +8,6 @@ import Tag from "@/components/common/tag";
 import Title from "@/components/layout/title";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { cn } from "@/lib/utils";
 import { getAllShellRaffles } from "@/services/dashboard/content/shellRaffle";
 import { RaffleType } from "@/types/columns";
 import { convertPageIndex } from "@/utils/covertPageIndex";
