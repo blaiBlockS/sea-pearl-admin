@@ -253,7 +253,7 @@ function ShellRaffleInner() {
         <Title>결과</Title>
 
         {/* 결과 테이블 */}
-        <DataTable isPageNationOn={false} columns={raffleColumns} data={[]} />
+        <DataTable columns={raffleColumns} data={[]} />
       </div>
     </div>
   );

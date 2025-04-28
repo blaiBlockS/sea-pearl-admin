@@ -15,10 +15,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PaginationDeck } from "../pagenation";
 
 interface DataTableProps<TData, TValue> {
-  isPageNationOn?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 
