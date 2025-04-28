@@ -15,6 +15,7 @@ export const getDefaultSubQuestValues = (
     resetCycle,
     reward,
     roundInCycle,
+    maxParticipants,
     title,
     url,
   } = data;
@@ -33,6 +34,7 @@ export const getDefaultSubQuestValues = (
     resetCycle,
     reward,
     roundInCycle,
+    maxParticipants,
     title,
     url,
 
