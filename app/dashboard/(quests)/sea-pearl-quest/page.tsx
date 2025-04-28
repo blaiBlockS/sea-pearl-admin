@@ -224,7 +224,7 @@ function SeaPearlQuestInner() {
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS(pageIndex, pageSize),
-    queryFn: getAllSeaPearlQuests,
+    queryFn: () => getAllSeaPearlQuests(pageIndex, pageSize),
   });
 
   // 새로운 래플 생성 버튼
@@ -249,7 +249,7 @@ function SeaPearlQuestInner() {
       <Title ActionButton={NewQuestButton}>Sea Pearl 퀘스트</Title>
 
       {/* 테이블 */}
-      <DataTable columns={raffleColumns} data={data} />
+      <DataTable columns={raffleColumns} data={data.quests} />
     </div>
   );
 }

@@ -40,7 +40,8 @@ export const END_POINT = {
   PUT_FREE_BOX_CONFIG: "/api/freebox/updateFreebox",
 
   // BLOCKS QUEST
-  GET_BLOCKS_QUESTS: "/api/blocks/get-all-blocks-quest",
+  GET_BLOCKS_QUESTS: (page: number, size: number) =>
+    `/api/blocks/get-all-blocks-quest?page=${page}&size=${size}`,
   GET_BLOCKS_QUEST_DETAIL: (id: string) =>
     `/api/blocks/get-blocks-quest-by-id?id=${id}`,
   POST_BLOCKS_QUEST: "/api/blocks/create-blocks-quest",

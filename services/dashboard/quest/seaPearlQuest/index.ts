@@ -4,12 +4,17 @@ import { clientAxios } from "@/services";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 
 // SHELL 전체 리스트 페이지 GET
-export const getAllSeaPearlQuests = async (): Promise<SeaPearlQuestType[]> => {
-  const res = await clientAxios.get<SeaPearlQuestType[]>(
-    END_POINT.GET_BLOCKS_QUESTS
-  );
-
-  console.log(res, "res");
+export const getAllSeaPearlQuests = async (
+  pageIndex: number,
+  pageSize: number
+): Promise<{
+  quests: SeaPearlQuestType[];
+  totalCount: number;
+}> => {
+  const res = await clientAxios.get<{
+    quests: SeaPearlQuestType[];
+    totalCount: number;
+  }>(END_POINT.GET_BLOCKS_QUESTS(pageIndex, pageSize));
 
   return res.data;
 };
