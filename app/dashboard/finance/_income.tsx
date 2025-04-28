@@ -2,6 +2,7 @@
 
 import Button from "@/components/common/button";
 import { DatePicker } from "@/components/common/datePicker";
+import { PagenationDeck } from "@/components/common/pagenation";
 import { DataTable } from "@/components/common/table";
 import { incomeColumnHelper } from "@/components/common/table/columns";
 import Title from "@/components/layout/title";
@@ -178,6 +179,11 @@ const IncomeSection = () => {
     );
   };
 
+  let totalPages = 1;
+  if (pageSize && allIncomeDataByDate.totalCount) {
+    totalPages = Math.ceil(allIncomeDataByDate.totalCount / pageSize);
+  }
+
   return (
     <div className="flex-1">
       {/* 지출 타이틀 */}
@@ -201,17 +207,8 @@ const IncomeSection = () => {
       </div>
 
       {/* 테이블 */}
-      <DataTable
-        columns={incomeColumns}
-        data={allIncomeDataByDate.incomes}
-        pageSize={pageSize}
-        pageIndex={pageIndex}
-        pathname={pathname}
-        customPageData={{
-          customPageIndexKey: INCOME_PAGE_INDEX,
-          customPageSizeKey: INCOME_PAGE_SIZE,
-        }}
-      />
+      <DataTable columns={incomeColumns} data={allIncomeDataByDate.incomes} />
+      <PagenationDeck totalPages={totalPages} currentPage={pageIndex} />
     </div>
   );
 };
