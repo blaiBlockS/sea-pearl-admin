@@ -8,8 +8,18 @@ export const QUERY_KEY = {
     order: "asc" | "desc",
     category: UserFilterType
   ) => ["USERS", pageIndex, pageSize, order, category],
-  GET_USER_DETAIL: (id: string) => ["SHELL_RAFFLE_DETAIL", id],
-  GET_USER_SEARCH: () => [],
+  GET_USER_SEARCH: (search: string) => ["USER_SEARCH", search],
+
+  // USER_DETAIL
+  GET_USER_DETAIL: (id: string) => ["USER_DETAIL", id],
+  GET_USER_USDT_EXPENSE: (id: string, pageIndex: number, pageSize: number) => [
+    "USER_USDT_EXPENSE",
+    id,
+    pageIndex,
+    pageSize,
+  ],
+  GET_USER_REWARDS: (id: string) => ["USER_REWARDS", id],
+  GET_USER_QUEST_DONE: (id: string) => ["USER_QUEST_DONE", id],
 
   // SHELL RAFFLE
   GET_SHELL_RAFFLES: (pageIndex: number, pageSize: number) => [

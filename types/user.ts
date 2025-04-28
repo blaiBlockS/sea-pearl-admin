@@ -55,6 +55,8 @@ export interface UserDetailType {
     have: number;
     total_earn: number;
     spent: number;
+    storage: number;
+    fassive: number;
   };
   usdt: {
     have: number;
@@ -66,4 +68,12 @@ export interface UserDetailType {
   roulette: number;
   shellRaffle: number;
   pearlRaffle: number;
+}
+
+export interface UserUsdtExpenseType {
+  id: string;
+  expenseDate: string;
+  to: string;
+  amount: number;
+  link: string;
 }

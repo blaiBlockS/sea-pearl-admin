@@ -12,6 +12,29 @@ export const END_POINT = {
   GET_USER_DETAIL: (id: string) => `/api/users/detail?id=${id}`,
   GET_USER_SEARCH: `/api/users/search`,
 
+  // USER DETAIL
+  GET_USER_USDTEXPENSE: (
+    id: string,
+    page: number,
+    size: number,
+    order: "asc" | "desc"
+  ) =>
+    `/api/users/usdtExpense?userId=${id}&page=${page}&size=${size}&order=${order}`,
+  GET_USER_REWARDS: (
+    id: string,
+    page: number,
+    size: number,
+    order: "asc" | "desc"
+  ) =>
+    `/api/users/rewards?userId=${id}&page=${page}&size=${size}&order=${order}`,
+  GET_USER_QUESTDONE: (
+    id: string,
+    page: number,
+    size: number,
+    order: "asc" | "desc"
+  ) =>
+    `/api/users/questDone?userId=${id}&page=${page}&size=${size}&order=${order}`,
+
   // SHELL RAFFLE
   GET_SHELL_RAFFLES: (pageNumber: number, pageSize: number) =>
     `/api/shellRaffle/getAllShellRaffle?pageNumber=${pageNumber}&pageSize=${pageSize}&order=desc`,
@@ -88,6 +111,7 @@ export const END_POINT = {
   }) =>
     `/api/expense/get-all-by-date?page=${page}&size=${size}&start=${start}&end=${end}&order=${order}`,
 
+  // INCOME
   GET_ALL_INCOMES: (page: number, size: number) =>
     `/api/income/get-all?page=${page}&size=${size}&order=asc`,
   GET_INCOMES_BY_DETAIL: ({

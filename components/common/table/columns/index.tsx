@@ -7,7 +7,7 @@ import { ExpenseType } from "@/types/expense";
 import { IncomeType } from "@/types/income";
 import { SeaPearlQuestType } from "@/types/seaPearlQuest";
 import { SubQuestType } from "@/types/subQuest";
-import { UserType } from "@/types/user";
+import { UserType, UserUsdtExpenseType } from "@/types/user";
 import { createColumnHelper } from "@tanstack/react-table";
 
 export const userColumnHelper = createColumnHelper<UserType>();
@@ -22,3 +22,6 @@ export const subQuestColumnHelper = createColumnHelper<SubQuestType>();
 
 export const expenseColumnHelper = createColumnHelper<ExpenseType>();
 export const incomeColumnHelper = createColumnHelper<IncomeType>();
+
+// USER_DETAIL
+export const userUsdtColumnHelper = createColumnHelper<UserUsdtExpenseType>();

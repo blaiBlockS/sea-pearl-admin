@@ -1,9 +1,13 @@
 "use client";
 
+import { DataTable } from "@/components/common/table";
 import Title from "@/components/layout/title";
 import ColumnBox from "@/components/pages/dashboard/user/columnBox";
 import Divider from "@/components/pages/dashboard/user/divider";
 import Subtitle from "@/components/pages/dashboard/user/subtitle";
+import QuestDoneTable from "@/components/pages/dashboard/user/tables/questDone";
+import RewardTable from "@/components/pages/dashboard/user/tables/rewards";
+import UsdtExpenseTable from "@/components/pages/dashboard/user/tables/usdtExpense";
 import { QUERY_KEY } from "@/constants/queryKey";
 import { getUserDetail } from "@/services/dashboard/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -199,13 +203,13 @@ function UserDetailInner() {
           {/* Pearl 저장량 업그레이드 횟수 */}
           <ColumnBox
             columnName="Pearl 저장량 업그레이드 횟수:"
-            columnValue={"추가 필요"}
+            columnValue={userDetailData.pearls.storage}
           />
 
           {/* Pearl 채굴량 업그레이드 횟수 */}
           <ColumnBox
             columnName="Pearl 채굴량 업그레이드 횟수:"
-            columnValue={"추가 필요"}
+            columnValue={userDetailData.pearls.fassive}
           />
 
           {/* DIVIDER */}
@@ -273,16 +277,19 @@ function UserDetailInner() {
         {/* USDT 출금 기록 */}
         <div>
           <Title fontSize="text-head2">USDT 출금 기록</Title>
+          <UsdtExpenseTable />
         </div>
 
         {/* 리워드 지급 기록 */}
         <div>
           <Title fontSize="text-head2">리워드 지급 기록</Title>
+          <RewardTable />
         </div>
 
         {/* 퀘스트 완료 내역 */}
         <div>
           <Title fontSize="text-head2">퀘스트 완료 내역</Title>
+          <QuestDoneTable />
         </div>
       </div>
     </div>

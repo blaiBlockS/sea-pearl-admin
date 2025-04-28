@@ -5,6 +5,7 @@ import {
   UserFilterType,
   UserListType,
   UserType,
+  UserUsdtExpenseType,
 } from "@/types/user";
 
 // <GET> 모든 INCOME 내역 조회
@@ -30,11 +31,25 @@ export const getUserDetail = async (id: string) => {
   return res.data.data;
 };
 
+// 유저 검색 기능
 export const postSearchUser = async (search: string) => {
   const res = await clientAxios.post<{ data: UserType[] }>(
     END_POINT.GET_USER_SEARCH,
     { search }
   );
+
+  return res.data.data;
+};
+
+export const getUserUsdtExpense = async (
+  id: string,
+  pageIndex: number,
+  pageSize: number,
+  order: "asc" | "desc" = "asc"
+) => {
+  const res = await clientAxios.get<{
+    data: { expenses: UserUsdtExpenseType[]; totalCount: number };
+  }>(END_POINT.GET_USER_USDTEXPENSE(id, pageIndex, pageSize, order));
 
   return res.data.data;
 };
