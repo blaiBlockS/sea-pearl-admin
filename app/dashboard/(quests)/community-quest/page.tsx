@@ -232,6 +232,7 @@ function CommunityQuestInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS(pageIndex, pageSize),
     queryFn: () => getAllCommunityQuests(pageIndex, pageSize),
+    refetchOnWindowFocus: true,
   });
 
   // 새로운 래플 생성 버튼

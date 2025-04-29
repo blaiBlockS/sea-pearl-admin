@@ -130,6 +130,7 @@ const IncomeSection = () => {
         end: end.toISOString(),
         order: "desc",
       }),
+    refetchOnWindowFocus: true,
   });
 
   const uploadMutation = useMutation({

@@ -54,6 +54,7 @@ function CommunityQuestInfoInner() {
   const { data: subQuestData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUEST_DETAIL(questId),
     queryFn: () => getSubQuestDetail(questId),
+    refetchOnWindowFocus: true,
   });
 
   // RHF

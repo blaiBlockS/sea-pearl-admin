@@ -38,6 +38,7 @@ const ExpenseDetailInner = () => {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_FINANCE_EXPENSE_DETAIL(id),
     queryFn: () => getExpenseDetail(id),
+    refetchOnWindowFocus: true,
   });
 
   const mutation = useMutation({

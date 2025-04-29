@@ -226,6 +226,7 @@ function SeaPearlQuestInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_SEA_PEARL_QUESTS(pageIndex, pageSize),
     queryFn: () => getAllSeaPearlQuests(pageIndex, pageSize),
+    refetchOnWindowFocus: true,
   });
 
   // 새로운 래플 생성 버튼

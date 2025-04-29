@@ -346,6 +346,7 @@ const QuestTableInner = ({ id }: { id: string }) => {
   const { data: communityQuestData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(id),
     queryFn: () => getSubQuestsByCommunityId(id, pageIndex, pageSize),
+    refetchOnWindowFocus: true,
   });
 
   return <DataTable columns={raffleColumns} data={communityQuestData} />;

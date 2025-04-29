@@ -461,6 +461,7 @@ function FinanceInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USERS(pageIndex, pageSize, order, category),
     queryFn: () => getAllUsers(pageIndex, pageSize, order, category),
+    refetchOnWindowFocus: true,
   });
 
   /**

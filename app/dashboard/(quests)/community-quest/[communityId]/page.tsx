@@ -51,6 +51,7 @@ function CommunityQuestInfoInner() {
   const { data: communityQuestData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS_DETAIL(id),
     queryFn: () => getCommunityQuestDetail(id),
+    refetchOnWindowFocus: true,
   });
 
   // 이미지 데이터

@@ -53,6 +53,7 @@ function RouletteInner() {
   const { data: rouletteData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_ROULETTE_CONFIG,
     queryFn: getRouletteConfig,
+    refetchOnWindowFocus: true,
   });
   console.log(rouletteData, "rouletteData...");
   /**
@@ -61,6 +62,7 @@ function RouletteInner() {
   const { data: liveBarData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_LIVE_BAR_CONFIG,
     queryFn: getLiveBarConfig,
+    refetchOnWindowFocus: true,
   });
   console.log(liveBarData, "liveBarData");
 

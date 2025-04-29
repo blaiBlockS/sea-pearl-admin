@@ -44,6 +44,7 @@ function FreeBoxInner() {
   const { data: freeBoxData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_FREE_BOX_CONFIG,
     queryFn: getFreeBoxConfig,
+    refetchOnWindowFocus: true,
   });
 
   /**

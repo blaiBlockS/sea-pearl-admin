@@ -39,6 +39,7 @@ function SeaPearlQuestDetailInner() {
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST_DETAIL(id),
     queryFn: () => getOneSeaPearlQuest(id),
+    refetchOnWindowFocus: true,
   });
 
   const {

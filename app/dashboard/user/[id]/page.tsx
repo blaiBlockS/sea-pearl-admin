@@ -33,6 +33,7 @@ function UserDetailInner() {
   const { data: userDetailData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USER_DETAIL(processedId),
     queryFn: () => getUserDetail(processedId),
+    refetchOnWindowFocus: true,
   });
 
   return (

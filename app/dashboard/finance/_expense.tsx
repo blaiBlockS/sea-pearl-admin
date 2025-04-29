@@ -182,6 +182,7 @@ const ExpenseSection = () => {
   const { data: allNotYetPaidData } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
     queryFn: () => getAllNotYetPaidExpenses(pageIndex, pageSize),
+    refetchOnWindowFocus: true,
   });
 
   // '지급 완료' 기간 별 조회 데이터 패칭
@@ -200,16 +201,8 @@ const ExpenseSection = () => {
         end: end.toISOString(),
         order: "desc",
       }),
+    refetchOnWindowFocus: true,
   });
-
-  // '지급 완료' 조회 데이터 패칭
-  // const { data: allPaidData } = useSuspenseQuery({
-  //   queryKey: QUERY_KEY.GET_ALL_FINANCE_EXPENSES,
-  //   queryFn: () => getAllPaidExpenses(pageIndex, pageSize),
-  // });
-
-  console.log(allNotYetPaidData, "allNotYetPaidData");
-  console.log(allPaidDataByDate, "allPaidDataByDate");
 
   let totalPages = 1;
   if (pageSize && allNotYetPaidData.totalCount) {
