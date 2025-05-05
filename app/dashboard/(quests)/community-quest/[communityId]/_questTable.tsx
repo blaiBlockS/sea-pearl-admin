@@ -349,7 +349,9 @@ const QuestTableInner = ({ id }: { id: string }) => {
     refetchOnWindowFocus: true,
   });
 
-  return <DataTable columns={raffleColumns} data={communityQuestData} />;
+  console.log(communityQuestData, "communityQuestData");
+
+  return <DataTable columns={raffleColumns} data={communityQuestData.quests} />;
 };
 
 export default QuestTable;

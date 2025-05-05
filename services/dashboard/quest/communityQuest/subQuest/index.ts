@@ -10,8 +10,8 @@ export const getSubQuestsByCommunityId = async (
   id: string,
   page: number,
   size: number
-): Promise<QuestConfigType[]> => {
-  const res = await clientAxios.get<QuestConfigType[]>(
+): Promise<{ quests: QuestConfigType[] }> => {
+  const res = await clientAxios.get<{ quests: QuestConfigType[] }>(
     END_POINT.GET_SUB_QUESTS(id, page, size)
   );
 

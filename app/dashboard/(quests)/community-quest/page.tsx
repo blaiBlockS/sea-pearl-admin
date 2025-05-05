@@ -156,25 +156,11 @@ function CommunityQuestInner() {
       size: 100,
       cell: ({ row }) => {
         const { rewards } = row.original;
-        let shell: number = 0;
-        let pearl: number = 0;
-
-        if (Array.isArray(rewards)) {
-          rewards.forEach((item) => {
-            const { amount, type } = item;
-
-            if (type === "shell") {
-              shell += amount;
-            } else if (type === "pearl") {
-              pearl += amount;
-            }
-          });
-        }
 
         return (
           <div className="flex flex-col">
-            <span>{shell} shell</span>
-            <span>{pearl} pearl</span>
+            <span>{rewards?.shell ?? 0} shell</span>
+            <span>{rewards?.pearl ?? 0} pearl</span>
           </div>
         );
       },
