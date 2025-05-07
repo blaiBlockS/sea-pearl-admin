@@ -125,7 +125,7 @@ const RaffleInfoConfig = ({
 
       {/* 참여기준 */}
       <div className="flex items-center justify-between">
-        <span className="text-body2 w-1/3">래플 당 가격(Pearls)</span>
+        <span className="text-body2 w-1/3">래플 당 가격</span>
         <div className="flex w-2/3 gap-4">
           <Input
             type="number"
