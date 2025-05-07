@@ -22,4 +22,10 @@ export default function ReactQueryProvider({
   );
 }
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true, // 윈도우 포커스시 refetch
+    },
+  },
+});
