@@ -15,16 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useParams, useRouter } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
 
 export default function SeaPearlQuestDetail() {
   return (
-    <ErrorBoundary
-      fallbackRender={(error) => <div>에러: {JSON.stringify(error.error)}</div>}
-    >
-      <Suspense fallback={<></>}>
+    <ErrorBoundary fallback={<div>error</div>}>
+      <Suspense fallback={<div>loading</div>}>
         <SeaPearlQuestDetailInner />
       </Suspense>
     </ErrorBoundary>
@@ -40,18 +38,29 @@ function SeaPearlQuestDetailInner() {
     queryKey: QUERY_KEY.GET_SEA_PEARL_QUEST_DETAIL(id),
     queryFn: () => getOneSeaPearlQuest(id),
     refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    staleTime: 0, // 데이터는 항상 stale 상태로 간주됨
   });
+
+  if (!data) return null; // fallback or loading UI
 
   const {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<QuestConfigType>({
     resolver: zodResolver(questSchema),
     mode: "onChange",
     defaultValues: getDefaultSubQuestValues(data),
   });
+
+  useEffect(() => {
+    if (data) {
+      reset(getDefaultSubQuestValues(data));
+    }
+  }, [data, reset]);
 
   const mutation = useMutation({
     mutationFn: putUpdateSeaPearlQuest,

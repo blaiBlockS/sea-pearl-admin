@@ -6,6 +6,8 @@ import {
 export const getDefaultSubQuestValues = (
   data: QuestConfigWithCombinedPeriod
 ): QuestConfigType => {
+  console.log(data, "data!");
+
   const {
     // id,
     enabled,

@@ -17,11 +17,10 @@ interface DatePickerProps {
   className?: string;
 }
 
-export function CustomTimePicker({
-  value,
-  onChange,
-  className,
-}: DatePickerProps) {
+export const CustomTimePicker = React.forwardRef<
+  HTMLButtonElement,
+  DatePickerProps
+>(({ value, onChange, className }: DatePickerProps, ref) => {
   const timeValue = `${String(value?.getHours()).padStart(2, "0")}:${String(value?.getMinutes()).padStart(2, "0")}`;
 
   const hours = Array.from({ length: 24 }, (_, i) => i); // 0 ~ 23
@@ -46,6 +45,7 @@ export function CustomTimePicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          ref={ref}
           id="date"
           variant={"outline"}
           className={cn(
@@ -98,4 +98,4 @@ export function CustomTimePicker({
       </PopoverContent>
     </Popover>
   );
-}
+});

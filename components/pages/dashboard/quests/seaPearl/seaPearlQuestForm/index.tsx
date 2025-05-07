@@ -1,3 +1,5 @@
+"use client";
+
 import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { DatePicker } from "@/components/common/datePicker";
 import Input from "@/components/common/input";
