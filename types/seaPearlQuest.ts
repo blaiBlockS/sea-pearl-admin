@@ -11,6 +11,7 @@ export interface SeaPearlQuestType {
 
   resetCycle: string; // 반복 주기
   roundInCycle: number; // 완료까지 몇 회인지
+  tookMoneyPeople: number;
 
   enabled: boolean;
   archivedPeople: number;

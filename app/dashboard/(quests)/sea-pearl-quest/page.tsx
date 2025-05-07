@@ -162,14 +162,29 @@ function SeaPearlQuestInner() {
       },
     }),
 
-    seaPearlQuestColumnHelper.accessor("maxParticipants", {
-      id: "maxParticipants",
-      header: "참여자 수",
+    seaPearlQuestColumnHelper.accessor("archivedPeople", {
+      id: "archivedPeople",
+      header: "조건 달성자",
       size: 100,
       cell: ({ row }) => {
-        const { archivedPeople, maxParticipants } = row.original;
+        const { archivedPeople } = row.original;
 
-        return `${archivedPeople?.toLocaleString() ?? "-"} / ${maxParticipants?.toLocaleString() ?? "-"}`;
+        return `${archivedPeople?.toLocaleString() ?? "-"}`;
+      },
+    }),
+
+    seaPearlQuestColumnHelper.accessor("maxParticipants", {
+      id: "maxParticipants",
+      header: () => (
+        <div>
+          참여자<span className="text-xs">(claimed)</span> / 최대
+        </div>
+      ),
+      size: 100,
+      cell: ({ row }) => {
+        const { tookMoneyPeople, maxParticipants } = row.original;
+
+        return `${tookMoneyPeople?.toLocaleString() ?? "-"} / ${maxParticipants ? maxParticipants?.toLocaleString() : "-"}`;
       },
     }),
 
