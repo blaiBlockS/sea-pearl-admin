@@ -19,12 +19,12 @@ import {
   postUpdateShellRaffle,
 } from "@/services/dashboard/content/shellRaffle";
 import { ErrorBoundary } from "react-error-boundary";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { QUERY_KEY } from "@/constants/queryKey";
 import { useParams } from "next/navigation";
 import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { updateDisabledParser } from "@/utils/convertStatus";
-import usePageData from "@/hook/usePageData";
+// import usePageData from "@/hook/usePageData";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
 import { format } from "date-fns";
 
@@ -107,19 +107,24 @@ function ShellRaffleDetailInner() {
     refetchOnWindowFocus: true,
   });
 
-  const { pageSize, pageIndex, pathname } = usePageData({});
-
   const {
     register,
     control,
     handleSubmit,
     trigger,
+    reset,
     formState: { errors },
   } = useForm<CreateRaffleFormData>({
     resolver: zodResolver(raffleFormSchema),
     mode: "onChange",
     defaultValues: getDefaultValues(data),
   });
+
+  useEffect(() => {
+    if (data) {
+      reset(data);
+    }
+  }, [data, reset]);
 
   const mutation = useMutation({
     mutationFn: postUpdateShellRaffle,

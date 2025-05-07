@@ -21,7 +21,6 @@ import { DatePicker } from "@/components/common/datePicker";
 import { SelectBox } from "@/components/common/selectBox";
 import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
-import { getDefaultSubQuestValues } from "@/utils/getDefaultSubQuestValues";
 
 export default function CommunityQuestInfo() {
   return (

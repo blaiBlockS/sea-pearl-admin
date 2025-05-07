@@ -30,7 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideTrash2 as TrashIcon } from "lucide-react";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -74,6 +74,7 @@ function RouletteInner() {
     control: rouletteControl,
     handleSubmit: rouletteHandleSubmit,
     getValues: rouletteGetValues,
+    reset: rouletteReset,
     // formState: { errors },
   } = useForm<CreateRouletteRewardFormData>({
     resolver: zodResolver(rouletteFormSchema),
@@ -87,11 +88,22 @@ function RouletteInner() {
     register: liveBarRegister,
     handleSubmit: liveBarHandleSubmit,
     formState: { errors },
+    reset: liveBarReset,
   } = useForm<LiveBarConfigType>({
     resolver: zodResolver(liveBarConfigSchema),
     mode: "onChange",
     defaultValues: getDefaultLiveBarValues(liveBarData),
   });
+  useEffect(() => {
+    if (rouletteData) {
+      rouletteReset(rouletteData);
+    }
+  }, [rouletteData, rouletteReset]);
+  useEffect(() => {
+    if (liveBarData) {
+      liveBarReset(liveBarData);
+    }
+  }, [liveBarData, liveBarReset]);
 
   // 3. 테이블 데이터 배열 동적 관리
   const { fields, append, remove } = useFieldArray({

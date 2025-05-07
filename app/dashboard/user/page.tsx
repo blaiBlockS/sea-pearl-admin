@@ -480,10 +480,12 @@ function FinanceInner() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<UserSearchFormData>({
     resolver: zodResolver(userSearchSchema),
   });
+
   // 제출 검사
   const onSubmit = async (data: UserSearchFormData) => {
     const { search } = data;

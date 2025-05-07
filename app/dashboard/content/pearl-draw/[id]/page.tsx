@@ -26,7 +26,7 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -109,12 +109,19 @@ function PearlRaffleDetailInner() {
     control,
     handleSubmit,
     trigger,
+    reset,
     formState: { errors },
   } = useForm<CreateRaffleFormData>({
     resolver: zodResolver(raffleFormSchema),
     mode: "onChange",
     defaultValues: getDefaultValues(data),
   });
+
+  useEffect(() => {
+    if (data) {
+      reset(data);
+    }
+  }, [data, reset]);
 
   const mutation = useMutation({
     mutationFn: postUpdatePearlRaffle,

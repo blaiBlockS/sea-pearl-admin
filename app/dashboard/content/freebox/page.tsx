@@ -55,12 +55,19 @@ function FreeBoxInner() {
     control: freeBoxControl,
     handleSubmit: rouletteHandleSubmit,
     getValues: rouletteGetValues,
+    reset,
     // formState: { errors },
   } = useForm<FreeBoxConfigType>({
     resolver: zodResolver(freeBoxConfigSchema),
     mode: "onBlur",
     defaultValues: getDefaultFreeBoxValues(freeBoxData),
   });
+
+  useEffect(() => {
+    if (freeBoxData) {
+      reset(freeBoxData);
+    }
+  }, [freeBoxData, reset]);
 
   // 3. 테이블 데이터 배열 동적 관리
   const { fields, append, remove } = useFieldArray({

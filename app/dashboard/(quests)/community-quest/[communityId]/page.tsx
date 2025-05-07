@@ -1,7 +1,7 @@
 "use client";
 
 import { ErrorBoundary } from "react-error-boundary";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Title from "@/components/layout/title";
 import { useRouter } from "next/navigation";
@@ -66,12 +66,19 @@ function CommunityQuestInfoInner() {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CommunityQuestConfigType>({
     resolver: zodResolver(communityQuestSchema),
     mode: "onChange",
     defaultValues: communityQuestData,
   });
+
+  useEffect(() => {
+    if (communityQuestData) {
+      reset(communityQuestData);
+    }
+  }, [communityQuestData, reset]);
 
   // 수정 MUTATION
   const mutation = useMutation({
