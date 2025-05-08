@@ -311,7 +311,7 @@ function CommunityQuestInfoInner() {
                   inputClassName="h-10 input-no-spinner"
                   placeholder="Enter Title"
                   hint={errors?.reward?.[0]?.message}
-                  {...register("reward.0.amount")}
+                  {...register("reward.0.amount", { valueAsNumber: true })}
                 />
               </div>
             </div>

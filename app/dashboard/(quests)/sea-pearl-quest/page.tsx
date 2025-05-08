@@ -177,7 +177,8 @@ function SeaPearlQuestInner() {
       id: "maxParticipants",
       header: () => (
         <div>
-          참여자<span className="text-xs">(claimed)</span> / 최대
+          참여자<span className="text-xs">(claimed)</span> / 최대참여자
+          <span className="text-xs">(max)</span>
         </div>
       ),
       size: 100,
