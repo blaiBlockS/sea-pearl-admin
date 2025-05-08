@@ -21,15 +21,15 @@ import Button from "@/components/common/button";
 import { QuestConfigType } from "@/schemas/quest.schema";
 
 interface QuestTableProps {
-  id: string;
+  communityId: string;
 }
 
-const QuestTable = ({ id }: QuestTableProps) => {
+const QuestTable = ({ communityId }: QuestTableProps) => {
   return (
     <ErrorBoundary fallback={<QuestTableFallback />}>
       <Suspense fallback={<QuestTableFallback />}>
         {/* id가 있어야 실행 */}
-        {id && <QuestTableInner id={id} />}
+        {communityId && <QuestTableInner communityId={communityId} />}
       </Suspense>
     </ErrorBoundary>
   );
@@ -180,7 +180,7 @@ const QuestTableFallback = () => {
 };
 
 // INNER
-const QuestTableInner = ({ id }: { id: string }) => {
+const QuestTableInner = ({ communityId }: { communityId: string }) => {
   const raffleColumns = [
     subQuestColumnHelper.accessor("id", {
       id: "id",
@@ -331,7 +331,7 @@ const QuestTableInner = ({ id }: { id: string }) => {
     onSuccess: () => {
       window.alert("수정 완료.");
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(id),
+        queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(communityId),
       });
     },
     onError: () => {
@@ -344,8 +344,8 @@ const QuestTableInner = ({ id }: { id: string }) => {
 
   // 커뮤니티 퀘스트 단일 데이터 조회
   const { data: communityQuestData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(id),
-    queryFn: () => getSubQuestsByCommunityId(id, pageIndex, pageSize),
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(communityId),
+    queryFn: () => getSubQuestsByCommunityId(communityId, pageIndex, pageSize),
     refetchOnWindowFocus: true,
   });
 

@@ -40,7 +40,7 @@ export default function CommunityQuestInfo() {
 
 function CommunityQuestInfoInner() {
   const params = useParams();
-  const id = Array.isArray(params.communityId)
+  const communityId = Array.isArray(params.communityId)
     ? params.communityId[0]
     : params.communityId;
 
@@ -49,8 +49,8 @@ function CommunityQuestInfoInner() {
 
   // 커뮤니티 퀘스트 단일 데이터 조회
   const { data: communityQuestData } = useSuspenseQuery({
-    queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS_DETAIL(id),
-    queryFn: () => getCommunityQuestDetail(id),
+    queryKey: QUERY_KEY.GET_COMMUNITY_QUESTS_DETAIL(communityId),
+    queryFn: () => getCommunityQuestDetail(communityId),
     refetchOnWindowFocus: true,
   });
 
@@ -115,7 +115,7 @@ function CommunityQuestInfoInner() {
     const { name, enabled, projectNumber } = data;
 
     mutation.mutate({
-      id,
+      id: communityId,
       name,
       enabled,
       projectNumber,
@@ -136,7 +136,7 @@ function CommunityQuestInfoInner() {
 
   // 삭제 핸들러
   const handleRemove = () => {
-    deleteMutation.mutate({ id });
+    deleteMutation.mutate({ id: communityId });
   };
 
   // 프로젝트 삭제 버튼
@@ -261,7 +261,7 @@ function CommunityQuestInfoInner() {
           </Title>
 
           {/* SUB QUESTS */}
-          <QuestTable id={id} />
+          <QuestTable communityId={communityId} />
         </div>
       </div>
     </div>

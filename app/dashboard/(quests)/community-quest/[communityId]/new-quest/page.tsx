@@ -21,6 +21,8 @@ import { DatePicker } from "@/components/common/datePicker";
 import { SelectBox } from "@/components/common/selectBox";
 import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
+import { queryClient } from "@/api";
+import { QUERY_KEY } from "@/constants/queryKey";
 
 export default function CommunityQuestInfo() {
   return (
@@ -72,6 +74,9 @@ function CommunityQuestInfoInner() {
       postCreateSubQuest(dto),
     onSuccess: () => {
       window.alert("성공적으로 퀘스트를 생성하였습니다.");
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.GET_COMMUNITY_QUEST_SUB_QUESTS(communityId),
+      });
       router.back();
     },
     onError: () => {
