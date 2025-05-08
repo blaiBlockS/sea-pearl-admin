@@ -73,7 +73,7 @@ export const END_POINT = {
 
   // COMMUNITY QUEST
   GET_COMMUNITY_QUESTS: (page: number, size: number) =>
-    `/api/projects/getAll?page=${page}&size=${size}`,
+    `/api/projects/getAll?page=${page}&size=${size}&order=asc`,
   GET_COMMUNITY_QUEST_DETAIL: (id: string) => `/api/projects/getById?id=${id}`,
   POST_COMMUNITY_QUEST: "/api/projects/create",
   PUT_COMMUNITY_QUEST: "/api/files/projects/update", // FILE
