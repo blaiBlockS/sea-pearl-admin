@@ -102,7 +102,7 @@ const ExpenseSection = () => {
       cell: ({ getValue }) => {
         const id = getValue<number>();
 
-        return `${id?.toLocaleString()}`;
+        return `${id?.toLocaleString() ?? "-"}`;
       },
     }),
 
