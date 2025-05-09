@@ -41,6 +41,8 @@ export const CustomTimePicker = React.forwardRef<
   const settingHour = value?.getHours();
   const settingMinute = value?.getMinutes();
 
+  React.useEffect(() => {}, []);
+
   return (
     <Popover>
       <PopoverTrigger asChild>

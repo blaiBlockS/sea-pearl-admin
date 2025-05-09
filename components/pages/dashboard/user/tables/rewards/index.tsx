@@ -148,7 +148,7 @@ const RewardTableInner = () => {
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USER_REWARDS(id, pageIndex, pageSize),
-    queryFn: () => getUserRewards(id, pageIndex, pageSize, "asc"),
+    queryFn: () => getUserRewards(id, pageIndex, pageSize, "desc"),
     refetchOnWindowFocus: true,
   });
 
