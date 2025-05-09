@@ -143,7 +143,9 @@ const ExpenseDetailInner = () => {
         {/* 출금 요청한 USDT */}
         <div className="flex items-center justify-between gap-8">
           <span className="text-body2 flex-1 max-w-1/5">출금 요청한 USDT</span>
-          <div className="flex  flex-1 max-w-4/5 gap-4">{data.amount}</div>
+          <div className="flex  flex-1 max-w-4/5 gap-4">
+            {data.order_amount || data.amount}
+          </div>
         </div>
 
         {/* 출금 요청일 */}
