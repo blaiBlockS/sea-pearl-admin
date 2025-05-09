@@ -101,8 +101,8 @@ function FinanceInnerFallback() {
       },
     }),
 
-    expenseColumnHelper.accessor("order_amount", {
-      id: "order_amount",
+    expenseColumnHelper.accessor("amount", {
+      id: "amount",
       header: () => "출금 USDT",
       size: 200,
       cell: () => {
@@ -189,12 +189,13 @@ function FinanceInnerFallback() {
             data={new Array(10).fill(undefined).map(() => ({
               id: "string",
               userId: "string",
-              telegramUid: 0,
+              telegramId: 0,
               firstName: "string",
               lastName: "string",
               userName: "string",
+              orderDate: "2025-04-16T02:43:18.667Z",
               expenseDate: "2025-04-16T02:43:18.667Z",
-              order_amount: 0,
+              amount: 0,
               link: "string",
               createdAt: "2025-04-16T02:43:18.667Z",
               updatedAt: "2025-04-16T02:43:18.667Z",
@@ -216,12 +217,13 @@ function FinanceInnerFallback() {
             data={new Array(10).fill(undefined).map(() => ({
               id: "string",
               userId: "string",
-              telegramUid: 0,
+              telegramId: 0,
               firstName: "string",
               lastName: "string",
               userName: "string",
+              orderDate: "2025-04-16T02:43:18.667Z",
               expenseDate: "2025-04-16T02:43:18.667Z",
-              order_amount: 0,
+              amount: 0,
               link: "string",
               createdAt: "2025-04-16T02:43:18.667Z",
               updatedAt: "2025-04-16T02:43:18.667Z",

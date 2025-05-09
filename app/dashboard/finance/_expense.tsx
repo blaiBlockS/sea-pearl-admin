@@ -95,8 +95,8 @@ const ExpenseSection = () => {
       },
     }),
 
-    expenseColumnHelper.accessor("order_amount", {
-      id: "order_amount",
+    expenseColumnHelper.accessor("amount", {
+      id: "amount",
       header: () => "출금 USDT",
       size: 100,
       cell: ({ getValue }) => {
