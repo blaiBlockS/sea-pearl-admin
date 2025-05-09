@@ -3,14 +3,14 @@ import { DataTable } from "@/components/common/table";
 import { userRewardColumnHelper } from "@/components/common/table/columns";
 import { QUERY_KEY } from "@/constants/queryKey";
 import usePageData from "@/hook/usePageData";
-import { getUserRewards, getUserUsdtExpense } from "@/services/dashboard/user";
+import { getUserRewards } from "@/services/dashboard/user";
 import { RaffleType } from "@/types/columns";
-import { UserRewardsType, UserUsdtExpenseType } from "@/types/user";
+import { UserRewardsType } from "@/types/user";
 import { convertPageIndex } from "@/utils/covertPageIndex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -141,14 +141,14 @@ const RewardTableInner = () => {
 
       cell: ({ getValue }) => {
         const to = getValue<number>();
-        return to ? `${to.toLocaleString()} USDT` : "-";
+        return to ? `${to.toLocaleString()}` : "-";
       },
     }),
   ] as ColumnDef<UserRewardsType, unknown>[];
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USER_REWARDS(id, pageIndex, pageSize),
-    queryFn: () => getUserRewards(id, pageIndex, pageSize, "asc"),
+    queryFn: () => getUserRewards(id, pageIndex, pageSize, "desc"),
     refetchOnWindowFocus: true,
   });
 
