@@ -179,7 +179,7 @@ const UsdtExpenseTableInner = () => {
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USER_USDT_EXPENSE(id, pageIndex, pageSize),
-    queryFn: () => getUserUsdtExpense(id, pageIndex, pageSize, "desc"),
+    queryFn: () => getUserUsdtExpense(id, pageIndex, pageSize, "asc"),
     refetchOnWindowFocus: true,
   });
 

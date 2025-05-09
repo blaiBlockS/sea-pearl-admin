@@ -122,7 +122,7 @@ const QuestDoneTableInner = () => {
 
   const { data } = useSuspenseQuery({
     queryKey: QUERY_KEY.GET_USER_QUEST_DONE(id, pageIndex, pageSize),
-    queryFn: () => getUserQuestDone(id, pageIndex, pageSize, "desc"),
+    queryFn: () => getUserQuestDone(id, pageIndex, pageSize, "asc"),
     refetchOnWindowFocus: true,
   });
 
