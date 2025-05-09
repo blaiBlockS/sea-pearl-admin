@@ -42,7 +42,7 @@ function FinanceInnerFallback() {
       ),
     }),
 
-    expenseColumnHelper.accessor("createdAt", {
+    expenseColumnHelper.accessor("expenseDate", {
       id: "createdAt",
       header: () => <div className="pl-3">요청 일자</div>,
       size: 100,

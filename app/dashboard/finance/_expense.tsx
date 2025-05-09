@@ -46,7 +46,7 @@ const ExpenseSection = () => {
       },
     }),
 
-    expenseColumnHelper.accessor("createdAt", {
+    expenseColumnHelper.accessor("expenseDate", {
       id: "createdAt",
       header: () => <div className="">요청 일자</div>,
       size: 100,
