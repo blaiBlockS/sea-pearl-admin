@@ -101,9 +101,9 @@ function FinanceInnerFallback() {
       },
     }),
 
-    expenseColumnHelper.accessor("amount", {
-      id: "amount",
-      header: () => "출금 USDT",
+    expenseColumnHelper.accessor("order_amount", {
+      id: "order_amount",
+      header: () => "출금요청 USDT",
       size: 200,
       cell: () => {
         return (

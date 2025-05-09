@@ -95,14 +95,14 @@ const ExpenseSection = () => {
       },
     }),
 
-    expenseColumnHelper.accessor("amount", {
-      id: "amount",
-      header: () => "출금 USDT",
+    expenseColumnHelper.accessor("order_amount", {
+      id: "order_amount",
+      header: () => "출금요청 USDT",
       size: 100,
       cell: ({ getValue }) => {
-        const id = getValue<number>();
+        const order_amount = getValue<number>();
 
-        return `${id?.toLocaleString() ?? "-"}`;
+        return `${order_amount?.toLocaleString() ?? "-"}`;
       },
     }),
 

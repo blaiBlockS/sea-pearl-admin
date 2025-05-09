@@ -6,7 +6,11 @@ export interface ExpenseType {
   firstName: string;
   lastName: string;
   userName: string;
-  amount: number;
+
+  // 혼용되고 있음...
+  amount?: number;
+  order_amount?: number;
+
   link: string;
 
   expenseDate: string;
