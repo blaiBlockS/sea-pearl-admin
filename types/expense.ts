@@ -1,16 +1,16 @@
 export interface ExpenseType {
   id: string;
   userId: string;
-  telegramUid: number;
+  telegramId: number;
 
   firstName: string;
   lastName: string;
   userName: string;
-  order_amount: number;
+  amount: number;
   link: string;
 
   expenseDate: string;
-  createdAt: string; // IsoString
+  orderDate: string; // IsoString
   updatedAt: string; // IsoString
 }
 
