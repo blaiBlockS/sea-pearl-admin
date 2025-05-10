@@ -47,6 +47,16 @@ export const CustomTimePicker = React.forwardRef<
   });
   const [highlightedDigit, setHighlightedDigit] = React.useState(1);
 
+  React.useEffect(() => {
+    setHighlightedDigit(1);
+    setFocusedSection("hour");
+    setHourValue((prev) => {
+      const temp = { ...prev };
+      temp.targetDigit = 1;
+      return temp;
+    });
+  }, [open]);
+
   const timeValue = `${String(value?.getHours()).padStart(2, "0")}:${String(value?.getMinutes()).padStart(2, "0")}`;
 
   const hours = Array.from({ length: 24 }, (_, i) => i); // 0 ~ 23
@@ -186,6 +196,7 @@ export const CustomTimePicker = React.forwardRef<
 
   const highlighten = (timeValue: string, highlightedDigit: number) => {
     const divided = timeValue.split(":").map((item) => item.split(""));
+
     if (!open) {
       return <span>{timeValue}</span>;
     }
