@@ -40,7 +40,6 @@ export const questSchema = z.object({
   roundInCycle: z.preprocess(
     (val) => {
       if (val === "" || val === null || Number.isNaN(val)) return undefined;
-      console.log(val, "value?!@");
       return Number(val);
     },
     z
@@ -52,7 +51,6 @@ export const questSchema = z.object({
   maxParticipants: z.preprocess(
     (val) => {
       if (val === "" || val === null || Number.isNaN(val)) return undefined;
-      console.log(val, "value?!@");
       return Number(val);
     },
     z.number({ message: "숫자를 입력해주세요." }).optional()
