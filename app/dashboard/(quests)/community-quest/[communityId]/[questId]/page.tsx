@@ -185,6 +185,10 @@ function CommunityQuestInfoInner() {
     );
   };
 
+  const handleConvert = () => {
+    document.querySelector(".");
+  };
+
   return (
     <div className="px-9 py-7 flex flex-col gap-8">
       {/* 페이지 타이틀 */}

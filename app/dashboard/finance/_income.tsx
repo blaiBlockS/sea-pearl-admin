@@ -19,10 +19,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useRef, useState } from "react";
 
-const INCOME_PAGE_INDEX = "incomeIndex";
-const INCOME_PAGE_SIZE = "incomeSize";
-
 const IncomeSection = () => {
+  const INCOME_PAGE_INDEX = "incomeIndex";
+  const INCOME_PAGE_SIZE = "incomeSize";
+
   const { pageIndex, pageSize, pathname } = usePageData({
     customPageIndexKey: INCOME_PAGE_INDEX,
     customPageSizeKey: INCOME_PAGE_SIZE,
@@ -209,7 +209,12 @@ const IncomeSection = () => {
 
       {/* 테이블 */}
       <DataTable columns={incomeColumns} data={allIncomeDataByDate.incomes} />
-      <PagenationDeck totalPages={totalPages} currentPage={pageIndex} />
+      <PagenationDeck
+        currentPageKeyAlias={INCOME_PAGE_INDEX}
+        totalPageKeyAlias={INCOME_PAGE_SIZE}
+        totalPages={totalPages}
+        currentPage={pageIndex}
+      />
     </div>
   );
 };
