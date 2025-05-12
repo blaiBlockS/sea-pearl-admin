@@ -23,6 +23,7 @@ import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
 import { queryClient } from "@/api";
 import { QUERY_KEY } from "@/constants/queryKey";
+import { onKeyDownTab } from "@/utils/onKeyDownTab";
 
 export default function CommunityQuestInfo() {
   return (
@@ -343,7 +344,11 @@ function CommunityQuestInfoInner() {
                   name="period.startDate"
                   control={control}
                   render={({ field }) => (
-                    <DatePicker value={field.value} onChange={field.onChange} />
+                    <DatePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      onKeyDownTab={() => onKeyDownTab(0)}
+                    />
                   )}
                 />
 
@@ -358,6 +363,7 @@ function CommunityQuestInfoInner() {
                       onChange={(value: Date | undefined) =>
                         field.onChange(value)
                       }
+                      onKeyDownTab={() => onKeyDownTab(1)}
                     />
                   )}
                 />
@@ -376,6 +382,7 @@ function CommunityQuestInfoInner() {
                     <DatePicker
                       value={field.value} //
                       onChange={field.onChange}
+                      onKeyDownTab={() => onKeyDownTab(2)}
                     />
                   )}
                 />
@@ -391,6 +398,7 @@ function CommunityQuestInfoInner() {
                       onChange={(value: Date | undefined) =>
                         field.onChange(value)
                       }
+                      onKeyDownTab={() => onKeyDownTab(3)}
                     />
                   )}
                 />

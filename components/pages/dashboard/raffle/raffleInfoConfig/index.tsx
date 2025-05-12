@@ -6,6 +6,7 @@ import {
   CreateRaffleFormData,
   GetRaffleFormDataDto,
 } from "@/schemas/raffle.schema";
+import { onKeyDownTab } from "@/utils/onKeyDownTab";
 import {
   Control,
   Controller,
@@ -73,7 +74,11 @@ const RaffleInfoConfig = ({
             name="period.startDate"
             control={control}
             render={({ field }) => (
-              <DatePicker value={field.value} onChange={field.onChange} />
+              <DatePicker
+                value={field.value}
+                onChange={field.onChange}
+                onKeyDownTab={() => onKeyDownTab(0)}
+              />
             )}
           />
 
@@ -86,6 +91,7 @@ const RaffleInfoConfig = ({
                 {...field}
                 value={field.value}
                 onChange={(value: Date | undefined) => field.onChange(value)}
+                onKeyDownTab={() => onKeyDownTab(1)}
               />
             )}
           />
@@ -104,6 +110,7 @@ const RaffleInfoConfig = ({
               <DatePicker
                 value={field.value} //
                 onChange={field.onChange}
+                onKeyDownTab={() => onKeyDownTab(2)}
               />
             )}
           />
@@ -117,6 +124,7 @@ const RaffleInfoConfig = ({
                 {...field}
                 value={field.value}
                 onChange={(value: Date | undefined) => field.onChange(value)}
+                onKeyDownTab={() => onKeyDownTab(3)}
               />
             )}
           />

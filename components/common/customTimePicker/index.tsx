@@ -15,6 +15,9 @@ interface DatePickerProps {
   value: Date;
   onChange: (val: Date | undefined) => void;
   className?: string;
+
+  // 탭키 눌렀을 때
+  onKeyDownTab?: () => void;
 }
 
 interface TimeValueType {
@@ -26,7 +29,7 @@ interface TimeValueType {
 export const CustomTimePicker = React.forwardRef<
   HTMLButtonElement,
   DatePickerProps
->(({ value, onChange, className }: DatePickerProps, ref) => {
+>(({ value, onChange, className, onKeyDownTab }: DatePickerProps, ref) => {
   // 팝오버 창이 열렸는지 안 열렸는지
   const [open, setOpen] = React.useState(false);
 
@@ -246,68 +249,84 @@ export const CustomTimePicker = React.forwardRef<
     return <span>{timeValue}</span>;
   };
 
+  const handleKeyDownWrapper: React.KeyboardEventHandler<HTMLDivElement> = (
+    e
+  ) => {
+    if (e.key === "Tab" && onKeyDownTab) {
+      console.log("tab pressed");
+      e.preventDefault();
+      onKeyDownTab();
+
+      setOpen(false);
+    }
+  };
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          ref={ref}
-          id="date"
-          variant={"outline"}
-          className={cn(
-            "bg-background-teritary border-stroke-secondary text-body4-medium flex-1 justify-between border text-left font-normal",
-            !value && "text-muted-foreground",
-            className
-          )}
+    <div onKeyDown={handleKeyDownWrapper}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            ref={ref}
+            id="date"
+            variant={"outline"}
+            className={cn(
+              "_auto-clickable bg-background-teritary border-stroke-secondary text-body4-medium flex-1 justify-between border text-left font-normal",
+              !value && "text-muted-foreground",
+              className
+            )}
+          >
+            <div className="flex items-center gap-2">
+              {highlighten(timeValue, highlightedDigit)}
+            </div>
+            <ClockIcon />
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent
+          className="border-background-teritary w-auto border bg-[#131A25] p-0 text-gray-200"
+          align="start"
         >
-          <div className="flex items-center gap-2">
-            {highlighten(timeValue, highlightedDigit)}
+          <div className="flex h-40" onKeyDown={handlePopOverKeyDown}>
+            {/* HOUR SECTION */}
+            <section className="flex flex-col h-full overflow-y-scroll scrollbar-hide">
+              {hours.map((h) => (
+                <Button
+                  key={h}
+                  value={h}
+                  className={cn(
+                    settingHour === h && "bg-background-teritary",
+                    settingHour === h && hourFocused && "bg-background-brand",
+                    "hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                  )}
+                  onClick={() => handleClickHourButton(h, "hour")}
+                >
+                  {String(h).padStart(2, "0")}
+                </Button>
+              ))}
+            </section>
+
+            {/* MINUTES SECTION */}
+            <section className="flex flex-col h-full overflow-y-scroll">
+              {minutes.map((m) => (
+                <Button
+                  key={m}
+                  value={m}
+                  className={cn(
+                    settingMinute === m && "bg-background-teritary",
+                    settingMinute === m &&
+                      minuteFocused &&
+                      "bg-background-brand",
+                    "hover:bg-background-secondary scrollbar-hide cursor-pointer"
+                  )}
+                  onClick={() => handleClickHourButton(m, "minute")}
+                >
+                  {String(m).padStart(2, "0")}
+                </Button>
+              ))}
+            </section>
           </div>
-          <ClockIcon />
-        </Button>
-      </PopoverTrigger>
-
-      <PopoverContent
-        className="border-background-teritary w-auto border bg-[#131A25] p-0 text-gray-200"
-        align="start"
-      >
-        <div className="flex h-40" onKeyDown={handlePopOverKeyDown}>
-          {/* HOUR SECTION */}
-          <section className="flex flex-col h-full overflow-y-scroll scrollbar-hide">
-            {hours.map((h) => (
-              <Button
-                key={h}
-                value={h}
-                className={cn(
-                  settingHour === h && "bg-background-teritary",
-                  settingHour === h && hourFocused && "bg-background-brand",
-                  "hover:bg-background-secondary scrollbar-hide cursor-pointer"
-                )}
-                onClick={() => handleClickHourButton(h, "hour")}
-              >
-                {String(h).padStart(2, "0")}
-              </Button>
-            ))}
-          </section>
-
-          {/* MINUTES SECTION */}
-          <section className="flex flex-col h-full overflow-y-scroll">
-            {minutes.map((m) => (
-              <Button
-                key={m}
-                value={m}
-                className={cn(
-                  settingMinute === m && "bg-background-teritary",
-                  settingMinute === m && minuteFocused && "bg-background-brand",
-                  "hover:bg-background-secondary scrollbar-hide cursor-pointer"
-                )}
-                onClick={() => handleClickHourButton(m, "minute")}
-              >
-                {String(m).padStart(2, "0")}
-              </Button>
-            ))}
-          </section>
-        </div>
-      </PopoverContent>
-    </Popover>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 });

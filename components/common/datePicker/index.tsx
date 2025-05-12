@@ -17,6 +17,7 @@ interface DatePickerProps {
   value: Date;
   onChange: (val: Date | undefined) => void;
   className?: string;
+  onKeyDownTab?: () => void;
 }
 
 interface DateValueType {
@@ -26,7 +27,12 @@ interface DateValueType {
   date: [number, number];
 }
 
-export const DatePicker = ({ value, onChange, className }: DatePickerProps) => {
+export const DatePicker = ({
+  value,
+  onChange,
+  className,
+  onKeyDownTab,
+}: DatePickerProps) => {
   // 팝오버 창이 열렸는지 안 열렸는지
   const [open, setOpen] = React.useState(false);
 
@@ -273,44 +279,58 @@ export const DatePicker = ({ value, onChange, className }: DatePickerProps) => {
     );
   };
 
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          id="date"
-          variant={"outline"}
-          className={cn(
-            "bg-background-teritary border-stroke-secondary text-body4-medium flex-1 justify-between border text-left font-normal",
-            !value && "text-muted-foreground",
-            className
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <CalendarIcon />
-            {value ? (
-              // format(value, "yyyy.MM.dd.")
-              highlighten(value)
-            ) : (
-              <span>날짜를 선택하세요.</span>
-            )}
-          </div>
-          <ChevronDown />
-        </Button>
-      </PopoverTrigger>
+  const handleKeyDownWrapper: React.KeyboardEventHandler<HTMLDivElement> = (
+    e
+  ) => {
+    if (e.key === "Tab" && onKeyDownTab) {
+      console.log("tab pressed");
+      e.preventDefault();
+      onKeyDownTab();
 
-      <PopoverContent
-        className="border-background-teritary w-auto border bg-[#131A25] p-0 text-gray-200"
-        align="start"
-        onKeyDown={handleKeyDown}
-      >
-        <Calendar
-          initialFocus
-          mode="single"
-          selected={value}
-          onSelect={onChange}
-          numberOfMonths={1}
-        />
-      </PopoverContent>
-    </Popover>
+      setOpen(false);
+    }
+  };
+
+  return (
+    <div onKeyDown={handleKeyDownWrapper}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={"outline"}
+            className={cn(
+              "_auto-clickable bg-background-teritary border-stroke-secondary text-body4-medium flex-1 justify-between border text-left font-normal",
+              !value && "text-muted-foreground",
+              className
+            )}
+          >
+            <div className="flex items-center gap-2">
+              <CalendarIcon />
+              {value ? (
+                // format(value, "yyyy.MM.dd.")
+                highlighten(value)
+              ) : (
+                <span>날짜를 선택하세요.</span>
+              )}
+            </div>
+            <ChevronDown />
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent
+          className="border-background-teritary w-auto border bg-[#131A25] p-0 text-gray-200"
+          align="start"
+          onKeyDown={handleKeyDown}
+        >
+          <Calendar
+            initialFocus
+            mode="single"
+            selected={value}
+            onSelect={onChange}
+            numberOfMonths={1}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 };

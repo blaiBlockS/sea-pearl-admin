@@ -18,6 +18,7 @@ import { ExpenseStatusType } from "@/types/expenseStatus";
 import { cn } from "@/utils/cn";
 import { convertPageIndex } from "@/utils/covertPageIndex";
 import { isExpenseStatus } from "@/utils/isExpenseStatus";
+import { onKeyDownTab } from "@/utils/onKeyDownTab";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -241,11 +242,13 @@ const ExpenseSection = () => {
             onChange={handleChangeStartDate}
             value={start}
             className="flex-0"
+            onKeyDownTab={() => onKeyDownTab(0)}
           />
           <DatePicker
             onChange={handleChangeEndDate}
             value={end}
             className="flex-0"
+            onKeyDownTab={() => onKeyDownTab(1)}
           />
         </div>
 

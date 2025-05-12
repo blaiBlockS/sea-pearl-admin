@@ -6,6 +6,7 @@ import Input from "@/components/common/input";
 import { SelectBox } from "@/components/common/selectBox";
 import { Switch } from "@/components/ui/switch";
 import { QuestConfigType } from "@/schemas/quest.schema";
+import { onKeyDownTab } from "@/utils/onKeyDownTab";
 import {
   Control,
   Controller,
@@ -204,7 +205,11 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
             name="period.startDate"
             control={control}
             render={({ field }) => (
-              <DatePicker value={field.value} onChange={field.onChange} />
+              <DatePicker
+                value={field.value}
+                onChange={field.onChange}
+                onKeyDownTab={() => onKeyDownTab(0)}
+              />
             )}
           />
 
@@ -217,6 +222,7 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
                 {...field}
                 value={field.value}
                 onChange={(value: Date | undefined) => field.onChange(value)}
+                onKeyDownTab={() => onKeyDownTab(1)}
               />
             )}
           />
@@ -235,6 +241,7 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
               <DatePicker
                 value={field.value} //
                 onChange={field.onChange}
+                onKeyDownTab={() => onKeyDownTab(2)}
               />
             )}
           />
@@ -248,6 +255,7 @@ const QuestForm = ({ control, register, errors }: QuestFormProps) => {
                 {...field}
                 value={field.value}
                 onChange={(value: Date | undefined) => field.onChange(value)}
+                onKeyDownTab={() => onKeyDownTab(3)}
               />
             )}
           />

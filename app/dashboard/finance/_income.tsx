@@ -14,6 +14,7 @@ import {
 } from "@/services/dashboard/income";
 import { IncomeType } from "@/types/income";
 import { convertPageIndex } from "@/utils/covertPageIndex";
+import { onKeyDownTab } from "@/utils/onKeyDownTab";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -199,11 +200,13 @@ const IncomeSection = () => {
           onChange={handleChangeStartDate}
           value={start}
           className="flex-0"
+          onKeyDownTab={() => onKeyDownTab(0)}
         />
         <DatePicker
           onChange={handleChangeEndDate}
           value={end}
           className="flex-0"
+          onKeyDownTab={() => onKeyDownTab(1)}
         />
       </div>
 
