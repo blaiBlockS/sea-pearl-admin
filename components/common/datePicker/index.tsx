@@ -26,7 +26,7 @@ interface DateValueType {
   date: [number, number];
 }
 
-export function DatePicker({ value, onChange, className }: DatePickerProps) {
+export const DatePicker = ({ value, onChange, className }: DatePickerProps) => {
   // 팝오버 창이 열렸는지 안 열렸는지
   const [open, setOpen] = React.useState(false);
 
@@ -45,7 +45,8 @@ export function DatePicker({ value, onChange, className }: DatePickerProps) {
 
   // DATA
   const [dateValue, setDateValue] = React.useState<DateValueType>(() => {
-    const { year, month, date } = handleSplitDate(value);
+    const temp = new Date(value);
+    const { year, month, date } = handleSplitDate(temp);
 
     return {
       targetDigit: 3,
@@ -312,4 +313,4 @@ export function DatePicker({ value, onChange, className }: DatePickerProps) {
       </PopoverContent>
     </Popover>
   );
-}
+};

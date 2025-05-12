@@ -70,6 +70,7 @@ function CommunityQuestInfoInner() {
     defaultValues: getDefaultSubQuestValues(subQuestData),
   });
 
+  // 다시 리패칭
   useEffect(() => {
     if (subQuestData) {
       reset(getDefaultSubQuestValues(subQuestData));
