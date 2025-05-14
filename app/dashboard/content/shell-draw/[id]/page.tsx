@@ -24,7 +24,6 @@ import { QUERY_KEY } from "@/constants/queryKey";
 import { useParams } from "next/navigation";
 import { getDefaultValues } from "@/utils/getDefaultRaffleValues";
 import { updateDisabledParser } from "@/utils/convertStatus";
-// import usePageData from "@/hook/usePageData";
 import { combineDateAndTime } from "@/utils/combineDateAndTime";
 import { format } from "date-fns";
 
@@ -124,7 +123,7 @@ function ShellRaffleDetailInner() {
 
   useEffect(() => {
     if (data) {
-      reset(data);
+      reset(getDefaultValues(data));
     }
   }, [data, reset]);
 
@@ -200,11 +199,6 @@ function ShellRaffleDetailInner() {
       </div>
     </Button>
   );
-
-  const watchedPeriod = watch("period");
-  useEffect(() => {
-    console.log(watchedPeriod, "watchedPeriod");
-  }, [watchedPeriod]);
 
   const {
     fields: winnerFields,

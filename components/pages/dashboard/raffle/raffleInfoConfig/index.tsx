@@ -2,10 +2,7 @@ import { CustomTimePicker } from "@/components/common/customTimePicker";
 import { DatePicker } from "@/components/common/datePicker";
 import Input from "@/components/common/input";
 import Tag from "@/components/common/tag";
-import {
-  CreateRaffleFormData,
-  GetRaffleFormDataDto,
-} from "@/schemas/raffle.schema";
+import { CreateRaffleFormData } from "@/schemas/raffle.schema";
 import { onKeyDownTab } from "@/utils/onKeyDownTab";
 import {
   Control,
@@ -75,6 +72,7 @@ const RaffleInfoConfig = ({
             control={control}
             render={({ field }) => (
               <DatePicker
+                {...field}
                 value={field.value}
                 onChange={field.onChange}
                 onKeyDownTab={() => onKeyDownTab(0)}
@@ -108,6 +106,7 @@ const RaffleInfoConfig = ({
             control={control}
             render={({ field }) => (
               <DatePicker
+                {...field}
                 value={field.value} //
                 onChange={field.onChange}
                 onKeyDownTab={() => onKeyDownTab(2)}
