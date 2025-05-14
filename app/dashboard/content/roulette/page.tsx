@@ -96,12 +96,12 @@ function RouletteInner() {
   });
   useEffect(() => {
     if (rouletteData) {
-      rouletteReset(rouletteData);
+      rouletteReset(parseDefaultRouletteValues(rouletteData));
     }
   }, [rouletteData, rouletteReset]);
   useEffect(() => {
     if (liveBarData) {
-      liveBarReset(liveBarData);
+      liveBarReset(getDefaultLiveBarValues(liveBarData));
     }
   }, [liveBarData, liveBarReset]);
 

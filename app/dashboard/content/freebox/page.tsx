@@ -65,7 +65,7 @@ function FreeBoxInner() {
 
   useEffect(() => {
     if (freeBoxData) {
-      reset(freeBoxData);
+      reset(getDefaultFreeBoxValues(freeBoxData));
     }
   }, [freeBoxData, reset]);
 

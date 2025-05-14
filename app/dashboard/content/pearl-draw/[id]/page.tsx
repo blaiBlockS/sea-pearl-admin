@@ -119,7 +119,7 @@ function PearlRaffleDetailInner() {
 
   useEffect(() => {
     if (data) {
-      reset(data);
+      reset(getDefaultValues(data));
     }
   }, [data, reset]);
 
