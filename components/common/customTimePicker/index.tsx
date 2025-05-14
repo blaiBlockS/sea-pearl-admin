@@ -188,12 +188,13 @@ export const CustomTimePicker = React.forwardRef<
   };
 
   const handleClickHourButton = (v: number, type: "hour" | "minute") => {
+    console.log(v, type, "v type");
     if (type === "hour") {
       setFocusedSection("hour");
       handleHourChange(v);
     } else {
       setFocusedSection("minute");
-      handleHourChange(v);
+      handleMinuteChange(v);
     }
   };
 
