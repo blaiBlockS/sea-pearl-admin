@@ -111,7 +111,6 @@ function ShellRaffleDetailInner() {
     control,
     handleSubmit,
     getValues,
-    watch,
     trigger,
     reset,
     formState: { errors },
