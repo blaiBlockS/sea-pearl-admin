@@ -111,6 +111,8 @@ function ShellRaffleDetailInner() {
     register,
     control,
     handleSubmit,
+    getValues,
+    watch,
     trigger,
     reset,
     formState: { errors },
@@ -184,7 +186,12 @@ function ShellRaffleDetailInner() {
   const SubmitNewRaffleButton = () => (
     <Button
       variant="fill"
-      onClick={handleSubmit(onSubmit)}
+      onClick={handleSubmit(onSubmit, (error) => {
+        console.log(error, "error");
+
+        const period = getValues("period");
+        console.log(period, "period");
+      })}
       disabled={updateDisabledParser(data.status)}
       className={updateDisabledParser(data.status) ? "opacity-50" : ""}
     >
@@ -193,6 +200,11 @@ function ShellRaffleDetailInner() {
       </div>
     </Button>
   );
+
+  const watchedPeriod = watch("period");
+  useEffect(() => {
+    console.log(watchedPeriod, "watchedPeriod");
+  }, [watchedPeriod]);
 
   const {
     fields: winnerFields,

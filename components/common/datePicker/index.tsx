@@ -137,6 +137,11 @@ export const DatePicker = ({
       // 타겟 숫자가 다섯 번째라면? (month의 첫 번째)
       // (0 - 1만 허용)
       if (temp.targetDigit === 5) {
+        if (Number(`${temp.month[0]}${temp.month[1]}`) > 12) {
+          targetKey = 1;
+          temp.month[1] = 2;
+        }
+
         if (targetKey >= 2) {
           targetKey = 1;
         }
@@ -145,12 +150,6 @@ export const DatePicker = ({
         // 달이 00이면 01로 강제 전환
         if (targetKey === 0 && temp.month[0] === 0) {
           temp.month[1] = 1;
-        }
-
-        // 달이 13이상이면 12로 강제 전환
-        if (targetKey >= 3 && temp.month[0] >= 1) {
-          temp.month[0] = 1;
-          temp.month[1] = 2;
         }
       }
 
@@ -178,6 +177,35 @@ export const DatePicker = ({
 
         if (targetKey > 3) {
           temp.date[0] = 3;
+        }
+
+        const joinedYear = Number(temp.year.join(""));
+        const joinedMonth = Number(temp.month.join(""));
+        let joinedDate = Number(temp.date.join(""));
+
+        // 유효한 날짜인지 체크
+        let isVerified = false;
+        while (!isVerified) {
+          if (joinedDate <= 10) break;
+
+          isVerified = isValidDate(joinedYear, joinedMonth, joinedDate);
+          if (!isVerified) joinedDate--;
+
+          if (joinedDate <= 0) break;
+        }
+
+        if (isVerified) {
+          const [verifiedFirstLetter, verifiedSecondLetter] = joinedDate
+            .toString()
+            .split("");
+          temp.date[0] = +verifiedFirstLetter;
+          temp.date[1] = +verifiedSecondLetter;
+
+          console.log(
+            verifiedFirstLetter,
+            verifiedSecondLetter,
+            "verifiedFirstLetter, verifiedSecondLetter"
+          );
         }
       }
 
@@ -248,31 +276,37 @@ export const DatePicker = ({
       return <span>{format(date, "yyyy.MM.dd.")}</span>;
     }
 
+    const {
+      year: tempYear,
+      month: tempMonth,
+      date: tempDate,
+    } = handleSplitDate(date);
+
     const focusedDigitStyle = "text-text-brand bg-blue-50";
 
     return (
       <span>
-        <span>{dateValue.year[0]}</span>
-        <span>{dateValue.year[1]}</span>
+        <span>{tempYear[0]}</span>
+        <span>{tempYear[1]}</span>
         <span className={dateValue.targetDigit === 3 ? focusedDigitStyle : ""}>
-          {dateValue.year[2]}
+          {tempYear[2]}
         </span>
         <span className={dateValue.targetDigit === 4 ? focusedDigitStyle : ""}>
-          {dateValue.year[3]}
+          {tempYear[3]}
         </span>
         <span>.</span>
         <span className={dateValue.targetDigit === 5 ? focusedDigitStyle : ""}>
-          {dateValue.month[0]}
+          {tempMonth[0]}
         </span>
         <span className={dateValue.targetDigit === 6 ? focusedDigitStyle : ""}>
-          {dateValue.month[1]}
+          {tempMonth[1]}
         </span>
         <span>.</span>
         <span className={dateValue.targetDigit === 7 ? focusedDigitStyle : ""}>
-          {dateValue.date[0]}
+          {tempDate[0]}
         </span>
         <span className={dateValue.targetDigit === 8 ? focusedDigitStyle : ""}>
-          {dateValue.date[1]}
+          {tempDate[1]}
         </span>
         <span>.</span>
       </span>
@@ -306,12 +340,7 @@ export const DatePicker = ({
           >
             <div className="flex items-center gap-2">
               <CalendarIcon />
-              {value ? (
-                // format(value, "yyyy.MM.dd.")
-                highlighten(value)
-              ) : (
-                <span>날짜를 선택하세요.</span>
-              )}
+              {value ? highlighten(value) : <span>날짜를 선택하세요.</span>}
             </div>
             <ChevronDown />
           </Button>
