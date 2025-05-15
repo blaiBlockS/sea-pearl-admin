@@ -136,18 +136,14 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
         // 타겟 숫자가 다섯 번째라면? (month의 첫 번째)
         // (0 - 1만 허용)
         if (temp.targetDigit === 5) {
+          temp.month[0] = targetKey;
           if (Number(`${temp.month[0]}${temp.month[1]}`) > 12) {
             targetKey = 1;
             temp.month[1] = 2;
           }
 
-          if (targetKey >= 2) {
-            targetKey = 1;
-          }
-          temp.month[0] = targetKey;
-
           // 달이 00이면 01로 강제 전환
-          if (targetKey === 0 && temp.month[0] === 0) {
+          if (temp.month[0] === 0 && temp.month[1] === 0) {
             temp.month[1] = 1;
           }
         }
@@ -177,35 +173,6 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
           if (targetKey > 3) {
             temp.date[0] = 3;
           }
-
-          const joinedYear = Number(temp.year.join(""));
-          const joinedMonth = Number(temp.month.join(""));
-          let joinedDate = Number(temp.date.join(""));
-
-          // 유효한 날짜인지 체크
-          let isVerified = false;
-          while (!isVerified) {
-            if (joinedDate <= 10) break;
-
-            isVerified = isValidDate(joinedYear, joinedMonth, joinedDate);
-            if (!isVerified) joinedDate--;
-
-            if (joinedDate <= 0) break;
-          }
-
-          if (isVerified) {
-            const [verifiedFirstLetter, verifiedSecondLetter] = joinedDate
-              .toString()
-              .split("");
-            temp.date[0] = +verifiedFirstLetter;
-            temp.date[1] = +verifiedSecondLetter;
-
-            console.log(
-              verifiedFirstLetter,
-              verifiedSecondLetter,
-              "verifiedFirstLetter, verifiedSecondLetter"
-            );
-          }
         }
 
         // 타겟 숫자가 여덟 번째라면? (day의 두 번째)
@@ -213,6 +180,11 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
           temp.date[1] = targetKey;
 
           if (temp.date[0] === 0 && temp.date[1] === 0) {
+            temp.date[1] = 1;
+          }
+
+          if (temp.date[0] >= 3 && temp.date[1] >= 2) {
+            temp.date[0] = 3;
             temp.date[1] = 1;
           }
 
