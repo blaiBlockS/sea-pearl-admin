@@ -21,5 +21,5 @@ export interface ExpenseType {
 export interface ExpenseListType {
   expenses: ExpenseType[];
   totalCount: number;
-  totalExpenseAmount: number;
+  totalExpenseAmount: number; // 페이지 별 총합이랜다...
 }

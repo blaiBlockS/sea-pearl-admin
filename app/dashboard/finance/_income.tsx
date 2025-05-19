@@ -134,6 +134,8 @@ const IncomeSection = () => {
     refetchOnWindowFocus: true,
   });
 
+  console.log(allIncomeDataByDate, "allIncomeDataByDate");
+
   const uploadMutation = useMutation({
     mutationFn: (formData: FormData) => postUploadIncomeCsv(formData),
     onSuccess: () => {
@@ -191,7 +193,9 @@ const IncomeSection = () => {
       {/* 지출 타이틀 */}
       <Title fontSize="text-head2" ActionButton={UploadButton}>
         <span className="mr-5">수익</span>
-        <span>{allIncomeDataByDate.totalIncomeAmount} USDT</span>
+        <span>
+          {allIncomeDataByDate.wholePeriodIncomeAmount.toFixed(4)} USDT
+        </span>
       </Title>
 
       {/* Date Picker */}

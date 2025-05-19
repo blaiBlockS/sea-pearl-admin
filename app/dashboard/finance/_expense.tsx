@@ -259,15 +259,6 @@ const ExpenseSection = () => {
           valueList={["출금요청", "지급완료"]}
           triggerClassName={"bg-background-teritary border"}
         />
-
-        {/* 조회 버튼 */}
-        {/* <Button
-          onClick={() => setConfirm(true)}
-          variant="fill"
-          className="px-3 bg-background-teritary hover:bg-background-teritary/50"
-        >
-          조회
-        </Button> */}
       </div>
 
       {/* 테이블 */}

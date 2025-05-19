@@ -11,5 +11,6 @@ export interface IncomeType {
 export interface IncomeListType {
   incomes: IncomeType[];
   totalCount: number;
-  totalIncomeAmount: number;
+  totalIncomeAmount: number; // 페이지별 토탈 인컴이랜다..
+  wholePeriodIncomeAmount: number;
 }
