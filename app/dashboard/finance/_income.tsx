@@ -59,7 +59,12 @@ const IncomeSection = () => {
 
     incomeColumnHelper.accessor("our_ads", {
       id: "our_ads",
-      header: () => <div className="">자체 집계한 광고 시청 횟수</div>,
+      header: () => (
+        <div className="flex flex-col">
+          <span>자체 집계한</span>
+          <span>광고 시청 횟수</span>
+        </div>
+      ),
       size: 100,
       cell: ({ getValue }) => {
         const ourAds = getValue<number>();
@@ -70,7 +75,12 @@ const IncomeSection = () => {
 
     incomeColumnHelper.accessor("real_ads", {
       id: "realAds",
-      header: () => <div className="">실제 집계된 광고 시청 횟수</div>,
+      header: () => (
+        <div className="flex flex-col">
+          <span>실제 집계된</span>
+          <span>광고 시청 횟수</span>
+        </div>
+      ),
       size: 100,
       cell: ({ getValue }) => {
         const realAds = getValue<number>();
@@ -91,13 +101,24 @@ const IncomeSection = () => {
     }),
 
     incomeColumnHelper.accessor("avg_price", {
-      id: "avg_price",
-      header: () => "평균 광고 단가",
+      id: "cpc",
+      header: () => "cpc",
       size: 150,
       cell: ({ getValue }) => {
         const avgPrice = getValue<string>();
 
         return <div>{avgPrice}</div>;
+      },
+    }),
+
+    incomeColumnHelper.accessor("cpm", {
+      id: "cpm",
+      header: () => "cpm",
+      size: 150,
+      cell: ({ getValue }) => {
+        const cpm = getValue<string>();
+
+        return <div>{cpm ?? "-"}</div>;
       },
     }),
   ] as ColumnDef<IncomeType, unknown>[];
